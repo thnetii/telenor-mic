@@ -5,6 +5,7 @@ using System.IO;
 using System.Linq;
 using System.Reflection;
 using System.Text;
+using System.Threading.Tasks;
 using TelenorConnexion.ManagedIoTCloud.Manifest.Data;
 using Xunit;
 
@@ -21,7 +22,6 @@ namespace TelenorConnexion.ManagedIoTCloud.Manifest.Test
             foreach (var pi in manifest.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
                 object pv = pi.GetValue(manifest);
-                Assert.NotNull(pv);
             }
         }
 
@@ -37,11 +37,11 @@ namespace TelenorConnexion.ManagedIoTCloud.Manifest.Test
         }
 
         [SkippableTheory]
+        [InlineData("demo.mic.telenorconnexion.com")]
         [InlineData("startiot.mic.telenorconnexion.com")]
-        public static void FetchMicManifestForHostname(string hostname)
+        public static async Task FetchMicManifestForHostname(string hostname)
         {
-            var manifest = MicManifest.GetMicManifest(hostname)
-                .GetAwaiter().GetResult();
+            var manifest = await MicManifest.GetMicManifest(hostname);
             AssertMicManifest(manifest);
         }
     }
