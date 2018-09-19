@@ -19,7 +19,7 @@
     <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
   </PropertyGroup>
   <PropertyGroup Label="Version">
-    <VersionPrefix>2.30.0</VersionPrefix>
+    <VersionPrefix>2.31.0</VersionPrefix>
     <FileVersion>$(VersionPrefix)</FileVersion>
     <AssemblyVersion Condition="'$(BuildNumber)'==''">$(FileVersion)</AssemblyVersion>
     <AssemblyVersion Condition="'$(BuildNumber)'!=''">$(FileVersion).$(BuildNumber)</AssemblyVersion>
