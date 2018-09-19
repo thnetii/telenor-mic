@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.Serialization;
@@ -7,18 +8,17 @@ using THNETII.Common.Serialization;
 
 namespace TelenorConnexion.ManagedIoTCloud
 {
-    [DataContract]
     public partial class MicManifest
     {
-        [DataMember(Name = nameof(ManifestLambda))]
+        [JsonProperty(nameof(ManifestLambda))]
         public string ManifestLambda { get; set; }
-        [DataMember(Name = "Rev")]
+        [JsonProperty("Rev")]
         public string Version { get; set; }
-        [DataMember(Name = nameof(ResponseLambda))]
+        [JsonProperty(nameof(ResponseLambda))]
         public string ResponseLambda { get; set; }
-        [DataMember(Name = nameof(PermissionsLambda))]
+        [JsonProperty(nameof(PermissionsLambda))]
         public string PermissionsLambda { get; set; }
-        [DataMember(Name = nameof(IdentityPool))]
+        [JsonProperty(nameof(IdentityPool))]
         public string IdentityPool { get; set; }
         #region LogLevel
         private readonly DuplexConversionTuple<string, int> logLevel =
@@ -26,7 +26,7 @@ namespace TelenorConnexion.ManagedIoTCloud
                 rawConvert: s => int.TryParse(s, out int l) ? l : 0,
                 rawReverseConvert: l => l.ToString(CultureInfo.InvariantCulture)
             );
-        [DataMember(Name = "LogLevel")]
+        [JsonProperty("LogLevel")]
         public string LogLevelString
         {
             get => logLevel.RawValue;
@@ -39,18 +39,18 @@ namespace TelenorConnexion.ManagedIoTCloud
             set => logLevel.ConvertedValue = value;
         }
         #endregion
-        [DataMember(Name = nameof(IotEndpoint))]
+        [JsonProperty(nameof(IotEndpoint))]
         public string IotEndpoint { get; set; }
-        [DataMember(Name = nameof(ThingBatchLambda))]
+        [JsonProperty(nameof(ThingBatchLambda))]
         public string ThingBatchLambda { get; set; }
-        [DataMember(Name = nameof(AuthLambda))]
+        [JsonProperty(nameof(AuthLambda))]
         public string AuthLambda { get; set; }
-        [DataMember(Name = nameof(Permissions))]
+        [JsonProperty(nameof(Permissions))]
         public string Permissions { get; set; }
         #region ThingEvent
         private readonly DuplexConversionTuple<string, Uri> thingEvent =
             GetUrlToUriDuplexConversionTuple();
-        [DataMember(Name = "ThingEvent")]
+        [JsonProperty("ThingEvent")]
         [SuppressMessage("Design", "CA1056:Uri properties should not be strings")]
         public string ThingEventUrl
         {
@@ -64,28 +64,28 @@ namespace TelenorConnexion.ManagedIoTCloud
             set => thingEvent.ConvertedValue = value;
         }
         #endregion
-        [DataMember(Name = nameof(UserPoolClient))]
+        [JsonProperty(nameof(UserPoolClient))]
         public string UserPoolClient { get; set; }
-        [DataMember(Name = nameof(RulesTable))]
+        [JsonProperty(nameof(RulesTable))]
         public string RulesTable { get; set; }
-        [DataMember(Name = nameof(ResourceTable))]
+        [JsonProperty(nameof(ResourceTable))]
         public string ResourceTable { get; set; }
-        [DataMember(Name = nameof(UserLambda))]
+        [JsonProperty(nameof(UserLambda))]
         public string UserLambda { get; set; }
-        [DataMember(Name = nameof(ObservationLambda))]
+        [JsonProperty(nameof(ObservationLambda))]
         public string ObservationLambda { get; set; }
-        [DataMember(Name = nameof(GraphQLLambda))]
+        [JsonProperty(nameof(GraphQLLambda))]
         public string GraphQLLambda { get; set; }
-        [DataMember(Name = nameof(ThingJobsTable))]
+        [JsonProperty(nameof(ThingJobsTable))]
         public string ThingJobsTable { get; set; }
-        [DataMember(Name = nameof(EventLambda))]
+        [JsonProperty(nameof(EventLambda))]
         public string EventLambda { get; set; }
-        [DataMember(Name = nameof(UnitTable))]
+        [JsonProperty(nameof(UnitTable))]
         public string UnitTable { get; set; }
         #region ApiGatewayRootUrl
         private readonly DuplexConversionTuple<string, Uri> apiGatewayRootUrl =
             GetUrlToUriDuplexConversionTuple();
-        [DataMember(Name = nameof(ApiGatewayRootUrl))]
+        [JsonProperty(nameof(ApiGatewayRootUrl))]
         [SuppressMessage("Design", "CA1056:Uri properties should not be strings")]
         public string ApiGatewayRootUrl
         {
@@ -99,39 +99,39 @@ namespace TelenorConnexion.ManagedIoTCloud
             set => apiGatewayRootUrl.ConvertedValue = value;
         }
         #endregion
-        [DataMember(Name = nameof(Es5Endpoint))]
+        [JsonProperty(nameof(Es5Endpoint))]
         public string Es5Endpoint { get; set; }
-        [DataMember(Name = nameof(FileLambda))]
+        [JsonProperty(nameof(FileLambda))]
         public string FileLambda { get; set; }
-        [DataMember(Name = nameof(ManagementLambda))]
+        [JsonProperty(nameof(ManagementLambda))]
         public string ManagementLambda { get; set; }
-        [DataMember(Name = "Region")]
+        [JsonProperty("Region")]
         public string AwsRegion { get; set; }
-        [DataMember(Name = nameof(ThingLambda))]
+        [JsonProperty(nameof(ThingLambda))]
         public string ThingLambda { get; set; }
-        [DataMember(Name = nameof(ThingTypeLambda))]
+        [JsonProperty(nameof(ThingTypeLambda))]
         public string ThingTypeLambda { get; set; }
-        [DataMember(Name = nameof(PermissionsTable))]
+        [JsonProperty(nameof(PermissionsTable))]
         public string PermissionsTable { get; set; }
-        [DataMember(Name = nameof(AtomicCountersTable))]
+        [JsonProperty(nameof(AtomicCountersTable))]
         public string AtomicCountersTable { get; set; }
-        [DataMember(Name = nameof(DashboardLambda))]
+        [JsonProperty(nameof(DashboardLambda))]
         public string DashboardLambda { get; set; }
-        [DataMember(Name = nameof(DomainLambda))]
+        [JsonProperty(nameof(DomainLambda))]
         public string DomainLambda { get; set; }
-        [DataMember(Name = nameof(ObservationsBucket))]
+        [JsonProperty(nameof(ObservationsBucket))]
         public string ObservationsBucket { get; set; }
-        [DataMember(Name = nameof(ThingTypesTable))]
+        [JsonProperty(nameof(ThingTypesTable))]
         public string ThingTypesTable { get; set; }
-        [DataMember(Name = nameof(SignUpVerificationMedium))]
+        [JsonProperty(nameof(SignUpVerificationMedium))]
         public string SignUpVerificationMedium { get; set; }
-        [DataMember(Name = nameof(ThingGroupsLambda))]
+        [JsonProperty(nameof(ThingGroupsLambda))]
         public string ThingGroupsLambda { get; set; }
-        [DataMember(Name = nameof(UsersTable))]
+        [JsonProperty(nameof(UsersTable))]
         public string UsersTable { get; set; }
-        [DataMember(Name = nameof(LoraLambda))]
+        [JsonProperty(nameof(LoraLambda))]
         public string LoraLambda { get; set; }
-        [DataMember(Name = nameof(UserPool))]
+        [JsonProperty(nameof(UserPool))]
         public string UserPool { get; set; }
         #region ConsentRequired
         private readonly DuplexConversionTuple<string, bool> consentRequired =
@@ -139,7 +139,7 @@ namespace TelenorConnexion.ManagedIoTCloud
                 s => BooleanStringConverter.TryParse(s, out bool b) ? b : false,
                 b => BooleanStringConverter.ToString(b)
                 );
-        [DataMember(Name = "ConsentRequired")]
+        [JsonProperty("ConsentRequired")]
         public string ConsentRequiredText
         {
             get => consentRequired.RawValue;
@@ -152,47 +152,47 @@ namespace TelenorConnexion.ManagedIoTCloud
             set => consentRequired.ConvertedValue = value;
         }
         #endregion
-        [DataMember(Name = nameof(DomainTreeTable))]
+        [JsonProperty(nameof(DomainTreeTable))]
         public string DomainTreeTable { get; set; }
-        [DataMember(Name = nameof(ThingFilesBucket))]
+        [JsonProperty(nameof(ThingFilesBucket))]
         public string ThingFilesBucket { get; set; }
-        [DataMember(Name = nameof(ThingCertsBucket))]
+        [JsonProperty(nameof(ThingCertsBucket))]
         public string ThingCertsBucket { get; set; }
-        [DataMember(Name = nameof(SmsLambda))]
+        [JsonProperty(nameof(SmsLambda))]
         public string SmsLambda { get; set; }
-        [DataMember(Name = nameof(RuleLambda))]
+        [JsonProperty(nameof(RuleLambda))]
         public string RuleLambda { get; set; }
-        [DataMember(Name = nameof(SearchLambda))]
+        [JsonProperty(nameof(SearchLambda))]
         public string SearchLambda { get; set; }
-        [DataMember(Name = nameof(FileLambdaV2))]
+        [JsonProperty(nameof(FileLambdaV2))]
         public string FileLambdaV2 { get; set; }
-        [DataMember(Name = nameof(ThingJobsLambda))]
+        [JsonProperty(nameof(ThingJobsLambda))]
         public string ThingJobsLambda { get; set; }
-        [DataMember(Name = nameof(Protocol))]
+        [JsonProperty(nameof(Protocol))]
         public string Protocol { get; set; }
-        [DataMember(Name = nameof(DashboardTable))]
+        [JsonProperty(nameof(DashboardTable))]
         public string DashboardTable { get; set; }
-        [DataMember(Name = nameof(ApiKeyId))]
+        [JsonProperty(nameof(ApiKeyId))]
         public string ApiKeyId { get; set; }
-        [DataMember(Name = nameof(EsVersion))]
+        [JsonProperty(nameof(EsVersion))]
         public string EsVersion { get; set; }
-        [DataMember(Name = nameof(AccountNumber))]
+        [JsonProperty(nameof(AccountNumber))]
         public string AccountNumber { get; set; }
-        [DataMember(Name = nameof(ResourceLambda))]
+        [JsonProperty(nameof(ResourceLambda))]
         public string ResourceLambda { get; set; }
-        [DataMember(Name = nameof(ResourceOptionsTable))]
+        [JsonProperty(nameof(ResourceOptionsTable))]
         public string ResourceOptionsTable { get; set; }
-        [DataMember(Name = nameof(PublicBucket))]
+        [JsonProperty(nameof(PublicBucket))]
         public string PublicBucket { get; set; }
-        [DataMember(Name = nameof(UserDataTable))]
+        [JsonProperty(nameof(UserDataTable))]
         public string UserDataTable { get; set; }
-        [DataMember(Name = nameof(GraphIQLLambda))]
+        [JsonProperty(nameof(GraphIQLLambda))]
         public string GraphIQLLambda { get; set; }
-        [DataMember(Name = nameof(ApiId))]
+        [JsonProperty(nameof(ApiId))]
         public string ApiId { get; set; }
-        [DataMember(Name = nameof(StackName))]
+        [JsonProperty(nameof(StackName))]
         public string StackName { get; set; }
-        [DataMember(Name = nameof(MqttFn))]
+        [JsonProperty(nameof(MqttFn))]
         public string MqttFn { get; set; }
 
         private static DuplexConversionTuple<string, Uri> GetUrlToUriDuplexConversionTuple() =>
