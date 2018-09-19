@@ -28,9 +28,11 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "THNETII.Networking.Http", "
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "THNETII.Common.Serialization", "dotnet-common\src\THNETII.Common.Serialization\THNETII.Common.Serialization.csproj", "{6E651B28-06B9-4A69-8176-D76B648E9FD8}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelenorConnexion.ManagedIoTCloud.Test", "test\TelenorConnexion.ManagedIoTCloud.Test\TelenorConnexion.ManagedIoTCloud.Test.csproj", "{214D4FE0-09EA-44D1-ADB7-C9F214AD706D}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelenorConnexion.ManagedIoTCloud.Test", "test\TelenorConnexion.ManagedIoTCloud.Test\TelenorConnexion.ManagedIoTCloud.Test.csproj", "{214D4FE0-09EA-44D1-ADB7-C9F214AD706D}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{D5B1372B-83AF-4060-9A56-2C606C293F3C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelenorConnexion.ManagedIoTCloud.CloudApi", "src\TelenorConnexion.ManagedIoTCloud.CloudApi\TelenorConnexion.ManagedIoTCloud.CloudApi.csproj", "{EEB9A562-CCA3-40B8-BA90-FA16B593F3A1}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -102,6 +104,18 @@ Global
 		{214D4FE0-09EA-44D1-ADB7-C9F214AD706D}.Release|x64.Build.0 = Release|Any CPU
 		{214D4FE0-09EA-44D1-ADB7-C9F214AD706D}.Release|x86.ActiveCfg = Release|Any CPU
 		{214D4FE0-09EA-44D1-ADB7-C9F214AD706D}.Release|x86.Build.0 = Release|Any CPU
+		{EEB9A562-CCA3-40B8-BA90-FA16B593F3A1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{EEB9A562-CCA3-40B8-BA90-FA16B593F3A1}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{EEB9A562-CCA3-40B8-BA90-FA16B593F3A1}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{EEB9A562-CCA3-40B8-BA90-FA16B593F3A1}.Debug|x64.Build.0 = Debug|Any CPU
+		{EEB9A562-CCA3-40B8-BA90-FA16B593F3A1}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{EEB9A562-CCA3-40B8-BA90-FA16B593F3A1}.Debug|x86.Build.0 = Debug|Any CPU
+		{EEB9A562-CCA3-40B8-BA90-FA16B593F3A1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{EEB9A562-CCA3-40B8-BA90-FA16B593F3A1}.Release|Any CPU.Build.0 = Release|Any CPU
+		{EEB9A562-CCA3-40B8-BA90-FA16B593F3A1}.Release|x64.ActiveCfg = Release|Any CPU
+		{EEB9A562-CCA3-40B8-BA90-FA16B593F3A1}.Release|x64.Build.0 = Release|Any CPU
+		{EEB9A562-CCA3-40B8-BA90-FA16B593F3A1}.Release|x86.ActiveCfg = Release|Any CPU
+		{EEB9A562-CCA3-40B8-BA90-FA16B593F3A1}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -113,6 +127,7 @@ Global
 		{5E036EE8-8CF1-42DA-AB7E-E3E507C6E9F1} = {3074DAB8-F585-4DBA-BF6F-2F2689B46D23}
 		{6E651B28-06B9-4A69-8176-D76B648E9FD8} = {3074DAB8-F585-4DBA-BF6F-2F2689B46D23}
 		{214D4FE0-09EA-44D1-ADB7-C9F214AD706D} = {D5B1372B-83AF-4060-9A56-2C606C293F3C}
+		{EEB9A562-CCA3-40B8-BA90-FA16B593F3A1} = {14DF9197-C154-40D1-8001-632BCF08E96E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D7EB7D3-BB18-4A25-B5BF-A236A532AE65}
