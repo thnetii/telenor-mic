@@ -1,18 +1,20 @@
 ﻿using Microsoft.Extensions.FileProviders;
 using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
-using TelenorConnexion.ManagedIoTCloud.CloudApi.Data;
+using TelenorConnexion.ManagedIoTCloud.Data;
 using Xunit;
 
-namespace TelenorConnexion.ManagedIoTCloud.CloudApi
+namespace TelenorConnexion.ManagedIoTCloud.Test
 {
-    public class CloudApiErrorMessageTest
+    public static class MicErrorMessageTest
     {
-        public static IEnumerable<object[]> GetSampleFiles() =>
-            EmbeddedData.GetFiles().Select(fi => new[] { fi });
+        public static IEnumerable<object[]> GetSampleFiles() => EmbeddedData
+            .GetFiles().Where(fi => fi.Name.EndsWith("errorMessage.json", StringComparison.OrdinalIgnoreCase))
+            .Select(fi => new[] { fi });
 
         [Theory, MemberData(nameof(GetSampleFiles))]
         public static void CanDeserializeSampleData(IFileInfo sampleFile)
@@ -23,7 +25,7 @@ namespace TelenorConnexion.ManagedIoTCloud.CloudApi
             using (var textReader = new StreamReader(stream, Encoding.UTF8))
             using (var jsonReader = new JsonTextReader(textReader))
             {
-                var errorMessage = serializer.Deserialize<CloudApiErrorMessage>(
+                var errorMessage = serializer.Deserialize<MicErrorMessage>(
                     jsonReader);
             }
         }

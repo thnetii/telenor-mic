@@ -17,12 +17,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\TelenorConnexion.ManagedIoTCloud.CloudApi\TelenorConnexion.ManagedIoTCloud.CloudApi.csproj" />
-    <ProjectReference Include="..\..\src\TelenorConnexion.ManagedIoTCloud.Manifest\TelenorConnexion.ManagedIoTCloud.Manifest.csproj" />
+    <EmbeddedResource Include="**\Data\*.json" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="**\Data\*.json" />
+    <ProjectReference Include="..\..\src\TelenorConnexion.ManagedIoTCloud\TelenorConnexion.ManagedIoTCloud.csproj" />
   </ItemGroup>
   
 </Project>

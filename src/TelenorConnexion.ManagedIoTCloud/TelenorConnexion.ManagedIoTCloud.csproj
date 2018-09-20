@@ -7,10 +7,6 @@
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
-  <ItemGroup Condition="'$(TargetFramework)'=='netstandard1.3'">
-    <PackageReference Include="System.Runtime.Serialization.Primitives" Version="4.3.0" />
-  </ItemGroup>
-
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
     <PackageReference Include="MQTTnet" Version="2.8.2" />
@@ -19,11 +15,13 @@
 
   <ItemGroup>
     <PackageReference Include="AWSSDK.CognitoIdentity" Version="3.3.2.34" />
+    <PackageReference Include="AWSSDK.APIGateway" Version="3.3.20.1" />
     <PackageReference Include="AWSSDK.Lambda" Version="3.3.16.2" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TelenorConnexion.ManagedIoTCloud.Manifest\TelenorConnexion.ManagedIoTCloud.Manifest.csproj" />
+    <ProjectReference Include="..\..\dotnet-common\src\THNETII.Common\THNETII.Common.csproj" />
+    <ProjectReference Include="..\..\dotnet-common\src\THNETII.Common.Serialization\THNETII.Common.Serialization.csproj" />
   </ItemGroup>
 
 </Project>

@@ -1,18 +1,18 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace TelenorConnexion.ManagedIoTCloud.CloudApi.AuthApi
+namespace TelenorConnexion.ManagedIoTCloud
 {
-    public class AuthLoginResponse
+    public class MicAuthLoginResponse
     {
         [JsonProperty("user")]
-        public AuthLoginUser User { get; set; }
+        public MicAuthLoginUser User { get; set; }
 
         [JsonProperty("credentials")]
-        public AuthLoginCredentials Credentials { get; set; }
+        public MicAuthLoginCredentials Credentials { get; set; }
 
         [JsonProperty("permissions")]
-        public AuthLoginPermissions Permissions { get; set; }
+        public MicAuthLoginPermissions Permissions { get; set; }
 
         [JsonExtensionData]
         internal IDictionary<string, object> AdditionalData { get; set; }

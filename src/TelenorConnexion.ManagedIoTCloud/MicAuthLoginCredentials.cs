@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace TelenorConnexion.ManagedIoTCloud.CloudApi.AuthApi
+namespace TelenorConnexion.ManagedIoTCloud
 {
-    public class AuthLoginCredentials
+    public class MicAuthLoginCredentials
     {
         /// <summary>
         /// A Cognito IdentityId to use when communicating with AWS.

@@ -1,9 +1,9 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
-namespace TelenorConnexion.ManagedIoTCloud.CloudApi
+namespace TelenorConnexion.ManagedIoTCloud
 {
     [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
-    public static class CloudApiErrorKey
+    public static class MicErrorMessageKey
     {
         public const string INVALID_ACTION = nameof(INVALID_ACTION);
         public const string NOT_AUTHORIZED = nameof(NOT_AUTHORIZED);

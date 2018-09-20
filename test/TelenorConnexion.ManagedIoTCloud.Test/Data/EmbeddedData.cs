@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.FileProviders;
 using System;
 
-namespace TelenorConnexion.ManagedIoTCloud.Manifest.Data
+namespace TelenorConnexion.ManagedIoTCloud.Data
 {
     public static class EmbeddedData
     {
