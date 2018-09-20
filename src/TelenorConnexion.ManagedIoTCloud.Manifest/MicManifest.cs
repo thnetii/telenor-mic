@@ -1,4 +1,5 @@
-﻿using Newtonsoft.Json;
+﻿using Amazon;
+using Newtonsoft.Json;
 using System;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -105,8 +106,25 @@ namespace TelenorConnexion.ManagedIoTCloud
         public string FileLambda { get; set; }
         [JsonProperty(nameof(ManagementLambda))]
         public string ManagementLambda { get; set; }
+        #region Region
+        private readonly DuplexConversionTuple<string, RegionEndpoint> region =
+            new DuplexConversionTuple<string, RegionEndpoint>(
+                rawConvert: s => RegionEndpoint.GetBySystemName(s),
+                rawReverseConvert: r => r?.SystemName
+                );
         [JsonProperty("Region")]
-        public string AwsRegion { get; set; }
+        public string RegionSystemName
+        {
+            get => region.RawValue;
+            set => region.RawValue = value;
+        }
+        [JsonIgnore]
+        public RegionEndpoint AwsRegion
+        {
+            get => region.ConvertedValue;
+            set => region.ConvertedValue = value;
+        }
+        #endregion
         [JsonProperty(nameof(ThingLambda))]
         public string ThingLambda { get; set; }
         [JsonProperty(nameof(ThingTypeLambda))]

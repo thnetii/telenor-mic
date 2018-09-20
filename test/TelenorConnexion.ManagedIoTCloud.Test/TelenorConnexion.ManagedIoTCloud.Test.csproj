@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="utf-8"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
@@ -17,11 +17,12 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\TelenorConnexion.ManagedIoTCloud.CloudApi\TelenorConnexion.ManagedIoTCloud.CloudApi.csproj" />
     <ProjectReference Include="..\..\src\TelenorConnexion.ManagedIoTCloud.Manifest\TelenorConnexion.ManagedIoTCloud.Manifest.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <EmbeddedResource Include="**\Data\*.json" />
   </ItemGroup>
-
+  
 </Project>
