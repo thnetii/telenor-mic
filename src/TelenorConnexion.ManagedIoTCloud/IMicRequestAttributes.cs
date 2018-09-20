@@ -1,9 +1,11 @@
 ﻿using System;
 using System.Collections.Concurrent;
+using System.Diagnostics.CodeAnalysis;
 using System.Reflection;
 
 namespace TelenorConnexion.ManagedIoTCloud
 {
+    [SuppressMessage("Design", "CA1040:Avoid empty interfaces")]
     public interface IMicRequestAttributes { }
 
     public static class MicRequestAttributesExtensions

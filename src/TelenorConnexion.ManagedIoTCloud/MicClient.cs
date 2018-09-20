@@ -5,12 +5,14 @@ using Amazon.Lambda;
 using Amazon.Lambda.Model;
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
 using THNETII.Common;
 
 namespace TelenorConnexion.ManagedIoTCloud
 {
+    [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly")]
     public class MicClient : IDisposable
     {
         public static async Task<MicClient> CreateFromHostname(
@@ -117,6 +119,8 @@ namespace TelenorConnexion.ManagedIoTCloud
             loginCredentials = loginResponse.Credentials;
         }
 
+        [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly")]
+        [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize")]
         public void Dispose()
         {
             if (apiGatewayClient.IsValueCreated)
