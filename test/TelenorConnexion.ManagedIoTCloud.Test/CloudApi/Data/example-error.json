@@ -1,0 +1,8 @@
+{
+  "message": "Number is smaller than 2",
+  "messageKey": "NUMBER_TOO_SMALL",
+  "messageParams": {
+    "minValue": 2
+  },
+  "property": "age"
+}

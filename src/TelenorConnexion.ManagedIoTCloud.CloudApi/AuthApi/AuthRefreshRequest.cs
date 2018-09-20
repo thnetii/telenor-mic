@@ -2,15 +2,12 @@
 
 namespace TelenorConnexion.ManagedIoTCloud.CloudApi.AuthApi
 {
-    public class AuthLoginRequest : ICloudApiRequestAttributes
+    internal class AuthRefreshRequest : ICloudApiRequestAttributes
     {
-        public const string Action = "LOGIN";
+        public const string Action = "REFRESH";
 
-        [JsonProperty("userName")]
-        public string Username { get; set; }
-
-        [JsonProperty("password")]
-        public string Password { get; set; }
+        [JsonProperty("refreshToken")]
+        public string RefreshToken { get; set; }
 
         public CloudApiRequest CreateRequest() =>
             new CloudApiRequest
