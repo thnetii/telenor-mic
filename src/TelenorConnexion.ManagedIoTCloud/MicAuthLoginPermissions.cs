@@ -2,10 +2,10 @@
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 
-namespace TelenorConnexion.ManagedIoTCloud.CloudApi.AuthApi
+namespace TelenorConnexion.ManagedIoTCloud
 {
     [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix")]
-    public class AuthLoginPermissions
+    public class MicAuthLoginPermissions
     {
         /// <summary>
         /// A list of permission objects with allowed operations for the user’s

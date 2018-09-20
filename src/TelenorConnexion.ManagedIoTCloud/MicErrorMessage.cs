@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace TelenorConnexion.ManagedIoTCloud.CloudApi
+namespace TelenorConnexion.ManagedIoTCloud
 {
-    public class CloudApiErrorMessage
+    public class MicErrorMessage
     {
         [JsonProperty("message")]
         public string Message { get; set; }

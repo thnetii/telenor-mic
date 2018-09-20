@@ -1,9 +1,9 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
 
-namespace TelenorConnexion.ManagedIoTCloud.CloudApi.AuthApi
+namespace TelenorConnexion.ManagedIoTCloud
 {
-    public class AuthLoginUser
+    public class MicAuthLoginUser
     {
         /// <summary>
         /// The user name of the user.
