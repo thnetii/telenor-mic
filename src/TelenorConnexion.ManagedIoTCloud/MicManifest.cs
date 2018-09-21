@@ -9,16 +9,29 @@ using THNETII.Common.Serialization;
 
 namespace TelenorConnexion.ManagedIoTCloud
 {
+    /// <summary>
+    /// Represents a MIC manifest document describing details of the various
+    /// components that make up a MIC Stack Distribution.
+    /// </summary>
     public partial class MicManifest
     {
+        /// <summary>
+        /// The function name of the Lambda returning the Manifest document.
+        /// </summary>
         [JsonProperty(nameof(ManifestLambda))]
         public string ManifestLambda { get; set; }
+        /// <summary>
+        /// The Version of the MIC system currently in use.
+        /// </summary>
         [JsonProperty("Rev")]
         public string Version { get; set; }
         [JsonProperty(nameof(ResponseLambda))]
         public string ResponseLambda { get; set; }
         [JsonProperty(nameof(PermissionsLambda))]
         public string PermissionsLambda { get; set; }
+        /// <summary>
+        /// The Identity Pool Id for AWS Cognito Credentials.
+        /// </summary>
         [JsonProperty(nameof(IdentityPool))]
         public string IdentityPool { get; set; }
         #region LogLevel
@@ -40,10 +53,16 @@ namespace TelenorConnexion.ManagedIoTCloud
             set => logLevel.ConvertedValue = value;
         }
         #endregion
+        /// <summary>
+        /// The AWS IoT Endpoint to use for MQTT connections.
+        /// </summary>
         [JsonProperty(nameof(IotEndpoint))]
         public string IotEndpoint { get; set; }
         [JsonProperty(nameof(ThingBatchLambda))]
         public string ThingBatchLambda { get; set; }
+        /// <summary>
+        /// The AWS Lambda function name to invoke for actions using the Auth API.
+        /// </summary>
         [JsonProperty(nameof(AuthLambda))]
         public string AuthLambda { get; set; }
         [JsonProperty(nameof(Permissions))]
@@ -86,6 +105,10 @@ namespace TelenorConnexion.ManagedIoTCloud
         #region ApiGatewayRootUrl
         private readonly DuplexConversionTuple<string, Uri> apiGatewayRootUrl =
             GetUrlToUriDuplexConversionTuple();
+        /// <summary>
+        /// The API Gateway root URL-string for HTTP REST requests to the MIC API.
+        /// </summary>
+        /// <seealso cref="ApiGatewayRootUri"/>
         [JsonProperty(nameof(ApiGatewayRootUrl))]
         [SuppressMessage("Design", "CA1056:Uri properties should not be strings")]
         public string ApiGatewayRootUrl
@@ -93,6 +116,9 @@ namespace TelenorConnexion.ManagedIoTCloud
             get => apiGatewayRootUrl.RawValue;
             set => apiGatewayRootUrl.RawValue = value;
         }
+        /// <summary>
+        /// The API Gateway root URI for HTTP REST requests to the MIC API.
+        /// </summary>
         [IgnoreDataMember]
         public Uri ApiGatewayRootUri
         {
@@ -112,12 +138,18 @@ namespace TelenorConnexion.ManagedIoTCloud
                 rawConvert: s => RegionEndpoint.GetBySystemName(s),
                 rawReverseConvert: r => r?.SystemName
                 );
+        /// <summary>
+        /// The AWS system name for the region on which the MIC stack is deployed.
+        /// </summary>
         [JsonProperty("Region")]
         public string RegionSystemName
         {
             get => region.RawValue;
             set => region.RawValue = value;
         }
+        /// <summary>
+        /// The AWS region endpoint to which the MIC stack is deployed.
+        /// </summary>
         [JsonIgnore]
         public RegionEndpoint AwsRegion
         {
@@ -190,10 +222,17 @@ namespace TelenorConnexion.ManagedIoTCloud
         public string Protocol { get; set; }
         [JsonProperty(nameof(DashboardTable))]
         public string DashboardTable { get; set; }
+        /// <summary>
+        /// The AWS API Gateway Key Identifier for the API Key to use to
+        /// authorise requests agains the MIC Cloud REST API.
+        /// </summary>
         [JsonProperty(nameof(ApiKeyId))]
         public string ApiKeyId { get; set; }
         [JsonProperty(nameof(EsVersion))]
         public string EsVersion { get; set; }
+        /// <summary>
+        /// The AWS Account number that is used to deploy the MIC stack.
+        /// </summary>
         [JsonProperty(nameof(AccountNumber))]
         public string AccountNumber { get; set; }
         [JsonProperty(nameof(ResourceLambda))]
@@ -208,6 +247,9 @@ namespace TelenorConnexion.ManagedIoTCloud
         public string GraphIQLLambda { get; set; }
         [JsonProperty(nameof(ApiId))]
         public string ApiId { get; set; }
+        /// <summary>
+        /// The canonical name of the MIC stack that has been deployed.
+        /// </summary>
         [JsonProperty(nameof(StackName))]
         public string StackName { get; set; }
         [JsonProperty(nameof(MqttFn))]

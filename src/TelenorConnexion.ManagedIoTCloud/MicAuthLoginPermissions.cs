@@ -1,10 +1,12 @@
 ﻿using Newtonsoft.Json;
 using System.Collections.Generic;
-using System.Diagnostics.CodeAnalysis;
 
 namespace TelenorConnexion.ManagedIoTCloud
 {
-    [SuppressMessage("Naming", "CA1710:Identifiers should have correct suffix")]
+    /// <summary>
+    /// Represents the permissions for the logged in user returned by a
+    /// successful login operation.
+    /// </summary>
     public class MicAuthLoginPermissions
     {
         /// <summary>
