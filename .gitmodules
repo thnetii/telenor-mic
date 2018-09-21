@@ -1,3 +1,6 @@
 [submodule "thnetii-dotnet-common"]
 	path = dotnet-common
 	url = https://github.com/thnetii/dotnet-common.git
+[submodule "thnetii-aws-sdk-net-ext"]
+	path = aws-sdk-net-ext
+	url = https://github.com/thnetii/aws-sdk-net-ext.git
