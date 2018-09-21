@@ -119,6 +119,7 @@ namespace TelenorConnexion.ManagedIoTCloud
             loginCredentials = loginResponse.Credentials;
         }
 
+        /// <inheritdoc />
         [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly")]
         [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize")]
         public void Dispose()

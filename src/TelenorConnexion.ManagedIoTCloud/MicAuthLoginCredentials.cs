@@ -3,6 +3,10 @@ using System.Collections.Generic;
 
 namespace TelenorConnexion.ManagedIoTCloud
 {
+    /// <summary>
+    /// Represents the AWS credentials returned from a successfull login
+    /// operation.
+    /// </summary>
     public class MicAuthLoginCredentials
     {
         /// <summary>
