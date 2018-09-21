@@ -24,13 +24,13 @@ namespace TelenorConnexion.ManagedIoTCloud
         }
 
         private MicAuthLoginCredentials loginCredentials;
-        private readonly CognitoAWSCredentials credentials;
         private readonly string cognitoProviderName;
 
         private readonly Lazy<AmazonAPIGatewayClient> apiGatewayClient;
         private readonly Lazy<AmazonLambdaClient> lambdaClient;
 
         public MicManifest Manifest { get; }
+        public CognitoAWSCredentials Credentials { get; }
 
         public async Task<MicAuthLoginResponse> AuthLogin(string username, string password,
             CancellationToken cancelToken = default)
@@ -87,16 +87,16 @@ namespace TelenorConnexion.ManagedIoTCloud
         public MicClient(MicManifest manifest) : this()
         {
             Manifest = manifest ?? throw new ArgumentNullException(nameof(manifest));
-            credentials = new CognitoAWSCredentials(manifest.IdentityPool,
+            Credentials = new CognitoAWSCredentials(manifest.IdentityPool,
                 manifest.AwsRegion);
             cognitoProviderName = $"cognito-idp.{manifest.RegionSystemName}.amazonaws.com/{manifest.UserPool}";
         }
 
         private AmazonAPIGatewayClient GetApiGatewayClient() =>
-            new AmazonAPIGatewayClient(credentials, Manifest.AwsRegion);
+            new AmazonAPIGatewayClient(Credentials, Manifest.AwsRegion);
 
         private AmazonLambdaClient GetLambdaClient() =>
-            new AmazonLambdaClient(credentials, Manifest.AwsRegion);
+            new AmazonLambdaClient(Credentials, Manifest.AwsRegion);
 
         protected async Task<TResponse> InvokeLambdaFunction<TResponse>(
             string functionName, IMicRequestAttributes request,
@@ -114,8 +114,8 @@ namespace TelenorConnexion.ManagedIoTCloud
 
         private void UpdateCredentials(MicAuthLoginResponse loginResponse)
         {
-            credentials.ClearCredentials();
-            credentials.AddLogin(cognitoProviderName, loginResponse.Credentials.Token);
+            Credentials.ClearCredentials();
+            Credentials.AddLogin(cognitoProviderName, loginResponse.Credentials.Token);
             loginCredentials = loginResponse.Credentials;
         }
 

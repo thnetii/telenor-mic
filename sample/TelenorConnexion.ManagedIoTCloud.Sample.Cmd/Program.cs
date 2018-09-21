@@ -1,5 +1,4 @@
 ﻿using McMaster.Extensions.CommandLineUtils;
-using Newtonsoft.Json;
 using System;
 using System.Threading.Tasks;
 
@@ -21,9 +20,13 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                     username, password);
                 Console.WriteLine("Successful!");
                 Console.WriteLine();
-                Console.WriteLine(JsonConvert.SerializeObject(login, Formatting.Indented));
 
-                login = await micClient.AuthRefresh();
+                Console.WriteLine("Retrieving AWS Credentials . . .");
+                var creds = await micClient.Credentials.GetCredentialsAsync();
+                Console.WriteLine($"{nameof(creds.AccessKey)}: {creds.AccessKey}");
+                Console.WriteLine($"{nameof(creds.SecretKey)}: {creds.SecretKey}");
+                if (creds.UseToken)
+                    Console.WriteLine($"{nameof(creds.Token)}: {creds.Token}");
             }
         }
     }
