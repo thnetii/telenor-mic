@@ -27,6 +27,8 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                 Console.WriteLine($"{nameof(creds.SecretKey)}: {creds.SecretKey}");
                 if (creds.UseToken)
                     Console.WriteLine($"{nameof(creds.Token)}: {creds.Token}");
+
+                await micClient.CreateMqttWebSocketUri();
             }
         }
     }

@@ -20,6 +20,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\aws-sdk-net-ext\src\THNETII.AWSSDK.IoTDeviceGateway\THNETII.AWSSDK.IoTDeviceGateway.csproj" />
     <ProjectReference Include="..\..\dotnet-common\src\THNETII.Common\THNETII.Common.csproj" />
     <ProjectReference Include="..\..\dotnet-common\src\THNETII.Common.Serialization\THNETII.Common.Serialization.csproj" />
   </ItemGroup>
