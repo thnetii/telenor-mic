@@ -1,6 +1,8 @@
 ﻿using Amazon.APIGateway;
 using Amazon.APIGateway.Model;
 using Amazon.CognitoIdentity;
+using Amazon.IoTDeviceGateway;
+using Amazon.IoTDeviceGateway.Model;
 using Amazon.Lambda;
 using Amazon.Lambda.Model;
 using Newtonsoft.Json;
@@ -27,6 +29,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         private readonly string cognitoProviderName;
 
         private readonly Lazy<AmazonAPIGatewayClient> apiGatewayClient;
+        private readonly Lazy<AmazonIoTDeviceGatewayClient> iotDeviceGatewayClient;
         private readonly Lazy<AmazonLambdaClient> lambdaClient;
 
         public MicManifest Manifest { get; }
@@ -78,9 +81,19 @@ namespace TelenorConnexion.ManagedIoTCloud
             return response.Value;
         }
 
+        public Task CreateMqttWebSocketUri(CancellationToken cancelToken = default)
+        {
+            var client = iotDeviceGatewayClient.Value;
+            return client.CreateMqttWebSocketUriAsync(new CreateMqttWebSocketUriRequest
+            {
+                EndpointAddress = Manifest.IotEndpoint
+            }, cancelToken);
+        }
+
         private MicClient()
         {
             apiGatewayClient = new Lazy<AmazonAPIGatewayClient>(GetApiGatewayClient);
+            iotDeviceGatewayClient = new Lazy<AmazonIoTDeviceGatewayClient>(GetIoTDeviceGatewayClient);
             lambdaClient = new Lazy<AmazonLambdaClient>(GetLambdaClient);
         }
 
@@ -97,6 +110,9 @@ namespace TelenorConnexion.ManagedIoTCloud
 
         private AmazonLambdaClient GetLambdaClient() =>
             new AmazonLambdaClient(Credentials, Manifest.AwsRegion);
+
+        private AmazonIoTDeviceGatewayClient GetIoTDeviceGatewayClient() =>
+            new AmazonIoTDeviceGatewayClient(Credentials, Manifest.AwsRegion);
 
         protected async Task<TResponse> InvokeLambdaFunction<TResponse>(
             string functionName, IMicRequestAttributes request,
