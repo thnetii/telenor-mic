@@ -1,5 +1,9 @@
-﻿using McMaster.Extensions.CommandLineUtils;
+﻿using Amazon.Util;
+using McMaster.Extensions.CommandLineUtils;
+using MQTTnet;
 using System;
+using System.Net.Http;
+using System.Net.WebSockets;
 using System.Threading.Tasks;
 
 namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
@@ -21,15 +25,15 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                 Console.WriteLine("Successful!");
                 Console.WriteLine();
 
-                Console.WriteLine("Retrieving AWS Credentials . . .");
-                var creds = await micClient.Credentials.GetCredentialsAsync();
-                Console.WriteLine($"{nameof(creds.AccessKey)}: {creds.AccessKey}");
-                Console.WriteLine($"{nameof(creds.SecretKey)}: {creds.SecretKey}");
-                if (creds.UseToken)
-                    Console.WriteLine($"{nameof(creds.Token)}: {creds.Token}");
+                var mqttOptionsTask = micClient.CreateMqttWebSocketOptions();
 
-                await micClient.CreateMqttWebSocketUri();
+                using (var mqttClient = new MqttFactory().CreateMqttClient())
+                {
+                    var connectResult = await mqttClient.ConnectAsync(await mqttOptionsTask);
+                }
             }
+
+            Console.ReadLine();
         }
     }
 }
