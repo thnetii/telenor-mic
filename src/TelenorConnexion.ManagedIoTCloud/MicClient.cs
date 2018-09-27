@@ -5,8 +5,10 @@ using Amazon.IoTDeviceGateway;
 using Amazon.IoTDeviceGateway.Model;
 using Amazon.Lambda;
 using Amazon.Lambda.Model;
+using MQTTnet.Client;
 using Newtonsoft.Json;
 using System;
+using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
 using System.Threading.Tasks;
@@ -33,7 +35,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         private readonly Lazy<AmazonLambdaClient> lambdaClient;
 
         public MicManifest Manifest { get; }
-        public CognitoAWSCredentials Credentials { get; }
+        protected CognitoAWSCredentials Credentials { get; }
 
         public async Task<MicAuthLoginResponse> AuthLogin(string username, string password,
             CancellationToken cancelToken = default)
@@ -81,13 +83,19 @@ namespace TelenorConnexion.ManagedIoTCloud
             return response.Value;
         }
 
-        public Task CreateMqttWebSocketUri(CancellationToken cancelToken = default)
+        public Task<CreateMqttWebSocketUriResponse> CreateMqttWebSocketUri(CancellationToken cancelToken = default)
         {
             var client = iotDeviceGatewayClient.Value;
             return client.CreateMqttWebSocketUriAsync(new CreateMqttWebSocketUriRequest
             {
                 EndpointAddress = Manifest.IotEndpoint
             }, cancelToken);
+        }
+
+        public Task<IMqttClientOptions> CreateMqttWebSocketOptions(CancellationToken cancelToken = default)
+        {
+            var client = iotDeviceGatewayClient.Value;
+            return client.CreateMqttWebSocketClientOptionsAsync(Manifest.IotEndpoint, cancelToken);
         }
 
         private MicClient()
@@ -136,6 +144,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         }
 
         /// <inheritdoc />
+        [DebuggerStepThrough]
         [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly")]
         [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize")]
         public void Dispose()
@@ -144,6 +153,8 @@ namespace TelenorConnexion.ManagedIoTCloud
                 apiGatewayClient.Value.Dispose();
             if (lambdaClient.IsValueCreated)
                 lambdaClient.Value.Dispose();
+            if (iotDeviceGatewayClient.IsValueCreated)
+                iotDeviceGatewayClient.Value.Dispose();
         }
     }
 }
