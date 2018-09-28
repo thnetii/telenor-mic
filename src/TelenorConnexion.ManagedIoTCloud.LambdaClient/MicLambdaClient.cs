@@ -6,15 +6,18 @@ using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
+using System.IO;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using TelenorConnexion.ManagedIoTCloud.CognitoIdentity;
-using THNETII.Common;
+using TelenorConnexion.ManagedIoTCloud.LambdaClient.Model;
+using TelenorConnexion.ManagedIoTCloud.Model;
 
 namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
 {
     [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly")]
-    public class MicLambdaClient : IAmazonService, IMicClient, IDisposable
+    public class MicLambdaClient : MicClient, IMicClient, IAmazonService, IDisposable
     {
         private readonly CognitoAWSCredentials awsCredentials;
         private readonly AmazonLambdaClient lambdaClient;
@@ -29,107 +32,76 @@ namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
             return new MicLambdaClient(manifest);
         }
 
-        public MicLambdaClient(MicManifest manifest)
+        public MicLambdaClient(MicManifest manifest) : base(manifest)
         {
-            Manifest = manifest ?? throw new ArgumentNullException(nameof(manifest));
-
             awsCredentials = manifest.CreateEmptyAWSCredentials();
             lambdaClient = new AmazonLambdaClient(awsCredentials,
                 manifest.AwsRegion);
         }
 
-        #endregion
+        #endregion // Constructors
 
-        #region IMicClient
+        #region Overrides
 
-        #region Public members
-
-        public MicManifest Manifest { get; }
-
-        public MicAuthLoginCredentials Credentials { get; private set; }
-
-        #endregion
-
-        #region Auth
-
-        #region Login
-
-        public Task<MicAuthLoginResponse> AuthLogin(string username, string password,
-            CancellationToken cancelToken = default) =>
-            AuthLogin(new MicAuthLoginRequest
-            {
-                Username = username,
-                Password = password
-            }, cancelToken);
-
-        public async Task<MicAuthLoginResponse> AuthLogin(MicAuthLoginRequest request,
-            CancellationToken cancelToken = default)
+        protected override async Task<TResponse> InvokeClientRequest<TRequest, TResponse>(string actionName, TRequest request, CancellationToken cancelToken = default)
         {
-            var response = await InvokeLambdaFunction<MicAuthLoginResponse>(
-                Manifest.AuthLambda, request, noAutoRefreshToken: true,
+            var lambdaRequest = new InvokeRequest();
+
+            switch (actionName)
+            {
+                #region Auth API
+                case nameof(AuthConfirmSignup):
+                    lambdaRequest.Payload = JsonConvert.SerializeObject(new MicLambdaRequest<TRequest>
+                    {
+                        Action = "CONFIRM_SIGN_UP",
+                        Attributes = request
+                    });
+                    goto case nameof(Manifest.AuthLambda);
+                case nameof(AuthLogin):
+                    lambdaRequest.Payload = JsonConvert.SerializeObject(new MicLambdaRequest<TRequest>
+                    {
+                        Action = "LOGIN",
+                        Attributes = request
+                    });
+                    goto case nameof(Manifest.AuthLambda);
+                case nameof(Manifest.AuthLambda):
+                    lambdaRequest.FunctionName = Manifest.AuthLambda;
+                    break;
+                #endregion // Auth API
+                default:
+                    throw new InvalidOperationException("Unknown action name: " + actionName);
+            }
+
+            var lambdaResponse = await lambdaClient.InvokeAsync(lambdaRequest, cancelToken)
+                .ConfigureAwait(continueOnCapturedContext: false);
+            var response = await DeserializeOrThrow<TResponse>(lambdaResponse,
                 cancelToken).ConfigureAwait(continueOnCapturedContext: false);
-            UpdateCredentials(response);
+
+            if (response is MicAuthLoginResponse loginResponse)
+                UpdateCredentials(loginResponse);
+
             return response;
         }
 
-        #endregion
-
-        #region Refresh
-
-        public Task<MicAuthLoginResponse> AuthRefresh(
-            CancellationToken cancelToken = default)
-        {
-            if (!(Credentials?.RefreshToken).TryNotNullOrWhiteSpace(out string refreshToken))
-                throw new InvalidOperationException("No refresh token available");
-            return AuthRefresh(refreshToken, cancelToken);
-        }
-
-        public Task<MicAuthLoginResponse> AuthRefresh(string refreshToken,
-            CancellationToken cancelToken = default) =>
-            AuthRefresh(new MicAuthRefreshRequest
-            {
-                RefreshToken = refreshToken
-            }, cancelToken);
-
-        public async Task<MicAuthLoginResponse> AuthRefresh(MicAuthRefreshRequest request,
-            CancellationToken cancelToken = default)
-        {
-            var response = await InvokeLambdaFunction<MicAuthLoginResponse>(
-                Manifest.AuthLambda, request, noAutoRefreshToken: true,
-                cancelToken).ConfigureAwait(continueOnCapturedContext: false);
-            UpdateCredentials(response);
-            return response;
-        }
-
-        #endregion
-
-        #endregion
-
-        #endregion
+        #endregion // Overrides
 
         #region Private Helper methods
 
-        private async Task<TResponse> InvokeLambdaFunction<TResponse>(
-            string functionName, IMicRequestAttributes request,
-            bool noAutoRefreshToken = false, CancellationToken cancelToken = default)
+        protected override void UpdateCredentials(IMicAuthLoginResponse loginResponse)
         {
-            var response = await lambdaClient.InvokeAsync(
-                new InvokeRequest
-                {
-                    FunctionName = functionName,
-                    Payload = JsonConvert.SerializeObject(request.CreateRequest())
-                }, cancelToken).ConfigureAwait(continueOnCapturedContext: false);
-            return await response.DeserializeOrThrow<TResponse>(cancelToken)
-                .ConfigureAwait(continueOnCapturedContext: false);
-        }
-
-        private void UpdateCredentials(MicAuthLoginResponse loginResponse)
-        {
-            Credentials = loginResponse.Credentials;
+            base.UpdateCredentials(loginResponse);
             this.AddLoginToCognitoCredentials(awsCredentials);
         }
 
-        #endregion
+        private Task<TResponse> DeserializeOrThrow<TResponse>(InvokeResponse lambdaResponse,
+            CancellationToken cancelToken)
+        {
+            using (var textReader = new StreamReader(lambdaResponse.Payload, Encoding.UTF8))
+            using (var jsonReader = new JsonTextReader(textReader))
+                return DeserializeOrThrow<TResponse>(jsonReader, cancelToken);
+        }
+
+        #endregion // Private Helper methods
 
         #region IAmazonService
 
@@ -137,7 +109,7 @@ namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
 
         IClientConfig IAmazonService.Config => lambdaClient.Config;
 
-        #endregion
+        #endregion // IAmazonService
 
         #region Dispose
 
@@ -150,6 +122,6 @@ namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
             lambdaClient.Dispose();
         }
 
-        #endregion
+        #endregion // Dispose
     }
 }
