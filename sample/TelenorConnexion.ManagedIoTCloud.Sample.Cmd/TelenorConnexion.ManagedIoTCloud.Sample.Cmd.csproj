@@ -13,6 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\src\TelenorConnexion.ManagedIoTCloud.CognitoIdentity\TelenorConnexion.ManagedIoTCloud.CognitoIdentity.csproj" />
+    <ProjectReference Include="..\..\src\TelenorConnexion.ManagedIoTCloud.LambdaClient\TelenorConnexion.ManagedIoTCloud.LambdaClient.csproj" />
     <ProjectReference Include="..\..\src\TelenorConnexion.ManagedIoTCloud\TelenorConnexion.ManagedIoTCloud.csproj" />
   </ItemGroup>
 
