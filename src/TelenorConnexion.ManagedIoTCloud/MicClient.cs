@@ -5,9 +5,11 @@ using Amazon.IoTDeviceGateway;
 using Amazon.IoTDeviceGateway.Model;
 using Amazon.Lambda;
 using Amazon.Lambda.Model;
+using Amazon.Runtime;
 using MQTTnet.Client;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Threading;
@@ -34,6 +36,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         private readonly Lazy<AmazonIoTDeviceGatewayClient> iotDeviceGatewayClient;
         private readonly Lazy<AmazonLambdaClient> lambdaClient;
 
+        public MicConfig Config { get; }
         public MicManifest Manifest { get; }
         protected CognitoAWSCredentials Credentials { get; }
 
@@ -100,6 +103,8 @@ namespace TelenorConnexion.ManagedIoTCloud
 
         private MicClient()
         {
+            Config = new MicConfig(GetAmazonClientConfigs);
+
             apiGatewayClient = new Lazy<AmazonAPIGatewayClient>(GetApiGatewayClient);
             iotDeviceGatewayClient = new Lazy<AmazonIoTDeviceGatewayClient>(GetIoTDeviceGatewayClient);
             lambdaClient = new Lazy<AmazonLambdaClient>(GetLambdaClient);
@@ -121,6 +126,19 @@ namespace TelenorConnexion.ManagedIoTCloud
 
         private AmazonIoTDeviceGatewayClient GetIoTDeviceGatewayClient() =>
             new AmazonIoTDeviceGatewayClient(Credentials, Manifest.AwsRegion);
+
+        private IEnumerable<ClientConfig> GetAmazonClientConfigs()
+        {
+            if (apiGatewayClient.IsValueCreated &&
+                apiGatewayClient.Value.Config is ClientConfig apiGatewayConfig)
+                yield return apiGatewayConfig;
+            if (lambdaClient.IsValueCreated &&
+                lambdaClient.Value.Config is ClientConfig lambdaConfig)
+                yield return lambdaConfig;
+            if (iotDeviceGatewayClient.IsValueCreated &&
+                iotDeviceGatewayClient.Value.Config is ClientConfig iotDeviceGatewayConfig)
+                yield return iotDeviceGatewayConfig;
+        }
 
         protected async Task<TResponse> InvokeLambdaFunction<TResponse>(
             string functionName, IMicRequestAttributes request,
