@@ -2,19 +2,15 @@
 
 namespace TelenorConnexion.ManagedIoTCloud.Model
 {
-    public interface IMicUserBasicInfo : IMicModel
+    /// <summary>
+    /// Represents the most basic information required to identify a MIC User.
+    /// </summary>
+    public class MicUserBasicInfo : MicModel
     {
         /// <summary>
         /// The user name of the user.
         /// </summary>
         [JsonProperty("userName")]
-        string Username { get; set; }
-    }
-
-    /// <inheritdoc />
-    public class MicUserBasicInfo : MicModel, IMicUserBasicInfo
-    {
-        /// <inheritdoc />
         public string Username { get; set; }
     }
 }

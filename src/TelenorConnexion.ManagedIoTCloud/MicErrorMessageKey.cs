@@ -10,8 +10,7 @@ namespace TelenorConnexion.ManagedIoTCloud
     public static class MicErrorMessageKey
     {
         /// <summary>
-        /// An invalid action was passed through the <see cref="MicRequest.Action"/>
-        /// property of the <see cref="MicRequest"/>.
+        /// An invalid action was requested.
         /// </summary>
         public const string INVALID_ACTION = nameof(INVALID_ACTION);
         /// <summary>
@@ -31,7 +30,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// </summary>
         public const string INVALID_LOGIN = nameof(INVALID_LOGIN);
         /// <summary>
-        /// The user has not given consent, refer to the <see cref="MicClient.AuthGiveConsent"/>
+        /// The user has not given consent, refer to the <see cref="IMicClient.AuthGiveConsent"/>
         /// method.
         /// </summary>
         public const string USER_CONSENT_REQUIRED = nameof(USER_CONSENT_REQUIRED);
