@@ -2,19 +2,10 @@
 
 namespace TelenorConnexion.ManagedIoTCloud.Model
 {
-    public interface IMicAuthLoginRequest : IMicUserBasicInfo
+    /// <summary>
+    /// Represents the request payload for logging a user on MIC.
+    /// </summary>
+    public class MicAuthLoginRequest : MicAuthUserPassword
     {
-        /// <summary>
-        /// The password of the user.
-        /// </summary>
-        [JsonProperty("password")]
-        string Password { get; set; }
-    }
-
-    /// <inheritdoc />
-    public class MicAuthLoginRequest : MicUserBasicInfo, IMicAuthLoginRequest
-    {
-        /// <inheritdoc />
-        public string Password { get; set; }
     }
 }

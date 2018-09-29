@@ -46,23 +46,36 @@ namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
         protected override async Task<TResponse> InvokeClientRequest<TRequest, TResponse>(string actionName, TRequest request, CancellationToken cancelToken = default)
         {
             var lambdaRequest = new InvokeRequest();
+            var micRequest = new MicLambdaRequest<TRequest> { Attributes = request };
 
             switch (actionName)
             {
                 #region Auth API
                 case nameof(AuthConfirmSignup):
-                    lambdaRequest.Payload = JsonConvert.SerializeObject(new MicLambdaRequest<TRequest>
-                    {
-                        Action = "CONFIRM_SIGN_UP",
-                        Attributes = request
-                    });
+                    micRequest.Action = "CONFIRM_SIGN_UP";
+                    goto case nameof(Manifest.AuthLambda);
+                case nameof(AuthForgotPassword):
+                    micRequest.Action = "FORGOT_PASSWORD";
                     goto case nameof(Manifest.AuthLambda);
                 case nameof(AuthLogin):
-                    lambdaRequest.Payload = JsonConvert.SerializeObject(new MicLambdaRequest<TRequest>
-                    {
-                        Action = "LOGIN",
-                        Attributes = request
-                    });
+                    micRequest.Action = "LOGIN";
+                    awsCredentials.RemoveLogin(Manifest.GetCognitoProviderName());
+                    goto case nameof(Manifest.AuthLambda);
+                case nameof(AuthGiveConsent):
+                    micRequest.Action = "GIVE_CONSENT";
+                    goto case nameof(Manifest.AuthLambda);
+                case nameof(AuthRefresh):
+                    micRequest.Action = "REFRESH";
+                    awsCredentials.RemoveLogin(Manifest.GetCognitoProviderName());
+                    goto case nameof(Manifest.AuthLambda);
+                case nameof(AuthResendConfirmationCode):
+                    micRequest.Action = "RESEND_CONFIRMATION_CODE";
+                    goto case nameof(Manifest.AuthLambda);
+                case nameof(AuthSetPassword):
+                    micRequest.Action = "SET_PASSWORD";
+                    goto case nameof(Manifest.AuthLambda);
+                case nameof(AuthSignup):
+                    micRequest.Action = "SIGN_UP";
                     goto case nameof(Manifest.AuthLambda);
                 case nameof(Manifest.AuthLambda):
                     lambdaRequest.FunctionName = Manifest.AuthLambda;
@@ -72,6 +85,7 @@ namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
                     throw new InvalidOperationException("Unknown action name: " + actionName);
             }
 
+            lambdaRequest.Payload = JsonConvert.SerializeObject(micRequest);
             var lambdaResponse = await lambdaClient.InvokeAsync(lambdaRequest, cancelToken)
                 .ConfigureAwait(continueOnCapturedContext: false);
             var response = await DeserializeOrThrow<TResponse>(lambdaResponse,
@@ -87,7 +101,7 @@ namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
 
         #region Private Helper methods
 
-        protected override void UpdateCredentials(IMicAuthLoginResponse loginResponse)
+        protected override void UpdateCredentials(MicAuthLoginResponse loginResponse)
         {
             base.UpdateCredentials(loginResponse);
             this.AddLoginToCognitoCredentials(awsCredentials);
