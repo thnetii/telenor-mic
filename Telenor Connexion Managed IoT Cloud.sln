@@ -54,19 +54,17 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Services", "Services", "{D6
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWSSDK.CognitoIdentity.CoreCLR", "aws-sdk-net-ext\aws-sdk-net\sdk\src\Services\CognitoIdentity\AWSSDK.CognitoIdentity.CoreCLR.csproj", "{6B8D1FF5-896C-41A4-BBB4-CA3A19089D1A}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWSSDK.APIGateway.CoreCLR", "aws-sdk-net-ext\aws-sdk-net\sdk\src\Services\APIGateway\AWSSDK.APIGateway.CoreCLR.csproj", "{AC872CB9-059A-4100-B932-35F723ED3229}"
-EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWSSDK.Lambda.CoreCLR", "aws-sdk-net-ext\aws-sdk-net\sdk\src\Services\Lambda\AWSSDK.Lambda.CoreCLR.csproj", "{05A6F0ED-9758-408A-810C-454E0E11927B}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AWSSDK.SecurityToken.CoreCLR", "aws-sdk-net-ext\aws-sdk-net\sdk\src\Services\SecurityToken\AWSSDK.SecurityToken.CoreCLR.csproj", "{5456D483-4419-4466-B77B-9596096B94FB}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THNETII.AWSSDK.IoTDeviceGateway.Mqtt", "aws-sdk-net-ext\src\THNETII.AWSSDK.IoTDeviceGateway.Mqtt\THNETII.AWSSDK.IoTDeviceGateway.Mqtt.csproj", "{20CF3407-E958-4DBB-A1AA-8DACE2771CC0}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "THNETII.AWSSDK.IoTDeviceGateway.Mqtt", "aws-sdk-net-ext\src\THNETII.AWSSDK.IoTDeviceGateway.Mqtt\THNETII.AWSSDK.IoTDeviceGateway.Mqtt.csproj", "{20CF3407-E958-4DBB-A1AA-8DACE2771CC0}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelenorConnexion.ManagedIoTCloud.LambdaClient", "src\TelenorConnexion.ManagedIoTCloud.LambdaClient\TelenorConnexion.ManagedIoTCloud.LambdaClient.csproj", "{C20DD58C-6DA2-450E-8AB4-99EB4BA91195}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelenorConnexion.ManagedIoTCloud.LambdaClient", "src\TelenorConnexion.ManagedIoTCloud.LambdaClient\TelenorConnexion.ManagedIoTCloud.LambdaClient.csproj", "{C20DD58C-6DA2-450E-8AB4-99EB4BA91195}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelenorConnexion.ManagedIoTCloud.CognitoIdentity", "src\TelenorConnexion.ManagedIoTCloud.CognitoIdentity\TelenorConnexion.ManagedIoTCloud.CognitoIdentity.csproj", "{2D4682BC-96CB-400A-B68E-45A0647B2491}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelenorConnexion.ManagedIoTCloud.CognitoIdentity", "src\TelenorConnexion.ManagedIoTCloud.CognitoIdentity\TelenorConnexion.ManagedIoTCloud.CognitoIdentity.csproj", "{2D4682BC-96CB-400A-B68E-45A0647B2491}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelenorConnexion.ManagedIoTCloud.RestClient", "src\TelenorConnexion.ManagedIoTCloud.RestClient\TelenorConnexion.ManagedIoTCloud.RestClient.csproj", "{F23F349D-D4AE-41F3-8D6C-7A0B55F71D4C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TelenorConnexion.ManagedIoTCloud.RestClient", "src\TelenorConnexion.ManagedIoTCloud.RestClient\TelenorConnexion.ManagedIoTCloud.RestClient.csproj", "{F23F349D-D4AE-41F3-8D6C-7A0B55F71D4C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -186,18 +184,6 @@ Global
 		{6B8D1FF5-896C-41A4-BBB4-CA3A19089D1A}.Release|x64.Build.0 = Release|Any CPU
 		{6B8D1FF5-896C-41A4-BBB4-CA3A19089D1A}.Release|x86.ActiveCfg = Release|Any CPU
 		{6B8D1FF5-896C-41A4-BBB4-CA3A19089D1A}.Release|x86.Build.0 = Release|Any CPU
-		{AC872CB9-059A-4100-B932-35F723ED3229}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{AC872CB9-059A-4100-B932-35F723ED3229}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{AC872CB9-059A-4100-B932-35F723ED3229}.Debug|x64.ActiveCfg = Debug|Any CPU
-		{AC872CB9-059A-4100-B932-35F723ED3229}.Debug|x64.Build.0 = Debug|Any CPU
-		{AC872CB9-059A-4100-B932-35F723ED3229}.Debug|x86.ActiveCfg = Debug|Any CPU
-		{AC872CB9-059A-4100-B932-35F723ED3229}.Debug|x86.Build.0 = Debug|Any CPU
-		{AC872CB9-059A-4100-B932-35F723ED3229}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{AC872CB9-059A-4100-B932-35F723ED3229}.Release|Any CPU.Build.0 = Release|Any CPU
-		{AC872CB9-059A-4100-B932-35F723ED3229}.Release|x64.ActiveCfg = Release|Any CPU
-		{AC872CB9-059A-4100-B932-35F723ED3229}.Release|x64.Build.0 = Release|Any CPU
-		{AC872CB9-059A-4100-B932-35F723ED3229}.Release|x86.ActiveCfg = Release|Any CPU
-		{AC872CB9-059A-4100-B932-35F723ED3229}.Release|x86.Build.0 = Release|Any CPU
 		{05A6F0ED-9758-408A-810C-454E0E11927B}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{05A6F0ED-9758-408A-810C-454E0E11927B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05A6F0ED-9758-408A-810C-454E0E11927B}.Debug|x64.ActiveCfg = Debug|Any CPU
@@ -290,7 +276,6 @@ Global
 		{48191846-C0E7-46EB-BEDF-38AE7E1A6E31} = {60667626-541F-4F8F-9A9F-C56B6593043E}
 		{D61D3A24-2DDE-49F4-BFE9-42212F7D4914} = {60667626-541F-4F8F-9A9F-C56B6593043E}
 		{6B8D1FF5-896C-41A4-BBB4-CA3A19089D1A} = {D61D3A24-2DDE-49F4-BFE9-42212F7D4914}
-		{AC872CB9-059A-4100-B932-35F723ED3229} = {D61D3A24-2DDE-49F4-BFE9-42212F7D4914}
 		{05A6F0ED-9758-408A-810C-454E0E11927B} = {D61D3A24-2DDE-49F4-BFE9-42212F7D4914}
 		{5456D483-4419-4466-B77B-9596096B94FB} = {D61D3A24-2DDE-49F4-BFE9-42212F7D4914}
 		{20CF3407-E958-4DBB-A1AA-8DACE2771CC0} = {3746CEDF-85CF-42DE-8208-66A2C5904958}

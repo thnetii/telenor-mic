@@ -10,6 +10,7 @@ using System.Net.Http;
 using System.Threading.Tasks;
 using TelenorConnexion.ManagedIoTCloud.CognitoIdentity;
 using TelenorConnexion.ManagedIoTCloud.LambdaClient;
+using TelenorConnexion.ManagedIoTCloud.Model;
 
 namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
 {
@@ -40,6 +41,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                 Console.Write("Logging in . . . ");
                 var login = await micClient.AuthLogin(
                     username, password);
+                ((IMicModel)(login.User)).AdditionalData.TryGetValue("domainPath", out object domainPath);
                 Console.WriteLine("Successful!");
                 Console.WriteLine();
 
@@ -47,7 +49,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                 Console.WriteLine(JsonConvert.SerializeObject(userInfo, Formatting.Indented));
 
                 Console.WriteLine();
-                Console.WriteLine("Connecting MQTT Client . . .");
+                Console.Write("Connecting MQTT Client . . . ");
                 var iotConfig = micClientConfig.Create<AmazonIoTDeviceGatewayConfig>();
                 using (var iotClient = new AmazonIoTDeviceGatewayClient(micClient.GetCognitoAWSCredentials(), iotConfig))
                 {
@@ -56,15 +58,16 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                     using (var mqttClient = new MqttFactory().CreateMqttClient())
                     {
                         var mqttOptions = await mqttOptionsTask;
-                        if (mqttOptions.ChannelOptions is MqttClientWebSocketOptions webSocketOptions)
-                        {
-                            if (webSocketOptions.ProxyOptions is null)
-                                webSocketOptions.ProxyOptions = new MqttClientWebSocketProxyOptions();
-                            webSocketOptions.ProxyOptions.Address = "http://localhost:8888/";
-                        }
-
                         var connectInfo = await mqttClient.ConnectAsync(mqttOptions);
-                        Console.WriteLine($"{nameof(connectInfo.IsSessionPresent)}: {connectInfo.IsSessionPresent}");
+                        Console.WriteLine("Successful!");
+                        Console.Write($"Subscribing to events on domain path {domainPath} . . . ");
+                        var subscriptions = await mqttClient.SubscribeAsync($"event{domainPath}#");
+                        Console.WriteLine($"{subscriptions.Count} subscriptions.");
+                        foreach (var sub in subscriptions)
+                        {
+                            var tf = sub.TopicFilter;
+                            Console.WriteLine($"{tf.Topic} (QoS: {tf.QualityOfServiceLevel}): {sub.ReturnCode}");
+                        }
                         await mqttClient.DisconnectAsync();
                     }
                 }
