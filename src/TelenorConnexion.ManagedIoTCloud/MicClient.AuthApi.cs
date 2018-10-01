@@ -15,7 +15,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// an SMS will receive the username and a confirmation code.
         /// <para>This endpoint supports confirming the account with either token or username/code.</para>
         /// </summary>
-        Task<MicModel> AuthConfirmSignup(MicAuthConfirmSignupRequest request, CancellationToken cancelToken = default);
+        Task<MicResponse> AuthConfirmSignup(MicAuthConfirmSignupRequest request, CancellationToken cancelToken = default);
 
         /// <summary>
         /// If a user has forgotten the account password, this action can be used to let them reset their password.
@@ -25,7 +25,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// Note: After having invoked this action, it is still possible to login using the correct credentials;
         /// the password is not changed until the user has responded to the email sent by the <c>FORGOT_PASSWORD</c> action.
         /// </remarks>
-        Task<MicModel> AuthForgotPassword(MicAuthForgotPasswordRequest request, CancellationToken cancelToken = default);
+        Task<MicResponse> AuthForgotPassword(MicAuthForgotPasswordRequest request, CancellationToken cancelToken = default);
 
         /// <summary>
         /// Checks if a user is authorized to login and returns credentials that should be used when communicating with
@@ -38,7 +38,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// Use this endpoint to register that a user has given their consent.
         /// </summary>
         /// <returns>An empty object.</returns>
-        Task<MicModel> AuthGiveConsent(MicAuthGiveConsentRequest request, CancellationToken cancelToken = default);
+        Task<MicResponse> AuthGiveConsent(MicAuthGiveConsentRequest request, CancellationToken cancelToken = default);
 
         /// <summary>
         /// Lets a user refresh the token. Use the <see cref="MicAuthCredentials.RefreshToken"/> acquired from a <see cref="AuthLogin"/> call.
@@ -63,12 +63,12 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// <summary>
         /// Sends a new confirmation code to the user if the user didn't receive an e-mail or if the link has expired.
         /// </summary>
-        Task<MicModel> AuthResendConfirmationCode(MicAuthResendConfirmationCodeRequest request, CancellationToken cancelToken = default);
+        Task<MicResponse> AuthResendConfirmationCode(MicAuthResendConfirmationCodeRequest request, CancellationToken cancelToken = default);
 
         /// <summary>
         /// Sets the passsword of the user based on a token sent by the system when the user either forgets their password or is just created by an administrator.
         /// </summary>
-        Task<MicModel> AuthSetPassword(MicAuthSetPasswordRequest request, CancellationToken cancelToken = default);
+        Task<MicResponse> AuthSetPassword(MicAuthSetPasswordRequest request, CancellationToken cancelToken = default);
 
         /// <summary>
         /// Lets a user initiate the process to create a Managed IoT Cloud user account.
@@ -110,7 +110,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// <para>This endpoint supports confirming the account with either token or username/code.</para>
         /// </summary>
         public Task AuthConfirmSignup(MicAuthConfirmationCode confirmationCode, CancellationToken cancelToken = default) =>
-            HandleClientRequest<MicAuthConfirmationCode, MicModel>(nameof(IMicClient.AuthConfirmSignup), confirmationCode, cancelToken);
+            HandleClientRequest<MicAuthConfirmationCode, MicResponse>(nameof(IMicClient.AuthConfirmSignup), confirmationCode, cancelToken);
 
         /// <summary>
         /// Confirms the account of a signed up user. This action should be called after a user have received their
@@ -121,8 +121,8 @@ namespace TelenorConnexion.ManagedIoTCloud
         public Task AuthConfirmSignup(MicAuthConfirmSignupRequest request, CancellationToken cancelToken = default) =>
             ((IMicClient)this).AuthConfirmSignup(request, cancelToken);
 
-        Task<MicModel> IMicClient.AuthConfirmSignup(MicAuthConfirmSignupRequest request, CancellationToken cancelToken) =>
-            HandleClientRequest<MicAuthConfirmSignupRequest, MicModel>(nameof(IMicClient.AuthConfirmSignup), request, cancelToken);
+        Task<MicResponse> IMicClient.AuthConfirmSignup(MicAuthConfirmSignupRequest request, CancellationToken cancelToken) =>
+            HandleClientRequest<MicAuthConfirmSignupRequest, MicResponse>(nameof(IMicClient.AuthConfirmSignup), request, cancelToken);
 
         #endregion // Auth API : CONFIRM_SIGN_UP
 
@@ -149,7 +149,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// the password is not changed until the user has responded to the email sent by the <c>FORGOT_PASSWORD</c> action.
         /// </remarks>
         public Task AuthForgotPassword(MicUserBasicInfo userInfo, CancellationToken cancelToken = default) =>
-            HandleClientRequest<MicUserBasicInfo, MicModel>(nameof(AuthForgotPassword), userInfo, cancelToken);
+            HandleClientRequest<MicUserBasicInfo, MicResponse>(nameof(AuthForgotPassword), userInfo, cancelToken);
 
         /// <summary>
         /// If a user has forgotten the account password, this action can be used to let them reset their password.
@@ -162,8 +162,8 @@ namespace TelenorConnexion.ManagedIoTCloud
         public Task AuthForgotPassword(MicAuthForgotPasswordRequest request, CancellationToken cancelToken) =>
             ((IMicClient)this).AuthForgotPassword(request, cancelToken);
 
-        Task<MicModel> IMicClient.AuthForgotPassword(MicAuthForgotPasswordRequest request, CancellationToken cancelToken) =>
-            HandleClientRequest<MicAuthForgotPasswordRequest, MicModel>(nameof(IMicClient.AuthForgotPassword), request, cancelToken);
+        Task<MicResponse> IMicClient.AuthForgotPassword(MicAuthForgotPasswordRequest request, CancellationToken cancelToken) =>
+            HandleClientRequest<MicAuthForgotPasswordRequest, MicResponse>(nameof(IMicClient.AuthForgotPassword), request, cancelToken);
 
         #endregion // Auth API : FORGOT_PASSWORD
 
@@ -216,7 +216,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// </summary>
         /// <returns>An empty object.</returns>
         public Task AuthGiveConsent(MicAuthUserPassword userPassword, CancellationToken cancelToken = default) =>
-            HandleClientRequest<MicAuthUserPassword, MicModel>(nameof(AuthGiveConsent), userPassword, cancelToken);
+            HandleClientRequest<MicAuthUserPassword, MicResponse>(nameof(AuthGiveConsent), userPassword, cancelToken);
 
         /// <summary>
         /// You may require users to consent to terms and conditions before they can use the service.
@@ -226,8 +226,8 @@ namespace TelenorConnexion.ManagedIoTCloud
         public Task AuthGiveConsent(MicAuthGiveConsentRequest request, CancellationToken cancelToken = default) =>
             ((IMicClient)this).AuthGiveConsent(request, cancelToken);
 
-        Task<MicModel> IMicClient.AuthGiveConsent(MicAuthGiveConsentRequest request, CancellationToken cancelToken) =>
-            HandleClientRequest<MicAuthGiveConsentRequest, MicModel>(nameof(IMicClient.AuthGiveConsent), request, cancelToken);
+        Task<MicResponse> IMicClient.AuthGiveConsent(MicAuthGiveConsentRequest request, CancellationToken cancelToken) =>
+            HandleClientRequest<MicAuthGiveConsentRequest, MicResponse>(nameof(IMicClient.AuthGiveConsent), request, cancelToken);
 
         #endregion // Auth API : GIVE_CONSENT
 
@@ -314,7 +314,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// Sends a new confirmation code to the user if the user didn't receive an e-mail or if the link has expired.
         /// </summary>
         public Task AuthResendConfirmationCode(MicUserBasicInfo userInfo, CancellationToken cancelToken = default) =>
-            HandleClientRequest<MicUserBasicInfo, MicModel>(nameof(AuthResendConfirmationCode), userInfo, cancelToken);
+            HandleClientRequest<MicUserBasicInfo, MicResponse>(nameof(AuthResendConfirmationCode), userInfo, cancelToken);
 
         /// <summary>
         /// Sends a new confirmation code to the user if the user didn't receive an e-mail or if the link has expired.
@@ -322,8 +322,8 @@ namespace TelenorConnexion.ManagedIoTCloud
         public Task AuthResendConfirmationCode(MicAuthResendConfirmationCodeRequest request, CancellationToken cancelToken = default) =>
             ((IMicClient)this).AuthResendConfirmationCode(request, cancelToken);
 
-        Task<MicModel> IMicClient.AuthResendConfirmationCode(MicAuthResendConfirmationCodeRequest request, CancellationToken cancelToken) =>
-            HandleClientRequest<MicAuthResendConfirmationCodeRequest, MicModel>(nameof(IMicClient.AuthResendConfirmationCode), request, cancelToken);
+        Task<MicResponse> IMicClient.AuthResendConfirmationCode(MicAuthResendConfirmationCodeRequest request, CancellationToken cancelToken) =>
+            HandleClientRequest<MicAuthResendConfirmationCodeRequest, MicResponse>(nameof(IMicClient.AuthResendConfirmationCode), request, cancelToken);
 
         #endregion // Auth API : RESEND_CONFIRMATION_CODE
 
@@ -375,8 +375,8 @@ namespace TelenorConnexion.ManagedIoTCloud
         public Task AuthSetPassword(MicAuthSetPasswordRequest request, CancellationToken cancelToken = default) =>
             ((IMicClient)this).AuthSetPassword(request, cancelToken);
 
-        Task<MicModel> IMicClient.AuthSetPassword(MicAuthSetPasswordRequest request, CancellationToken cancelToken) =>
-            HandleClientRequest<MicAuthSetPasswordRequest, MicModel>(nameof(IMicClient.AuthSetPassword), request, cancelToken);
+        Task<MicResponse> IMicClient.AuthSetPassword(MicAuthSetPasswordRequest request, CancellationToken cancelToken) =>
+            HandleClientRequest<MicAuthSetPasswordRequest, MicResponse>(nameof(IMicClient.AuthSetPassword), request, cancelToken);
 
         #endregion // Auth API : SET_PASSWORD
 

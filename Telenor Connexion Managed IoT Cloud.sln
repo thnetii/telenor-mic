@@ -66,6 +66,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelenorConnexion.ManagedIoT
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelenorConnexion.ManagedIoTCloud.CognitoIdentity", "src\TelenorConnexion.ManagedIoTCloud.CognitoIdentity\TelenorConnexion.ManagedIoTCloud.CognitoIdentity.csproj", "{2D4682BC-96CB-400A-B68E-45A0647B2491}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelenorConnexion.ManagedIoTCloud.RestClient", "src\TelenorConnexion.ManagedIoTCloud.RestClient\TelenorConnexion.ManagedIoTCloud.RestClient.csproj", "{F23F349D-D4AE-41F3-8D6C-7A0B55F71D4C}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -256,6 +258,18 @@ Global
 		{2D4682BC-96CB-400A-B68E-45A0647B2491}.Release|x64.Build.0 = Release|Any CPU
 		{2D4682BC-96CB-400A-B68E-45A0647B2491}.Release|x86.ActiveCfg = Release|Any CPU
 		{2D4682BC-96CB-400A-B68E-45A0647B2491}.Release|x86.Build.0 = Release|Any CPU
+		{F23F349D-D4AE-41F3-8D6C-7A0B55F71D4C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{F23F349D-D4AE-41F3-8D6C-7A0B55F71D4C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{F23F349D-D4AE-41F3-8D6C-7A0B55F71D4C}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{F23F349D-D4AE-41F3-8D6C-7A0B55F71D4C}.Debug|x64.Build.0 = Debug|Any CPU
+		{F23F349D-D4AE-41F3-8D6C-7A0B55F71D4C}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{F23F349D-D4AE-41F3-8D6C-7A0B55F71D4C}.Debug|x86.Build.0 = Debug|Any CPU
+		{F23F349D-D4AE-41F3-8D6C-7A0B55F71D4C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{F23F349D-D4AE-41F3-8D6C-7A0B55F71D4C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{F23F349D-D4AE-41F3-8D6C-7A0B55F71D4C}.Release|x64.ActiveCfg = Release|Any CPU
+		{F23F349D-D4AE-41F3-8D6C-7A0B55F71D4C}.Release|x64.Build.0 = Release|Any CPU
+		{F23F349D-D4AE-41F3-8D6C-7A0B55F71D4C}.Release|x86.ActiveCfg = Release|Any CPU
+		{F23F349D-D4AE-41F3-8D6C-7A0B55F71D4C}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -282,6 +296,7 @@ Global
 		{20CF3407-E958-4DBB-A1AA-8DACE2771CC0} = {3746CEDF-85CF-42DE-8208-66A2C5904958}
 		{C20DD58C-6DA2-450E-8AB4-99EB4BA91195} = {14DF9197-C154-40D1-8001-632BCF08E96E}
 		{2D4682BC-96CB-400A-B68E-45A0647B2491} = {14DF9197-C154-40D1-8001-632BCF08E96E}
+		{F23F349D-D4AE-41F3-8D6C-7A0B55F71D4C} = {14DF9197-C154-40D1-8001-632BCF08E96E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D7EB7D3-BB18-4A25-B5BF-A236A532AE65}

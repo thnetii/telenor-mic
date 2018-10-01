@@ -2,6 +2,7 @@
 using Amazon.Lambda;
 using Amazon.Lambda.Model;
 using Amazon.Runtime;
+using Amazon.SecurityToken;
 using Newtonsoft.Json;
 using System;
 using System.Diagnostics;
@@ -20,6 +21,8 @@ namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
     public class MicLambdaClient : MicClient, IMicClient, IAmazonService, IDisposable
     {
         private readonly CognitoAWSCredentials awsCredentials;
+        private readonly AmazonCognitoIdentityClient cognitoClient;
+        private readonly AmazonSecurityTokenServiceClient stsClient;
         private readonly AmazonLambdaClient lambdaClient;
 
         #region Constructors
@@ -34,9 +37,18 @@ namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
 
         public MicLambdaClient(MicManifest manifest) : base(manifest)
         {
-            awsCredentials = manifest.CreateEmptyAWSCredentials();
-            lambdaClient = new AmazonLambdaClient(awsCredentials,
-                manifest.AwsRegion);
+            Config = new MicClientConfig()
+            {
+                RegionEndpoint = manifest.AwsRegion
+            };
+
+            AnonymousAWSCredentials anonymousAwsCreds = new AnonymousAWSCredentials();
+            cognitoClient = new AmazonCognitoIdentityClient(anonymousAwsCreds, Config.Create<AmazonCognitoIdentityConfig>());
+            stsClient = new AmazonSecurityTokenServiceClient(anonymousAwsCreds, Config.Create<AmazonSecurityTokenServiceConfig>());
+
+            awsCredentials = CreateEmptyAWSCredentials();
+
+            lambdaClient = new AmazonLambdaClient(awsCredentials, Config.Create<AmazonLambdaConfig>());
         }
 
         #endregion // Constructors
@@ -81,6 +93,20 @@ namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
                     lambdaRequest.FunctionName = Manifest.AuthLambda;
                     break;
                 #endregion // Auth API
+                #region User API
+                case nameof(UserCreate):
+                    micRequest.Action = "CREATE";
+                    goto case nameof(Manifest.UserLambda);
+                case nameof(UserResetPassword):
+                    micRequest.Action = "RESET_PASSWORD";
+                    goto case nameof(Manifest.UserLambda);
+                case nameof(UserGet):
+                    micRequest.Action = "GET";
+                    goto case nameof(Manifest.UserLambda);
+                case nameof(Manifest.UserLambda):
+                    lambdaRequest.FunctionName = Manifest.UserLambda;
+                    break;
+                #endregion // User API
                 default:
                     throw new InvalidOperationException("Unknown action name: " + actionName);
             }
@@ -88,24 +114,38 @@ namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
             lambdaRequest.Payload = JsonConvert.SerializeObject(micRequest);
             var lambdaResponse = await lambdaClient.InvokeAsync(lambdaRequest, cancelToken)
                 .ConfigureAwait(continueOnCapturedContext: false);
-            var response = await DeserializeOrThrow<TResponse>(lambdaResponse,
+            return await DeserializeOrThrow<TResponse>(lambdaResponse,
                 cancelToken).ConfigureAwait(continueOnCapturedContext: false);
-
-            if (response is MicAuthLoginResponse loginResponse)
-                UpdateCredentials(loginResponse);
-
-            return response;
         }
-
-        #endregion // Overrides
-
-        #region Private Helper methods
 
         protected override void UpdateCredentials(MicAuthLoginResponse loginResponse)
         {
             base.UpdateCredentials(loginResponse);
             this.AddLoginToCognitoCredentials(awsCredentials);
         }
+
+        #endregion // Overrides
+
+        #region Public helper methods
+
+        public CognitoAWSCredentials CreateEmptyAWSCredentials()
+        {
+            return new CognitoAWSCredentials(
+                accountId: null, Manifest.IdentityPool, unAuthRoleArn: null,
+                authRoleArn: null, cognitoClient, stsClient
+                );
+        }
+
+        public CognitoAWSCredentials GetCognitoAWSCredentials()
+        {
+            var creds = CreateEmptyAWSCredentials();
+            this.AddLoginToCognitoCredentials(creds);
+            return creds;
+        }
+
+        #endregion // Public helper methods
+
+        #region Private Helper methods
 
         private Task<TResponse> DeserializeOrThrow<TResponse>(InvokeResponse lambdaResponse,
             CancellationToken cancelToken)
@@ -119,9 +159,9 @@ namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
 
         #region IAmazonService
 
-        public AmazonLambdaConfig Config => lambdaClient.Config as AmazonLambdaConfig;
+        public MicClientConfig Config { get; }
 
-        IClientConfig IAmazonService.Config => lambdaClient.Config;
+        IClientConfig IAmazonService.Config => Config;
 
         #endregion // IAmazonService
 
@@ -133,6 +173,8 @@ namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
         [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize")]
         public void Dispose()
         {
+            cognitoClient.Dispose();
+            stsClient.Dispose();
             lambdaClient.Dispose();
         }
 
