@@ -2,6 +2,9 @@
 
 namespace TelenorConnexion.ManagedIoTCloud.Model
 {
+    /// <summary>
+    /// Represents User Confirmation Code consisting either of a token or a username and a code.
+    /// </summary>
     [JsonObject(ItemNullValueHandling = NullValueHandling.Ignore)]
     public class MicAuthConfirmationCode : MicUserBasicInfo
     {

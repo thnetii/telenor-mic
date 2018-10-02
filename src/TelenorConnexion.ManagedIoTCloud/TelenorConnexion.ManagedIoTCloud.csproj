@@ -9,26 +9,17 @@
 
   <ItemGroup>
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
-    <PackageReference Include="MQTTnet" Version="2.8.2" />
-    <PackageReference Include="MQTTnet.Extensions.ManagedClient" Version="2.8.2" />
   </ItemGroup>
 
-  <ItemGroup Condition="Exists('..\..\aws-sdk-net-ext\aws-sdk-net\sdk\src\Services')">
-    <ProjectReference Include="..\..\aws-sdk-net-ext\aws-sdk-net\sdk\src\Services\CognitoIdentity\AWSSDK.CognitoIdentity.CoreCLR.csproj" />
-    <ProjectReference Include="..\..\aws-sdk-net-ext\aws-sdk-net\sdk\src\Services\APIGateway\AWSSDK.APIGateway.CoreCLR.csproj" />
-    <ProjectReference Include="..\..\aws-sdk-net-ext\aws-sdk-net\sdk\src\Services\Lambda\AWSSDK.Lambda.CoreCLR.csproj" />
-  </ItemGroup>
-  <ItemGroup Condition="!Exists('..\..\aws-sdk-net-ext\aws-sdk-net\sdk\src\Services')">
-    <PackageReference Include="AWSSDK.CognitoIdentity" Version="3.3.2.34" />
-    <PackageReference Include="AWSSDK.APIGateway" Version="3.3.20.1" />
+  <ItemGroup>
+    <PackageReference Include="AWSSDK.CognitoIdentity" Version="3.3.2.35" />
+    <PackageReference Include="AWSSDK.SecurityToken" Version="3.3.4.16" />
     <PackageReference Include="AWSSDK.Lambda" Version="3.3.16.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\dotnet-common\src\THNETII.Common\THNETII.Common.csproj" />
     <ProjectReference Include="..\..\dotnet-common\src\THNETII.Common.Serialization\THNETII.Common.Serialization.csproj" />
-    <ProjectReference Include="..\..\aws-sdk-net-ext\src\THNETII.AWSSDK.IoTDeviceGateway\THNETII.AWSSDK.IoTDeviceGateway.csproj" />
-    <ProjectReference Include="..\..\aws-sdk-net-ext\src\THNETII.AWSSDK.IoTDeviceGateway.Mqtt\THNETII.AWSSDK.IoTDeviceGateway.Mqtt.csproj" />
   </ItemGroup>
 
 </Project>

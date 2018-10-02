@@ -2,6 +2,9 @@
 
 namespace TelenorConnexion.ManagedIoTCloud.Model
 {
+    /// <summary>
+    /// Represents a combination of username and password.
+    /// </summary>
     public class MicAuthUserPassword : MicUserBasicInfo
     {
         /// <summary>

@@ -13,7 +13,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\src\TelenorConnexion.ManagedIoTCloud.CognitoIdentity\TelenorConnexion.ManagedIoTCloud.CognitoIdentity.csproj" />
+    <ProjectReference Include="..\..\aws-sdk-net-ext\src\THNETII.AWSSDK.IoTDeviceGateway.Mqtt\THNETII.AWSSDK.IoTDeviceGateway.Mqtt.csproj" />
+    <ProjectReference Include="..\..\aws-sdk-net-ext\src\THNETII.AWSSDK.IoTDeviceGateway\THNETII.AWSSDK.IoTDeviceGateway.csproj" />
     <ProjectReference Include="..\..\src\TelenorConnexion.ManagedIoTCloud.LambdaClient\TelenorConnexion.ManagedIoTCloud.LambdaClient.csproj" />
     <ProjectReference Include="..\..\src\TelenorConnexion.ManagedIoTCloud.RestClient\TelenorConnexion.ManagedIoTCloud.RestClient.csproj" />
     <ProjectReference Include="..\..\src\TelenorConnexion.ManagedIoTCloud\TelenorConnexion.ManagedIoTCloud.csproj" />

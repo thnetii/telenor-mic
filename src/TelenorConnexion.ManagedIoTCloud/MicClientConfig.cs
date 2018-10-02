@@ -3,12 +3,13 @@ using Amazon.Runtime;
 using Amazon.Util.Internal;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Linq.Expressions;
 using System.Net;
 using System.Reflection;
 
-namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
+namespace TelenorConnexion.ManagedIoTCloud
 {
     public class MicClientConfig : ClientConfig
     {
@@ -47,6 +48,7 @@ namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
         }
 
         /// <inheritdoc />
+        [SuppressMessage("Design", "CA1056:Uri properties should not be strings", Justification = nameof(ClientConfig) + "." + nameof(ClientConfig.ServiceURL))]
         public new string ServiceURL
         {
             get => base.ServiceURL;
@@ -351,6 +353,7 @@ namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
         private static readonly List<MethodInfo> pushMarkedOfTypeInfos;
         private static readonly List<MethodInfo> pushMarkedOfTypeToConfigInfos;
 
+        [SuppressMessage("Performance", "CA1810:Initialize reference type static fields inline")]
         static MicClientConfig()
         {
             var configProperties = typeof(ClientConfig).GetProperties(BindingFlags.Instance | BindingFlags.Public)
