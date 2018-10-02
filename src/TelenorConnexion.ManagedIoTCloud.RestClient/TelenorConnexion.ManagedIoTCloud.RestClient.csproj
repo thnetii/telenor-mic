@@ -11,19 +11,11 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
-  <ItemGroup Condition="Exists('..\..\aws-sdk-net-ext\aws-sdk-net\sdk\src\Services')">
-    <ProjectReference Include="..\..\aws-sdk-net-ext\aws-sdk-net\sdk\src\Services\CognitoIdentity\AWSSDK.CognitoIdentity.CoreCLR.csproj" />
-  </ItemGroup>
-  <ItemGroup Condition="!Exists('..\..\aws-sdk-net-ext\aws-sdk-net\sdk\src\Services')">
-    <PackageReference Include="AWSSDK.CognitoIdentity" Version="3.3.2.34" />
-  </ItemGroup>
-
   <ItemGroup>
     <ProjectReference Include="..\..\dotnet-common\src\THNETII.Common\THNETII.Common.csproj" />
-    <ProjectReference Include="..\..\dotnet-common\src\THNETII.Common.Serialization\THNETII.Common.Serialization.csproj" />
-    <ProjectReference Include="..\TelenorConnexion.ManagedIoTCloud.CognitoIdentity\TelenorConnexion.ManagedIoTCloud.CognitoIdentity.csproj" />
-    <ProjectReference Include="..\TelenorConnexion.ManagedIoTCloud\TelenorConnexion.ManagedIoTCloud.csproj" />
     <ProjectReference Include="..\..\dotnet-common\src\THNETII.Networking.Http\THNETII.Networking.Http.csproj" />
+    <ProjectReference Include="..\..\dotnet-common\src\THNETII.Common.Serialization\THNETII.Common.Serialization.csproj" />
+    <ProjectReference Include="..\TelenorConnexion.ManagedIoTCloud\TelenorConnexion.ManagedIoTCloud.csproj" />
   </ItemGroup>
 
 </Project>

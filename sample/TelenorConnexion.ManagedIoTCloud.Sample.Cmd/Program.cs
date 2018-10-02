@@ -1,5 +1,4 @@
 ﻿using Amazon.IoTDeviceGateway;
-using Amazon.Runtime;
 using McMaster.Extensions.CommandLineUtils;
 using MQTTnet;
 using MQTTnet.Client;
@@ -8,7 +7,6 @@ using System;
 using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
-using TelenorConnexion.ManagedIoTCloud.CognitoIdentity;
 using TelenorConnexion.ManagedIoTCloud.LambdaClient;
 using TelenorConnexion.ManagedIoTCloud.Model;
 
@@ -28,7 +26,6 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
             using (var httpClient = new HttpClient(proxyHandler))
             using (var micClient = new MicLambdaClient(await MicManifest.GetMicManifest(hostname, httpClient)))
             {
-                //var micClientConfig = new MicClientConfig() { RegionEndpoint = micClient.Manifest.AwsRegion };
                 var micClientConfig = micClient.Config;
                 micClientConfig.LogMetrics = true;
                 micClientConfig.ProxyHost = "localhost";
@@ -51,7 +48,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                 Console.WriteLine();
                 Console.Write("Connecting MQTT Client . . . ");
                 var iotConfig = micClientConfig.Create<AmazonIoTDeviceGatewayConfig>();
-                using (var iotClient = new AmazonIoTDeviceGatewayClient(micClient.GetCognitoAWSCredentials(), iotConfig))
+                using (var iotClient = new AmazonIoTDeviceGatewayClient(((IMicClient)micClient).AwsCredentials, iotConfig))
                 {
                     var mqttOptionsTask = iotClient.CreateMqttWebSocketClientOptionsAsync(micClient.Manifest.IotEndpoint);
 

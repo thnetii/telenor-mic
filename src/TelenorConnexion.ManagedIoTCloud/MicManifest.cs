@@ -255,6 +255,9 @@ namespace TelenorConnexion.ManagedIoTCloud
         [JsonProperty(nameof(MqttFn))]
         public string MqttFn { get; set; }
 
+        public string GetCognitoProviderName() =>
+            $"cognito-idp.{RegionSystemName}.amazonaws.com/{UserPool}";
+
         private static DuplexConversionTuple<string, Uri> GetUrlToUriDuplexConversionTuple() =>
             new DuplexConversionTuple<string, Uri>(
                 rawConvert: s => string.IsNullOrWhiteSpace(s) ? null : new Uri(s),

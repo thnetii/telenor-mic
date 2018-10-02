@@ -11,18 +11,16 @@ using System.IO;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
-using TelenorConnexion.ManagedIoTCloud.CognitoIdentity;
 using TelenorConnexion.ManagedIoTCloud.LambdaClient.Model;
 using TelenorConnexion.ManagedIoTCloud.Model;
 
 namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
 {
     [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly")]
-    public class MicLambdaClient : MicClient, IMicClient, IAmazonService, IDisposable
+    public class MicLambdaClient : MicClient, IMicClient, IDisposable
     {
-        private readonly CognitoAWSCredentials awsCredentials;
-        private readonly AmazonCognitoIdentityClient cognitoClient;
-        private readonly AmazonSecurityTokenServiceClient stsClient;
+        private bool _disposed;
+
         private readonly AmazonLambdaClient lambdaClient;
 
         #region Constructors
@@ -37,18 +35,7 @@ namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
 
         public MicLambdaClient(MicManifest manifest) : base(manifest)
         {
-            Config = new MicClientConfig()
-            {
-                RegionEndpoint = manifest.AwsRegion
-            };
-
-            AnonymousAWSCredentials anonymousAwsCreds = new AnonymousAWSCredentials();
-            cognitoClient = new AmazonCognitoIdentityClient(anonymousAwsCreds, Config.Create<AmazonCognitoIdentityConfig>());
-            stsClient = new AmazonSecurityTokenServiceClient(anonymousAwsCreds, Config.Create<AmazonSecurityTokenServiceConfig>());
-
-            awsCredentials = CreateEmptyAWSCredentials();
-
-            lambdaClient = new AmazonLambdaClient(awsCredentials, Config.Create<AmazonLambdaConfig>());
+            lambdaClient = new AmazonLambdaClient(AwsCredentials, Config.Create<AmazonLambdaConfig>());
         }
 
         #endregion // Constructors
@@ -71,14 +58,14 @@ namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
                     goto case nameof(Manifest.AuthLambda);
                 case nameof(AuthLogin):
                     micRequest.Action = "LOGIN";
-                    awsCredentials.RemoveLogin(Manifest.GetCognitoProviderName());
+                    AwsCredentials.RemoveLogin(Manifest.GetCognitoProviderName());
                     goto case nameof(Manifest.AuthLambda);
                 case nameof(AuthGiveConsent):
                     micRequest.Action = "GIVE_CONSENT";
                     goto case nameof(Manifest.AuthLambda);
                 case nameof(AuthRefresh):
                     micRequest.Action = "REFRESH";
-                    awsCredentials.RemoveLogin(Manifest.GetCognitoProviderName());
+                    AwsCredentials.RemoveLogin(Manifest.GetCognitoProviderName());
                     goto case nameof(Manifest.AuthLambda);
                 case nameof(AuthResendConfirmationCode):
                     micRequest.Action = "RESEND_CONFIRMATION_CODE";
@@ -118,32 +105,7 @@ namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
                 cancelToken).ConfigureAwait(continueOnCapturedContext: false);
         }
 
-        protected override void UpdateCredentials(MicAuthLoginResponse loginResponse)
-        {
-            base.UpdateCredentials(loginResponse);
-            this.AddLoginToCognitoCredentials(awsCredentials);
-        }
-
         #endregion // Overrides
-
-        #region Public helper methods
-
-        public CognitoAWSCredentials CreateEmptyAWSCredentials()
-        {
-            return new CognitoAWSCredentials(
-                accountId: null, Manifest.IdentityPool, unAuthRoleArn: null,
-                authRoleArn: null, cognitoClient, stsClient
-                );
-        }
-
-        public CognitoAWSCredentials GetCognitoAWSCredentials()
-        {
-            var creds = CreateEmptyAWSCredentials();
-            this.AddLoginToCognitoCredentials(creds);
-            return creds;
-        }
-
-        #endregion // Public helper methods
 
         #region Private Helper methods
 
@@ -157,25 +119,18 @@ namespace TelenorConnexion.ManagedIoTCloud.LambdaClient
 
         #endregion // Private Helper methods
 
-        #region IAmazonService
-
-        public MicClientConfig Config { get; }
-
-        IClientConfig IAmazonService.Config => Config;
-
-        #endregion // IAmazonService
-
         #region Dispose
 
         /// <inheritdoc />
-        [DebuggerStepThrough]
-        [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly")]
-        [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize")]
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            cognitoClient.Dispose();
-            stsClient.Dispose();
-            lambdaClient.Dispose();
+            if (!_disposed && disposing)
+            {
+                lambdaClient.Dispose();
+
+                _disposed = true;
+            }
+            base.Dispose(disposing);
         }
 
         #endregion // Dispose

@@ -16,6 +16,7 @@ namespace TelenorConnexion.ManagedIoTCloud.RestClient
     [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly")]
     public class MicRestClient : MicClient, IMicClient, IDisposable
     {
+        private bool _disposed;
         private readonly HttpClient httpClient;
 
         public string ApiKey { get; }
@@ -125,12 +126,15 @@ namespace TelenorConnexion.ManagedIoTCloud.RestClient
         #region Dispose
 
         /// <inheritdoc />
-        [DebuggerStepThrough]
-        [SuppressMessage("Design", "CA1063:Implement IDisposable Correctly")]
-        [SuppressMessage("Usage", "CA1816:Dispose methods should call SuppressFinalize")]
-        public void Dispose()
+        protected override void Dispose(bool disposing)
         {
-            httpClient.Dispose();
+            if (!_disposed && disposing)
+            {
+                httpClient.Dispose();
+
+                _disposed = true;
+            }
+            base.Dispose(disposing);
         }
 
         #endregion // Dispose
