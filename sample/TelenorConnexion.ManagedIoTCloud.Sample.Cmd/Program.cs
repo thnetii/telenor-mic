@@ -2,6 +2,7 @@
 using McMaster.Extensions.CommandLineUtils;
 using MQTTnet;
 using MQTTnet.Client;
+using Newtonsoft.Json;
 using System;
 using System.Linq;
 using System.Net;
@@ -16,6 +17,9 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
 {
     public static class Program
     {
+        public const bool useProxy = true;
+        public const bool useLambdaClient = false;
+
         public static async Task Main(string[] args)
         {
             CancellationTokenSource cts = new CancellationTokenSource();
@@ -30,24 +34,55 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
             catch (AggregateException aggregateExcept) when (aggregateExcept.InnerException is OperationCanceledException) { }
         }
 
+        public static async Task<MicClient> CreateMicClient(string hostname, string apiKey, CancellationToken cancelToken)
+        {
+            HttpClientHandler httpHandler = new HttpClientHandler();
+            if (useProxy)
+            {
+                httpHandler.Proxy = new WebProxy("http://localhost:8888/");
+                httpHandler.UseProxy = true;
+            }
+
+            MicManifest manifest;
+            MicClient micClient;
+            if (useLambdaClient)
+            {
+                using (var httpClient = new HttpClient(httpHandler))
+                {
+                    manifest = await MicManifest.GetMicManifest(hostname, httpClient, cancelToken);
+                }
+                micClient = new MicLambdaClient(manifest);
+            }
+            else
+            {
+                micClient = await MicRestClient.CreateFromHostname(hostname, apiKey, httpHandler, cancelToken);
+            }
+
+            if (useProxy)
+            {
+                micClient.Config.ProxyHost = "localhost";
+                micClient.Config.ProxyPort = 8888;
+            }
+
+            return micClient;
+        }
+
         public static async Task Run(CancellationToken cancelToken)
         {
             Console.Write("MIC Hostname: ");
             var hostname = Console.ReadLine();
-            Console.Write("API Key: ");
-            var apiKey = Console.ReadLine();
+            string apiKey = null;
+            if (!useLambdaClient)
+            {
+                Console.Write("API Key: ");
+                apiKey = Console.ReadLine();
+            }
             Console.WriteLine("Getting MIC manifest . . .");
-            //using (var proxyHandler = new HttpClientHandler() { Proxy = new WebProxy("http://localhost:8888/"), UseProxy = true })
-            using (var micClient = await MicRestClient.CreateFromHostname(hostname, apiKey, cancelToken))
-            //using (var micClient = await MicRestClient.CreateFromHostname(hostname, apiKey, proxyHandler, cancelToken))
-            //using (var httpClient = new HttpClient(proxyHandler))
-            //using (var micClient = new MicLambdaClient(await MicManifest.GetMicManifest(hostname, httpClient)))
-            //using (var micClient = new MicLambdaClient(await MicManifest.GetMicManifest(hostname, cancelToken)))
+            using (var proxyHandler = new HttpClientHandler() { Proxy = new WebProxy("http://localhost:8888/"), UseProxy = true })
+            using (var micClient = await CreateMicClient(hostname, apiKey, cancelToken))
             {
                 var micClientConfig = micClient.Config;
                 micClientConfig.LogMetrics = true;
-                //micClientConfig.ProxyHost = "localhost";
-                //micClientConfig.ProxyPort = 8888;
 
                 Console.Write("Username: ");
                 var username = Console.ReadLine();
@@ -58,6 +93,10 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                     username, password, cancelToken);
                 ((IMicModel)(login.User)).AdditionalData.TryGetValue("domainPath", out object domainPath);
                 Console.WriteLine("Successful!");
+                Console.WriteLine();
+
+                var userInfo = await micClient.UserGet(login.User.Username, cancelToken);
+                Console.WriteLine(JsonConvert.SerializeObject(userInfo, Formatting.Indented));
                 Console.WriteLine();
 
                 Console.Write("Connecting MQTT Client . . . ");
