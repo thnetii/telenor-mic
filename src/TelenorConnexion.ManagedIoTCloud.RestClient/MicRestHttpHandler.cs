@@ -21,7 +21,7 @@ namespace TelenorConnexion.ManagedIoTCloud.RestClient
             var creds = (MicClient as IMicClient)?.Credentials;
             if (!(creds is null))
             {
-                request.Headers.Add(nameof(creds.IdentityId), creds.IdentityId ?? string.Empty);
+                request.Headers.Add("identityId", creds.IdentityId ?? string.Empty);
                 var authAdded = request.Headers.TryAddWithoutValidation(nameof(request.Headers.Authorization), creds.Token);
                 Debug.Assert(authAdded, "Authorization header could not be added");
             }

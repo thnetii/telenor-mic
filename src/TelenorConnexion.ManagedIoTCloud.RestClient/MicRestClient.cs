@@ -73,6 +73,7 @@ namespace TelenorConnexion.ManagedIoTCloud.RestClient
 
         protected override async Task<TResponse> InvokeClientRequest<TRequest, TResponse>(string actionName, TRequest request, CancellationToken cancelToken = default)
         {
+            bool hasPayload = true;
             HttpMethod httpMethod = request is null ? HttpMethod.Get : HttpMethod.Post;
             string relativeUri;
 
@@ -88,7 +89,7 @@ namespace TelenorConnexion.ManagedIoTCloud.RestClient
                 #endregion // Auth API
                 #region User API
                 case nameof(UserGet):
-                    httpMethod = HttpMethod.Get;
+                    (hasPayload, httpMethod) = (false, HttpMethod.Get);
                     var attributes = ((IMicModel)request).AdditionalData;
                     var userBasicInfo = request as MicUserBasicInfo;
                     var attributesValue = string.Join(",", attributes?.Keys.Select(k => Uri.EscapeDataString(k)) ?? Enumerable.Empty<string>());
@@ -100,11 +101,18 @@ namespace TelenorConnexion.ManagedIoTCloud.RestClient
             }
 
             Uri requestUri = new Uri(apiGatewayEndpoint, relativeUri);
-            string requestJson = JsonConvert.SerializeObject(request);
-            using (var requestContent = new StringContent(requestJson, Encoding.UTF8, HttpWellKnownMediaType.ApplicationJson))
-            using (var requestMessage = new HttpRequestMessage(httpMethod, requestUri) { Content = requestContent })
-            using (var responseMessage = await httpClient.SendAsync(requestMessage, cancelToken).ConfigureAwait(continueOnCapturedContext: false))
-                return await DeserializeOrThrow<TResponse>(responseMessage, cancelToken).ConfigureAwait(continueOnCapturedContext: false);
+            using (var requestMessage = new HttpRequestMessage(httpMethod, requestUri))
+            {
+                if (hasPayload)
+                {
+                    string requestJson = JsonConvert.SerializeObject(request);
+                    var requestContent = new StringContent(requestJson, Encoding.UTF8, HttpWellKnownMediaType.ApplicationJson);
+                    requestMessage.Content = requestContent;
+                }
+
+                using (var responseMessage = await httpClient.SendAsync(requestMessage, cancelToken).ConfigureAwait(continueOnCapturedContext: false))
+                    return await DeserializeOrThrow<TResponse>(responseMessage, cancelToken).ConfigureAwait(continueOnCapturedContext: false);
+            }
         }
 
         #endregion // Overrides
