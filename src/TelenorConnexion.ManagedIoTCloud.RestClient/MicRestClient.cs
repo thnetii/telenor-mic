@@ -18,6 +18,7 @@ namespace TelenorConnexion.ManagedIoTCloud.RestClient
     {
         private bool _disposed;
         private readonly HttpClient httpClient;
+        private readonly Uri apiGatewayEndpoint;
 
         public string ApiKey { get; }
 
@@ -57,6 +58,7 @@ namespace TelenorConnexion.ManagedIoTCloud.RestClient
 
         private MicRestClient(MicManifest manifest, string apiKey, HttpClient httpClient) : base(manifest)
         {
+            apiGatewayEndpoint = manifest.GetApiGatewayBaseEndpoint();
             ApiKey = apiKey.ThrowIfNullOrWhiteSpace(nameof(apiKey));
             this.httpClient = httpClient;
         }
@@ -78,10 +80,10 @@ namespace TelenorConnexion.ManagedIoTCloud.RestClient
             {
                 #region Auth API
                 case nameof(AuthLogin):
-                    relativeUri = "/auth/login";
+                    relativeUri = "auth/login";
                     break;
                 case nameof(AuthRefresh):
-                    relativeUri = "/auth/refresh";
+                    relativeUri = "auth/refresh";
                     break;
                 #endregion // Auth API
                 #region User API
@@ -90,14 +92,14 @@ namespace TelenorConnexion.ManagedIoTCloud.RestClient
                     var attributes = ((IMicModel)request).AdditionalData;
                     var userBasicInfo = request as MicUserBasicInfo;
                     var attributesValue = string.Join(",", attributes?.Keys.Select(k => Uri.EscapeDataString(k)) ?? Enumerable.Empty<string>());
-                    relativeUri = $"/users/{userBasicInfo?.Username ?? string.Empty}?attributes={attributesValue}";
+                    relativeUri = $"users/{userBasicInfo?.Username ?? string.Empty}?attributes={attributesValue}";
                     break;
                 #endregion // User API
                 default:
                     throw new InvalidOperationException("Unknown action name: " + actionName);
             }
 
-            Uri requestUri = new Uri(Manifest.ApiGatewayRootUri, relativeUri);
+            Uri requestUri = new Uri(apiGatewayEndpoint, relativeUri);
             string requestJson = JsonConvert.SerializeObject(request);
             using (var requestContent = new StringContent(requestJson, Encoding.UTF8, HttpWellKnownMediaType.ApplicationJson))
             using (var requestMessage = new HttpRequestMessage(httpMethod, requestUri) { Content = requestContent })
