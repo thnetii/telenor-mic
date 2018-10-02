@@ -54,7 +54,7 @@ namespace TelenorConnexion.ManagedIoTCloud
             get => logLevel.RawValue;
             set => logLevel.RawValue = value;
         }
-        [IgnoreDataMember]
+        [JsonIgnore]
         public int LogLevel
         {
             get => logLevel.ConvertedValue;
@@ -93,7 +93,7 @@ namespace TelenorConnexion.ManagedIoTCloud
             get => thingEvent.RawValue;
             set => thingEvent.RawValue = value;
         }
-        [IgnoreDataMember]
+        [JsonIgnore]
         public Uri ThingEventUri
         {
             get => thingEvent.ConvertedValue;
@@ -154,12 +154,15 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// <summary>
         /// The API Gateway root URI for HTTP REST requests to the MIC API.
         /// </summary>
-        [IgnoreDataMember]
+        [JsonIgnore]
         public Uri ApiGatewayRootUri
         {
             get => apiGatewayRootUrl.ConvertedValue;
             set => apiGatewayRootUrl.ConvertedValue = value;
         }
+
+        public Uri GetApiGatewayBaseEndpoint() =>
+            new Uri(ApiGatewayRootUri, (StackName ?? string.Empty) + '/');
         #endregion
 
         [JsonProperty(nameof(Es5Endpoint))]
@@ -248,7 +251,7 @@ namespace TelenorConnexion.ManagedIoTCloud
             get => consentRequired.RawValue;
             set => consentRequired.RawValue = value;
         }
-        [IgnoreDataMember]
+        [JsonIgnore]
         public bool ConsentRequired
         {
             get => consentRequired.ConvertedValue;

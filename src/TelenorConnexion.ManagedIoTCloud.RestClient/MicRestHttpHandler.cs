@@ -27,7 +27,7 @@ namespace TelenorConnexion.ManagedIoTCloud.RestClient
             }
             string apiKey = MicClient?.ApiKey;
             if (!string.IsNullOrEmpty(apiKey))
-                request.Headers.Add("X-Api-Key", apiKey);
+                request.Headers.Add("x-api-key", apiKey);
             return base.SendAsync(request, cancellationToken);
         }
     }
