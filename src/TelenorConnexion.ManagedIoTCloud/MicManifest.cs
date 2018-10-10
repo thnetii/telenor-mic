@@ -1,6 +1,7 @@
 ﻿using Amazon;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 using System.Runtime.Serialization;
@@ -328,6 +329,10 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// </summary>
         [JsonProperty(nameof(StackName))]
         public string StackName { get; set; }
+
+        [JsonExtensionData]
+        internal IDictionary<string, object> AdditionalData { get; } =
+            new Dictionary<string, object>(StringComparer.Ordinal);
 
         [JsonProperty(nameof(MqttFn))]
         public string MqttFn { get; set; }

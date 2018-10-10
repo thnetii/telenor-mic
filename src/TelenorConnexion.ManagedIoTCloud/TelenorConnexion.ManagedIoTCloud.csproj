@@ -11,10 +11,14 @@
     <PackageReference Include="Newtonsoft.Json" Version="11.0.2" />
   </ItemGroup>
 
-  <ItemGroup>
+  <ItemGroup Condition="Exists('..\..\aws-sdk-net-ext\aws-sdk-net\sdk\src')">
+    <ProjectReference Include="..\..\aws-sdk-net-ext\aws-sdk-net\sdk\src\Services\CognitoIdentity\AWSSDK.CognitoIdentity.CoreCLR.csproj" />
+    <ProjectReference Include="..\..\aws-sdk-net-ext\aws-sdk-net\sdk\src\Services\SecurityToken\AWSSDK.SecurityToken.CoreCLR.csproj" />
+  </ItemGroup>
+
+  <ItemGroup Condition="!Exists('..\..\aws-sdk-net-ext\aws-sdk-net\sdk\src')">
     <PackageReference Include="AWSSDK.CognitoIdentity" Version="3.3.2.35" />
     <PackageReference Include="AWSSDK.SecurityToken" Version="3.3.4.16" />
-    <PackageReference Include="AWSSDK.Lambda" Version="3.3.16.2" />
   </ItemGroup>
 
   <ItemGroup>
