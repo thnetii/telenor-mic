@@ -148,9 +148,9 @@ namespace TelenorConnexion.ManagedIoTCloud
         {
             var jsonObject = await JObject.LoadAsync(jsonReader, cancelToken)
                 .ConfigureAwait(continueOnCapturedContext: false);
-            if (jsonObject.ContainsKey(MicException.ErrorMessageKey))
+            if (jsonObject.TryGetValue(MicException.ErrorMessageKey, out var errorToken))
             {
-                throw new MicException(jsonObject.ToObject<MicErrorMessage>());
+                throw new MicException(errorToken.ToObject<MicErrorMessage>());
             }
             return jsonObject.ToObject<TResponse>();
         }
