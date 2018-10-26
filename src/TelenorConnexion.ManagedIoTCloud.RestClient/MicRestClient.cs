@@ -1,6 +1,5 @@
 ﻿using Newtonsoft.Json;
 using System;
-using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
 using System.Linq;
 using System.Net.Http;
@@ -20,9 +19,32 @@ namespace TelenorConnexion.ManagedIoTCloud.RestClient
         private readonly HttpClient httpClient;
         private readonly Uri apiGatewayEndpoint;
 
-        public string ApiKey { get; }
+        public string ApiKey { get; protected set; }
 
         #region Constructors
+
+        public static async Task<MicRestClient> CreateFromHostname(
+            string hostname, CancellationToken cancelToken = default)
+        {
+            var handler = new MicRestHttpHandler(new HttpClientHandler());
+            var httpClient = new HttpClient(handler);
+            MicRestClient micClient = await CreateFromHostname(hostname, httpClient, cancelToken)
+                .ConfigureAwait(continueOnCapturedContext: false);
+            handler.MicClient = micClient;
+            return micClient;
+        }
+
+        public static async Task<MicRestClient> CreateFromHostname(
+            string hostname, HttpMessageHandler httpHandler,
+            CancellationToken cancelToken = default)
+        {
+            var handler = new MicRestHttpHandler(httpHandler);
+            var httpClient = new HttpClient(handler);
+            MicRestClient micClient = await CreateFromHostname(hostname, httpClient, cancelToken)
+                .ConfigureAwait(continueOnCapturedContext: false);
+            handler.MicClient = micClient;
+            return micClient;
+        }
 
         public static async Task<MicRestClient> CreateFromHostname(
             string hostname, string apiKey, CancellationToken cancelToken = default)
@@ -47,6 +69,16 @@ namespace TelenorConnexion.ManagedIoTCloud.RestClient
             return micClient;
         }
 
+        private static async Task<MicRestClient> CreateFromHostname(string hostname, HttpClient httpClient, CancellationToken cancelToken)
+        {
+            var manifest = await MicManifest.GetMicManifest(hostname, httpClient, cancelToken)
+                .ConfigureAwait(continueOnCapturedContext: false);
+            var micClient = new MicRestClient(manifest, httpClient);
+            var metadataManifest = await micClient.MetadataManifest(cancelToken).ConfigureAwait(continueOnCapturedContext: false);
+            micClient.ApiKey = metadataManifest.ApiKey;
+            return micClient;
+        }
+
         private static async Task<MicRestClient> CreateFromHostname(string hostname, string apiKey, HttpClient httpClient, CancellationToken cancelToken)
         {
             var manifest = await MicManifest.GetMicManifest(hostname, httpClient, cancelToken)
@@ -56,15 +88,15 @@ namespace TelenorConnexion.ManagedIoTCloud.RestClient
             return micClient;
         }
 
-        private MicRestClient(MicManifest manifest, string apiKey, HttpClient httpClient) : base(manifest)
+        private MicRestClient(MicManifest manifest, HttpClient httpClient) : base(manifest)
         {
             apiGatewayEndpoint = manifest.GetApiGatewayBaseEndpoint();
-            ApiKey = apiKey.ThrowIfNullOrWhiteSpace(nameof(apiKey));
             this.httpClient = httpClient;
         }
 
-        public MicRestClient(MicManifest manifest, string apiKey) : this(manifest, apiKey, new HttpClient(new MicRestHttpHandler(new HttpClientHandler())))
+        private MicRestClient(MicManifest manifest, string apiKey, HttpClient httpClient) : this(manifest, httpClient)
         {
+            ApiKey = apiKey.ThrowIfNullOrWhiteSpace(nameof(apiKey));
         }
 
         #endregion
@@ -93,9 +125,15 @@ namespace TelenorConnexion.ManagedIoTCloud.RestClient
                     var attributes = ((IMicModel)request).AdditionalData;
                     var userBasicInfo = request as MicUserBasicInfo;
                     var attributesValue = string.Join(",", attributes?.Keys.Select(k => Uri.EscapeDataString(k)) ?? Enumerable.Empty<string>());
-                    relativeUri = $"users/{userBasicInfo?.Username ?? string.Empty}?attributes={attributesValue}";
+                    relativeUri = FormattableString.Invariant($"users/{userBasicInfo?.Username ?? string.Empty}?attributes={attributesValue}");
                     break;
                 #endregion // User API
+                #region Metadata API
+                case nameof(MetadataManifest):
+                    (hasPayload, httpMethod) = (false, HttpMethod.Get);
+                    relativeUri = "metadata/manifest";
+                    break;
+                #endregion // Metadata API
                 default:
                     throw new InvalidOperationException("Unknown action name: " + actionName);
             }
