@@ -19,7 +19,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
 {
     public static class Program
     {
-        public const bool useProxy = false;
+        public const bool useProxy = true;
         public const bool useLambdaClient = false;
 
         public static int Main()
@@ -50,9 +50,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
             }
             else
             {
-                Console.Write("API Key: ");
-                string apiKey = await ConsoleUtils.ReadLineAsync(cancelToken);
-                micClient = await MicRestClient.CreateFromHostname(hostname, apiKey, httpHandler, cancelToken);
+                micClient = await MicRestClient.CreateFromHostname(hostname, httpHandler, cancelToken);
             }
 
             if (useProxy)
@@ -69,7 +67,6 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
             Console.Write("MIC Hostname: ");
             var hostname = await ConsoleUtils.ReadLineAsync(cancelToken);
             Console.WriteLine("Getting MIC manifest . . .");
-            using (var proxyHandler = new HttpClientHandler() { Proxy = new WebProxy("http://localhost:8888/"), UseProxy = true })
             using (var micClient = await CreateMicClient(hostname, cancelToken))
             {
                 var micClientConfig = micClient.Config;
