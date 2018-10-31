@@ -1,6 +1,9 @@
 https://qvx6ay1eog.execute-api.eu-west-1.amazonaws.com/prod/metadata/manifest
 
 ###
+https://qvx6ay1eog.execute-api.eu-west-1.amazonaws.com/prod/metadata/swagger
+
+###
 POST https://qvx6ay1eog.execute-api.eu-west-1.amazonaws.com/prod/auth/login HTTP/1.1
 x-api-key: oy0yDJfZdQkQ52LLCugD6IQNiC8l1Xcacm89kg44
 Content-Type: application/json
