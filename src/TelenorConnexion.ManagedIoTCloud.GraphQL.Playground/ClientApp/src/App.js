@@ -5,10 +5,11 @@ import Home from './components/Home';
 import Counter from './components/Counter';
 import GraphqlPlayground from './components/GraphqlPlayground';
 
-export default () => (
+const App = () =>
   <Layout>
     <Route exact path='/' component={Home} />
     <Route path='/counter' component={Counter} />
     <Route path='/playground' component={GraphqlPlayground} />
-  </Layout>
-);
+  </Layout>;
+
+export default App;
