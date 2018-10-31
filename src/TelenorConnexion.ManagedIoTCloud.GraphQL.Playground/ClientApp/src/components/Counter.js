@@ -5,7 +5,7 @@ import { Button, ButtonGroup } from 'react-bootstrap';
 import { actionCreators } from '../store/Counter';
 import { Button } from 'react-bootstrap';
 
-const Counter = props => (
+const Counter = props =>
   <div>
     <h1>Counter</h1>
 
@@ -18,8 +18,7 @@ const Counter = props => (
       <Button onClick={props.reset}>Reset</Button>
       <Button onClick={props.decrement}>Decrement</Button>
     </ButtonGroup>
-  </div>
-);
+  </div>;
 
 export default connect(
   state => state.counter,
