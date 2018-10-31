@@ -3,14 +3,10 @@ import { Col, Grid, Row } from 'react-bootstrap';
 import NavMenu from './NavMenu';
 
 export default props => (
-  <Grid fluid>
+  <Grid fluid height="100%" width="100%">
     <Row>
-      <Col sm={3}>
-        <NavMenu />
-      </Col>
-      <Col sm={9}>
-        {props.children}
-      </Col>
+      {props.children}
     </Row>
+    <NavMenu />
   </Grid>
 );
