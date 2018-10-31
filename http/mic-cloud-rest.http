@@ -1,0 +1,71 @@
+https://qvx6ay1eog.execute-api.eu-west-1.amazonaws.com/prod/metadata/manifest
+
+###
+POST https://qvx6ay1eog.execute-api.eu-west-1.amazonaws.com/prod/auth/login HTTP/1.1
+x-api-key: oy0yDJfZdQkQ52LLCugD6IQNiC8l1Xcacm89kg44
+Content-Type: application/json
+
+{
+    "userName": "Dust",
+    "password": "Dust1234"
+}
+
+###
+POST https://qvx6ay1eog.execute-api.eu-west-1.amazonaws.com/prod/graphql HTTP/1.1
+x-api-key: oy0yDJfZdQkQ52LLCugD6IQNiC8l1Xcacm89kg44
+Authorization: eyJraWQiOiJmXC90Q2IwYnFpOFZEbkJLYWlSMWZUQ0dzdzZ5OTF6VXVCcmV3VFwvRTJTODQ9IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiIzYzIzMDk0Ni1lMmI3LTQwZDYtYmVhNC02YmI5MDZlOTBkNmIiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiY3VzdG9tOmRvbWFpbiI6ImR1c3QiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuZXUtd2VzdC0xLmFtYXpvbmF3cy5jb21cL2V1LXdlc3QtMV9qS2FZNkVHalQiLCJjb2duaXRvOnVzZXJuYW1lIjoiRHVzdCIsImdpdmVuX25hbWUiOiJEdXN0IiwibG9jYWxlIjoiZW4tVVMiLCJhdWQiOiI0ZmYxMW9vM2VodXJnNnM2c3EwMGp0cnVuZSIsImV2ZW50X2lkIjoiNzQyZTQ2MjEtZGMzZi0xMWU4LWIwM2EtN2I0NDE0MWRhZjEwIiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1NDA5MDI1NzIsImV4cCI6MTU0MDkwNjE3MiwiY3VzdG9tOnJvbGUiOiJSZWFkV3JpdGUiLCJpYXQiOjE1NDA5MDI1NzIsImZhbWlseV9uYW1lIjoiRHVzdHNvbiIsImVtYWlsIjoicG9udHVzLmUuYXVyZGFsQHVpdC5ubyJ9.DXK-kJt-I7mVdVKu3sDmH084rO7TWT5XE5ovUXks2RFUtyoW-QtVXNNO8FIHflq3w2E0NSeT4ehbd1d78YoWlUkgM5aWovzIn3mvzqhdeo4Zu7p-yyyVPhlD1nRoXUo8sjVFxwhe-6iSq8U0WYp1HO9cV9CsOC_ufwoV2rLws-K0hnb52Ln1id4AZr9TbT5sEw9k8-KRNjRzfAHE1vLFdu2j0ZKXJ3pApD3w-j8Gey4yNgOPgJgHZRKnbE35wj5Jse2yy1wFDWG1zS6rvhWNRneDLlTsxVGeCZsKVIKFRepopa-P6HqJKaM4ZITfUROh4tnfSqqK_O1yCOBJTDaS-Q
+identityId: eu-west-1:cd88f3a0-4e6e-47ae-b6d0-497f41ea599e
+Content-Type: application/json
+
+{
+    "query": "query {
+  __schema {
+    queryType {
+      fields {
+        name
+        type {
+          kind
+          ofType {
+            kind
+            name
+          }
+        }
+      }
+    }
+  }
+}"
+}
+
+###
+POST https://qvx6ay1eog.execute-api.eu-west-1.amazonaws.com/prod/graphql HTTP/1.1
+x-api-key: oy0yDJfZdQkQ52LLCugD6IQNiC8l1Xcacm89kg44
+Authorization: eyJraWQiOiJmXC90Q2IwYnFpOFZEbkJLYWlSMWZUQ0dzdzZ5OTF6VXVCcmV3VFwvRTJTODQ9IiwiYWxnIjoiUlMyNTYifQ.eyJzdWIiOiIzYzIzMDk0Ni1lMmI3LTQwZDYtYmVhNC02YmI5MDZlOTBkNmIiLCJlbWFpbF92ZXJpZmllZCI6dHJ1ZSwiY3VzdG9tOmRvbWFpbiI6ImR1c3QiLCJpc3MiOiJodHRwczpcL1wvY29nbml0by1pZHAuZXUtd2VzdC0xLmFtYXpvbmF3cy5jb21cL2V1LXdlc3QtMV9qS2FZNkVHalQiLCJjb2duaXRvOnVzZXJuYW1lIjoiRHVzdCIsImdpdmVuX25hbWUiOiJEdXN0IiwibG9jYWxlIjoiZW4tVVMiLCJhdWQiOiI0ZmYxMW9vM2VodXJnNnM2c3EwMGp0cnVuZSIsImV2ZW50X2lkIjoiMGNkNTA4NDQtZGMzNy0xMWU4LTg5N2UtYzMwNzRiZTg2Zjg0IiwidG9rZW5fdXNlIjoiaWQiLCJhdXRoX3RpbWUiOjE1NDA4OTg5NjMsImV4cCI6MTU0MDkwMjU2MywiY3VzdG9tOnJvbGUiOiJSZWFkV3JpdGUiLCJpYXQiOjE1NDA4OTg5NjMsImZhbWlseV9uYW1lIjoiRHVzdHNvbiIsImVtYWlsIjoicG9udHVzLmUuYXVyZGFsQHVpdC5ubyJ9.riwr-G-meDOtZjASzmY6ARUPcZxpmRczj0k32unleJr_uHYD4I-oGet5t50sOFKTsI54N8pCZi9_l5CKuU0RrSsFVPwt18Wa32b2rXpGEJ9P-_mtXIBYcW3SDchffiEhdps1sjNd4gMloLbZCLGH7tODnYTp4zpnI9bE1eEmgk6ETsSxOd0EBJpXZhpouCvBHC151DHYKhcOnspYtpkDXZmsKwRCWMLPyBV6bnomxx2e2o5X-taX8AjADgVFJf-LECz5zyRZhmBcQ36SgULJP1a_CopmQvCTJ7mF4-NVtTeGRu0BCd8wBAlFOMzIwJL9nekKT-hMXog0X3zQiTwkkA
+identityId: eu-west-1:cd88f3a0-4e6e-47ae-b6d0-497f41ea599e
+Content-Type: application/json
+
+{
+    "query": "query IntrospectionQuery {
+  __schema {
+    queryType {
+      name
+    }
+    mutationType {
+      name
+    }
+    subscriptionType {
+      name
+    }
+    types {
+      ...FullType
+    }
+    directives {
+      name
+      description
+      locations
+      args {
+        ...InputValue
+      }
+    }
+  }
+}"
+}
