@@ -1,0 +1,29 @@
+{
+  "iisSettings": {
+    "windowsAuthentication": false,
+    "anonymousAuthentication": true,
+    "iisExpress": {
+      "applicationUrl": "http://localhost:62615/",
+      "sslPort": 44384
+    }
+  },
+  "profiles": {
+    "TelenorConnexion.ManagedIoTCloud.GraphQL.Playground": {
+      "commandName": "Project",
+      "applicationUrl": "http://localhost:62616/;https://localhost:44385/",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:62616/",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    },
+    "IIS Express": {
+      "commandName": "IISExpress",
+      "launchBrowser": true,
+      "launchUrl": "http://localhost:62615/",
+      "environmentVariables": {
+        "ASPNETCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}
