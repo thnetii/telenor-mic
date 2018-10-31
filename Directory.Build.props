@@ -1,5 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <Project>
+  <PropertyGroup Label="Compiler Warnings">
+    <NoWarn>1591;$(NoWarn)</NoWarn>
+  </PropertyGroup>
   <PropertyGroup Label="Common Package Metadata">
     <Authors>Fredrik Høisæther Rasch</Authors>
     <Product>Telenor Connexion Managed IoT Cloud</Product>
