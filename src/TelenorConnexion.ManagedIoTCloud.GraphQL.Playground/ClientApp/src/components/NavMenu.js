@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { Glyphicon, Nav, Navbar, NavItem } from 'react-bootstrap';
 import { LinkContainer } from 'react-router-bootstrap';
 
-const AppNavBar =  props =>
+const AppNavBar =  () =>
   <Navbar inverse fixedBottom fluid collapseOnSelect>
     <Navbar.Header>
       <Navbar.Brand>
@@ -13,6 +13,11 @@ const AppNavBar =  props =>
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav>
+        <LinkContainer to={'/counter'}>
+          <NavItem>
+            <Glyphicon glyph='education' /> Counter
+          </NavItem>
+        </LinkContainer>
         <LinkContainer to={'/playground'}>
           <NavItem>
             <Glyphicon glyph='search' /> Playground
