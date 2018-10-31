@@ -2,6 +2,7 @@ import React from 'react';
 import { bindActionCreators } from 'redux';
 import { connect } from 'react-redux';
 import { actionCreators } from '../store/Counter';
+import { Button } from 'react-bootstrap';
 
 const Counter = props => (
   <div>
@@ -11,7 +12,7 @@ const Counter = props => (
 
     <p>Current count: <strong>{props.count}</strong></p>
 
-    <button onClick={props.increment}>Increment</button>
+    <Button onClick={props.increment}>Increment</Button>
   </div>
 );
 
