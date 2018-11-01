@@ -13,6 +13,11 @@ const AppNavBar =  () =>
     </Navbar.Header>
     <Navbar.Collapse>
       <Nav>
+        <LinkContainer to={'/login'}>
+          <NavItem>
+            <Glyphicon glyph='user' /> Login
+          </NavItem>
+        </LinkContainer>
         <LinkContainer to={'/counter'}>
           <NavItem>
             <Glyphicon glyph='education' /> Counter
