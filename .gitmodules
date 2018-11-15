@@ -4,3 +4,6 @@
 [submodule "thnetii-aws-sdk-net-ext"]
 	path = aws-sdk-net-ext
 	url = https://github.com/thnetii/aws-sdk-net-ext.git
+[submodule "telenor-mic-graphql-playground"]
+	path = src\\telenor-mic-graphql-playground
+	url = https://github.com/thnetii/telenor-mic-graphql-playground.git
