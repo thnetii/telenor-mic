@@ -34,11 +34,10 @@
   <PropertyGroup Label="Version">
     <VersionPrefix>2.31.0</VersionPrefix>
     <FileVersion>$(VersionPrefix)</FileVersion>
-    <AssemblyVersion Condition="'$(BuildNumber)'==''">$(FileVersion)</AssemblyVersion>
-    <AssemblyVersion Condition="'$(BuildNumber)'!=''">$(FileVersion).$(BuildNumber)</AssemblyVersion>
-    <VersionSuffix Condition="'$(BuildNumber)'!='' And '$(VersionSuffix)'!=''">$(VersionSuffix)-b$(BuildNumber)</VersionSuffix>
-    <VersionSuffix Condition="'$(BuildNumber)'!='' And '$(VersionSuffix)'==''">$(VersionSuffix)b$(BuildNumber)</VersionSuffix>
-    <VersionSuffix Condition="'$(Configuration)'=='Debug'">$(VersionSuffix)-pre</VersionSuffix>
+    <AssemblyVersion Condition="'$(BuildId)'==''">$(FileVersion)</AssemblyVersion>
+    <AssemblyVersion Condition="'$(BuildId)'!=''">$(FileVersion).$(BuildId)</AssemblyVersion>
+    <VersionSuffix Condition="'$(BuildId)'!='' And '$(VersionSuffix)'!=''">$(VersionSuffix)-b$(BuildId)</VersionSuffix>
+    <VersionSuffix Condition="'$(BuildId)'!='' And '$(VersionSuffix)'==''">$(VersionSuffix)b$(BuildId)</VersionSuffix>
   </PropertyGroup>
   <PropertyGroup>
     <Features>IOperation</Features>
