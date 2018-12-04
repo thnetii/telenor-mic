@@ -16,7 +16,7 @@
   </ItemGroup>
 
   <ItemGroup Condition="!Exists('..\..\aws-sdk-net-ext\aws-sdk-net\sdk\src')">
-    <PackageReference Include="AWSSDK.Lambda" Version="3.3.19" />
+    <PackageReference Include="AWSSDK.Lambda" Version="3.3.19.1" />
   </ItemGroup>
 
   <ItemGroup>
