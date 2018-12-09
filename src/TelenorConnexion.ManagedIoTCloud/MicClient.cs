@@ -233,10 +233,9 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// <param name="cancelToken">An optional cancellation token that can be used to prematurely cancel the operation.</param>
         /// <returns>A deserialized instance reqpresenting the response payload of the operation.</returns>
         /// <remarks>
-        /// <para>Valid values for <paramref name="actionName"/> are the identifiers of the instance methods defined in the <see cref="MicClient"/> class that represent MIC API oprations.</para>
-        /// <para>Classes derived from <see cref="MicClient"/> should implement this method using a switch statement with each case using the <c>nameof</c> operator.</para>
         /// <para>For MIC API endpoints that do not return any object <typeparamref name="TResponse"/> should be <see cref="MicModel"/> which represents an empty return value.</para>
         /// </remarks>
+        [SuppressMessage("Design", "CA1054: Uri parameters should not be strings", Scope = "parameter")]
         protected async Task<TResponse> HandleClientRequest<TRequest, TResponse>(
             string relativeUrl, HttpMethod httpMethod, TRequest request,
             bool hasPayload = true, CancellationToken cancelToken = default)

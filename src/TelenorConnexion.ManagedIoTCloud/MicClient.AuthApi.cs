@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 using TelenorConnexion.ManagedIoTCloud.Model;
@@ -26,6 +27,11 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// the password is not changed until the user has responded to the email sent by the <c>FORGOT_PASSWORD</c> action.
         /// </remarks>
         Task<MicResponse> AuthForgotPassword(MicAuthForgotPasswordRequest request, CancellationToken cancelToken = default);
+
+        /// <summary>
+        /// Get a signed url to the latest version of a consent document (terms of service).
+        /// </summary>
+        Task<MicAuthGetConsentDocumentResponse> AuthGetConsentDocument(CancellationToken cancelToken = default);
 
         /// <summary>
         /// Checks if a user is authorized to login and returns credentials that should be used when communicating with
@@ -83,10 +89,11 @@ namespace TelenorConnexion.ManagedIoTCloud
 
     public partial class MicClient
     {
-
         #region Auth API
 
         #region Auth API : CONFIRM_SIGN_UP
+
+        private const string authConfirmSignupUrl = "auth/confirm-sign-up";
 
         /// <summary>
         /// Confirms the account of a signed up user. This action should be called after a user have received their confirmation email from the SIGN_UP action to confirm the account.
@@ -110,7 +117,8 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// <para>This endpoint supports confirming the account with either token or username/code.</para>
         /// </summary>
         public Task AuthConfirmSignup(MicAuthConfirmationCode confirmationCode, CancellationToken cancelToken = default) =>
-            HandleClientRequest<MicAuthConfirmationCode, MicResponse>(nameof(IMicClient.AuthConfirmSignup), confirmationCode, cancelToken);
+            HandleClientRequest<MicAuthConfirmationCode, MicResponse>(authConfirmSignupUrl, HttpMethod.Post,
+                confirmationCode, hasPayload: true, cancelToken);
 
         /// <summary>
         /// Confirms the account of a signed up user. This action should be called after a user have received their
@@ -122,11 +130,14 @@ namespace TelenorConnexion.ManagedIoTCloud
             ((IMicClient)this).AuthConfirmSignup(request, cancelToken);
 
         Task<MicResponse> IMicClient.AuthConfirmSignup(MicAuthConfirmSignupRequest request, CancellationToken cancelToken) =>
-            HandleClientRequest<MicAuthConfirmSignupRequest, MicResponse>(nameof(IMicClient.AuthConfirmSignup), request, cancelToken);
+            HandleClientRequest<MicAuthConfirmSignupRequest, MicResponse>(authConfirmSignupUrl, HttpMethod.Post,
+                request, hasPayload: true, cancelToken);
 
         #endregion // Auth API : CONFIRM_SIGN_UP
 
         #region Auth API : FORGOT_PASSWORD
+
+        private const string authForgotPasswordUrl = "auth/forgot-password";
 
         /// <summary>
         /// If a user has forgotten the account password, this action can be used to let them reset their password.
@@ -149,7 +160,8 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// the password is not changed until the user has responded to the email sent by the <c>FORGOT_PASSWORD</c> action.
         /// </remarks>
         public Task AuthForgotPassword(MicUserBasicInfo userInfo, CancellationToken cancelToken = default) =>
-            HandleClientRequest<MicUserBasicInfo, MicResponse>(nameof(AuthForgotPassword), userInfo, cancelToken);
+            HandleClientRequest<MicUserBasicInfo, MicResponse>(authForgotPasswordUrl, HttpMethod.Post,
+                userInfo, hasPayload: true, cancelToken);
 
         /// <summary>
         /// If a user has forgotten the account password, this action can be used to let them reset their password.
@@ -163,11 +175,27 @@ namespace TelenorConnexion.ManagedIoTCloud
             ((IMicClient)this).AuthForgotPassword(request, cancelToken);
 
         Task<MicResponse> IMicClient.AuthForgotPassword(MicAuthForgotPasswordRequest request, CancellationToken cancelToken) =>
-            HandleClientRequest<MicAuthForgotPasswordRequest, MicResponse>(nameof(IMicClient.AuthForgotPassword), request, cancelToken);
+            HandleClientRequest<MicAuthForgotPasswordRequest, MicResponse>(authForgotPasswordUrl, HttpMethod.Post,
+                request, hasPayload: true, cancelToken);
 
         #endregion // Auth API : FORGOT_PASSWORD
 
-        #region Auth API : Login
+        #region Auth AP : GET_CONSENT_DOCUMENT
+
+        private const string authGetConsentDocumentUrl = "auth/get-consent-document";
+
+        /// <summary>
+        /// Get a signed url to the latest version of a consent document (terms of service).
+        /// </summary>
+        public Task<MicAuthGetConsentDocumentResponse> AuthGetConsentDocument(CancellationToken cancelToken = default) =>
+            HandleClientRequest<MicModel, MicAuthGetConsentDocumentResponse>(authGetConsentDocumentUrl, HttpMethod.Get,
+                request: null, hasPayload: false, cancelToken);
+
+        #endregion // Auth AP : GET_CONSENT_DOCUMENT
+
+        #region Auth API : LOGIN
+
+        private const string authLoginUrl = "auth/login";
 
         /// <summary>
         /// Checks if a user is authorized to login and returns credentials that should be used when communicating with
@@ -187,18 +215,22 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// AWS. The access token is valid for 60 minutes, whereafter it needs to be refreshed.
         /// </summary>
         public Task<MicAuthLoginResponse> AuthLogin(MicAuthUserPassword userPassword, CancellationToken cancelToken = default) =>
-            HandleClientRequest<MicAuthUserPassword, MicAuthLoginResponse>(nameof(AuthLogin), userPassword, cancelToken);
+            HandleClientRequest<MicAuthUserPassword, MicAuthLoginResponse>(authLoginUrl, HttpMethod.Post,
+                userPassword, hasPayload: true, cancelToken);
 
         /// <summary>
         /// Checks if a user is authorized to login and returns credentials that should be used when communicating with
         /// AWS. The access token is valid for 60 minutes, whereafter it needs to be refreshed.
         /// </summary>
         public Task<MicAuthLoginResponse> AuthLogin(MicAuthLoginRequest request, CancellationToken cancelToken = default) =>
-            HandleClientRequest<MicAuthLoginRequest, MicAuthLoginResponse>(nameof(AuthLogin), request, cancelToken);
+            HandleClientRequest<MicAuthLoginRequest, MicAuthLoginResponse>(authLoginUrl, HttpMethod.Post,
+                request, hasPayload: true, cancelToken);
 
-        #endregion // Auth API : Login
+        #endregion // Auth API : LOGIN
 
         #region Auth API : GIVE_CONSENT
+
+        private const string authGiveConsentUrl = "auth/consent";
 
         /// <summary>
         /// You may require users to consent to terms and conditions before they can use the service.
@@ -216,7 +248,8 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// </summary>
         /// <returns>An empty object.</returns>
         public Task AuthGiveConsent(MicAuthUserPassword userPassword, CancellationToken cancelToken = default) =>
-            HandleClientRequest<MicAuthUserPassword, MicResponse>(nameof(AuthGiveConsent), userPassword, cancelToken);
+            HandleClientRequest<MicAuthUserPassword, MicResponse>(authGiveConsentUrl, HttpMethod.Post,
+                userPassword, hasPayload: true, cancelToken);
 
         /// <summary>
         /// You may require users to consent to terms and conditions before they can use the service.
@@ -227,11 +260,14 @@ namespace TelenorConnexion.ManagedIoTCloud
             ((IMicClient)this).AuthGiveConsent(request, cancelToken);
 
         Task<MicResponse> IMicClient.AuthGiveConsent(MicAuthGiveConsentRequest request, CancellationToken cancelToken) =>
-            HandleClientRequest<MicAuthGiveConsentRequest, MicResponse>(nameof(IMicClient.AuthGiveConsent), request, cancelToken);
+            HandleClientRequest<MicAuthGiveConsentRequest, MicResponse>(authGiveConsentUrl, HttpMethod.Post,
+                request, hasPayload: true, cancelToken);
 
         #endregion // Auth API : GIVE_CONSENT
 
         #region Auth API : REFRESH
+
+        private const string authRefreshUrl = "auth/refresh";
 
         /// <summary>
         /// Lets a user refresh the token.
@@ -297,11 +333,14 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// </para>
         /// </remarks>
         public Task<MicAuthLoginResponse> AuthRefresh(MicAuthRefreshRequest request, CancellationToken cancelToken = default) =>
-            HandleClientRequest<MicAuthRefreshRequest, MicAuthLoginResponse>(nameof(AuthRefresh), request, cancelToken);
+            HandleClientRequest<MicAuthRefreshRequest, MicAuthLoginResponse>(authRefreshUrl, HttpMethod.Post,
+                request, hasPayload: true, cancelToken);
 
         #endregion // Auth API : REFRESH
 
         #region Auth API : RESEND_CONFIRMATION_CODE
+
+        private const string authResendConfirmationCodeUrl = "auth/resend-confirmation-code";
 
         /// <summary>
         /// Sends a new confirmation code to the user if the user didn't receive an e-mail or if the link has expired.
@@ -314,7 +353,8 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// Sends a new confirmation code to the user if the user didn't receive an e-mail or if the link has expired.
         /// </summary>
         public Task AuthResendConfirmationCode(MicUserBasicInfo userInfo, CancellationToken cancelToken = default) =>
-            HandleClientRequest<MicUserBasicInfo, MicResponse>(nameof(AuthResendConfirmationCode), userInfo, cancelToken);
+            HandleClientRequest<MicUserBasicInfo, MicResponse>(authResendConfirmationCodeUrl, HttpMethod.Post,
+                userInfo, hasPayload: true, cancelToken);
 
         /// <summary>
         /// Sends a new confirmation code to the user if the user didn't receive an e-mail or if the link has expired.
@@ -323,11 +363,14 @@ namespace TelenorConnexion.ManagedIoTCloud
             ((IMicClient)this).AuthResendConfirmationCode(request, cancelToken);
 
         Task<MicResponse> IMicClient.AuthResendConfirmationCode(MicAuthResendConfirmationCodeRequest request, CancellationToken cancelToken) =>
-            HandleClientRequest<MicAuthResendConfirmationCodeRequest, MicResponse>(nameof(IMicClient.AuthResendConfirmationCode), request, cancelToken);
+            HandleClientRequest<MicAuthResendConfirmationCodeRequest, MicResponse>(authResendConfirmationCodeUrl, HttpMethod.Post,
+                request, hasPayload: true, cancelToken);
 
         #endregion // Auth API : RESEND_CONFIRMATION_CODE
 
         #region Auth API : SET_PASSWORD
+
+        private const string authSetPasswordUrl = "auth/set-password";
 
         /// <summary>
         /// Sets the passsword of the user based on a token sent by the system when the user either forgets their password or is just created by an administrator.
@@ -376,11 +419,14 @@ namespace TelenorConnexion.ManagedIoTCloud
             ((IMicClient)this).AuthSetPassword(request, cancelToken);
 
         Task<MicResponse> IMicClient.AuthSetPassword(MicAuthSetPasswordRequest request, CancellationToken cancelToken) =>
-            HandleClientRequest<MicAuthSetPasswordRequest, MicResponse>(nameof(IMicClient.AuthSetPassword), request, cancelToken);
+            HandleClientRequest<MicAuthSetPasswordRequest, MicResponse>(authSetPasswordUrl, HttpMethod.Post,
+                request, hasPayload: true, cancelToken);
 
         #endregion // Auth API : SET_PASSWORD
 
         #region Auth API : SIGN_UP
+
+        private const string authSignUpUrl = "auth/sign-up";
 
         /// <summary>
         /// Lets a user initiate the process to create a Managed IoT Cloud user account.
@@ -391,7 +437,8 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// there is a possibility to resend the email via the endpoint <see cref="AuthResendConfirmationCode(MicAuthResendConfirmationCodeRequest, CancellationToken)"/>.
         /// </remarks>
         public Task<MicUserFullDetails> AuthSignup(MicAuthSignupRequest request, CancellationToken cancelToken = default) =>
-            HandleClientRequest<MicAuthSignupRequest, MicUserFullDetails>(nameof(AuthSignup), request, cancelToken);
+            HandleClientRequest<MicAuthSignupRequest, MicUserFullDetails>(authSignUpUrl, HttpMethod.Post,
+                request, hasPayload: true, cancelToken);
 
         #endregion // Auth API : SIGN_UP
 

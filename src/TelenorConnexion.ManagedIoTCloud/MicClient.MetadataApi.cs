@@ -1,4 +1,5 @@
-﻿using System.Threading;
+﻿using System.Net.Http;
+using System.Threading;
 using System.Threading.Tasks;
 using TelenorConnexion.ManagedIoTCloud.Model;
 
@@ -15,10 +16,11 @@ namespace TelenorConnexion.ManagedIoTCloud
         #region Metadata API
 
         #region Metadata API: MANIFEST
+        private const string metadataManifestUrl = "metadata/manifest";
 
         public Task<MicMetadataManifest> MetadataManifest(CancellationToken cancelToken = default) =>
-            HandleClientRequest<MicModel, MicMetadataManifest>(nameof(MetadataManifest), default, cancelToken);
-
+            HandleClientRequest<MicModel, MicMetadataManifest>(metadataManifestUrl, HttpMethod.Get,
+                request: null, hasPayload: false, cancelToken);
         #endregion
 
         #endregion
