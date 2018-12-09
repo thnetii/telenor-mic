@@ -3,22 +3,22 @@ using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TelenorConnexion.ManagedIoTCloud.RestClient
+namespace TelenorConnexion.ManagedIoTCloud
 {
     public class MicRestHttpHandler : DelegatingHandler
     {
         public MicRestHttpHandler() : base() { }
         public MicRestHttpHandler(HttpMessageHandler innerHandler) : base(innerHandler) { }
-        public MicRestHttpHandler(MicRestClient micClient) : base() =>
+        public MicRestHttpHandler(IMicClient micClient) : base() =>
             MicClient = micClient;
-        public MicRestHttpHandler(MicRestClient micClient, HttpMessageHandler innerHandler) : base(innerHandler) =>
+        public MicRestHttpHandler(IMicClient micClient, HttpMessageHandler innerHandler) : base(innerHandler) =>
             MicClient = micClient;
 
-        public MicRestClient MicClient { get; set; }
+        public IMicClient MicClient { get; set; }
 
         protected override Task<HttpResponseMessage> SendAsync(HttpRequestMessage request, CancellationToken cancellationToken)
         {
-            var creds = (MicClient as IMicClient)?.Credentials;
+            var creds = MicClient?.Credentials;
             if (!(creds is null))
             {
                 request.Headers.Add("identityId", creds.IdentityId ?? string.Empty);
