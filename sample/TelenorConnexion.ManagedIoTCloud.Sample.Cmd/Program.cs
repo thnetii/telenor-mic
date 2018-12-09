@@ -9,9 +9,7 @@ using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
-using TelenorConnexion.ManagedIoTCloud.LambdaClient;
 using TelenorConnexion.ManagedIoTCloud.Model;
-using TelenorConnexion.ManagedIoTCloud.RestClient;
 using THNETII.Common;
 using THNETII.Common.Cli;
 
@@ -19,9 +17,6 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
 {
     public static class Program
     {
-        public const bool useProxy = true;
-        public const bool useLambdaClient = false;
-
         public static int Main()
         {
             try { ConsoleUtils.RunAsync(Run).GetAwaiter().GetResult(); }
@@ -32,31 +27,20 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
         public static async Task<MicClient> CreateMicClient(string hostname, CancellationToken cancelToken)
         {
             HttpClientHandler httpHandler = new HttpClientHandler();
-            if (useProxy)
+            var proxyAddress = Environment.GetEnvironmentVariable("TELENOR_MIC_PROXY");
+            WebProxy webProxy = default;
+            if (!string.IsNullOrWhiteSpace(proxyAddress))
             {
-                httpHandler.Proxy = new WebProxy("http://localhost:8888/");
+                webProxy = new WebProxy(proxyAddress);
+                httpHandler.Proxy = webProxy;
                 httpHandler.UseProxy = true;
             }
 
-            MicClient micClient;
-            if (useLambdaClient)
+            MicClient micClient = await MicClient.CreateFromHostname(hostname, httpHandler, cancelToken);
+            if (!(webProxy is null))
             {
-                MicManifest manifest;
-                using (var httpClient = new HttpClient(httpHandler))
-                {
-                    manifest = await MicManifest.GetMicManifest(hostname, httpClient, cancelToken);
-                }
-                micClient = new MicLambdaClient(manifest);
-            }
-            else
-            {
-                micClient = await MicRestClient.CreateFromHostname(hostname, httpHandler, cancelToken);
-            }
-
-            if (useProxy)
-            {
-                micClient.Config.ProxyHost = "localhost";
-                micClient.Config.ProxyPort = 8888;
+                micClient.Config.ProxyHost = webProxy.Address.Host;
+                micClient.Config.ProxyPort = webProxy.Address.Port;
             }
 
             return micClient;
