@@ -19,7 +19,6 @@ namespace TelenorConnexion.ManagedIoTCloud.RestClient
         private readonly HttpClient httpClient;
         private readonly Uri apiGatewayEndpoint;
 
-        public string ApiKey { get; protected set; }
 
         #region Constructors
 
