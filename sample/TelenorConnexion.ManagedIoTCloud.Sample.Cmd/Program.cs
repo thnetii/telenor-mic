@@ -4,6 +4,7 @@ using MQTTnet.Client;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -131,16 +132,20 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                         {
                             cancelToken.ThrowIfCancellationRequested();
                             Console.WriteLine("Successful!");
+                            Console.WriteLine($"MQTT Client ID: {mqttClient.Options.ClientId}");
                             Console.Write($"Subscribing to events . . . ");
-                            var subscriptions = await mqttClient.SubscribeAsync($"event{domainPath}");
+                            var subscriptionTasks = new Task<IList<MqttSubscribeResult>>[]
+                            {
+                                mqttClient.SubscribeAsync($"event{domainPath}"),
+                                mqttClient.SubscribeAsync($"event{domainPath}#"),
+                                mqttClient.SubscribeAsync($"thing-update{domainPath}#")
+                            };
                             cancelToken.ThrowIfCancellationRequested();
-                            var subscriptionsWild = await mqttClient.SubscribeAsync($"event{domainPath}#");
+                            Task.WaitAll(subscriptionTasks, cancelToken);
                             cancelToken.ThrowIfCancellationRequested();
-                            var thingUpdateSubs = await mqttClient.SubscribeAsync($"thing-update{domainPath}#");
-                            cancelToken.ThrowIfCancellationRequested();
-                            int subCount = subscriptions.Count + subscriptionsWild.Count + thingUpdateSubs.Count;
+                            int subCount = subscriptionTasks.Sum(t => t.Result.Count);
                             Console.WriteLine($"{subCount} subscription{(subCount == 1 ? "" : "s")}.");
-                            foreach (var sub in subscriptions.Concat(subscriptionsWild).Concat(thingUpdateSubs))
+                            foreach (var sub in subscriptionTasks.SelectMany(t => t.Result))
                             {
                                 var tf = sub.TopicFilter;
                                 Console.WriteLine($"{tf.Topic} (QoS: {tf.QualityOfServiceLevel}): {sub.ReturnCode}");
