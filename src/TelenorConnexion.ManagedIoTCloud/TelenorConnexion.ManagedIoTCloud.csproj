@@ -18,7 +18,7 @@
 
   <ItemGroup Condition="!Exists('..\..\aws-sdk-net-ext\aws-sdk-net\sdk\src')">
     <PackageReference Include="AWSSDK.CognitoIdentity" Version="3.3.2.69" />
-    <PackageReference Include="AWSSDK.SecurityToken" Version="3.3.4.50" />
+    <PackageReference Include="AWSSDK.SecurityToken" Version="3.3.4.53" />
   </ItemGroup>
 
   <ItemGroup>
