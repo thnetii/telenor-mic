@@ -20,7 +20,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
     {
         public static int Main()
         {
-            try { ConsoleUtils.RunAsync(Run).GetAwaiter().GetResult(); }
+            try { ConsoleUtils.RunVoidAsync(Run).GetAwaiter().GetResult(); }
             catch (OperationCanceledException) { return ProcessExitCode.ExitFailure; }
             return ProcessExitCode.ExitSuccess;
         }
