@@ -20,7 +20,7 @@
     <!-- Separator to support automatic dependabot merge PR -->
     <PackageReference Include="AWSSDK.CognitoIdentity" Version="3.3.100.9" />
     <!-- Separator to support automatic dependabot merge PR -->
-    <PackageReference Include="AWSSDK.SecurityToken" Version="3.3.100.9" />
+    <PackageReference Include="AWSSDK.SecurityToken" Version="3.3.100.10" />
   </ItemGroup>
 
   <ItemGroup>
