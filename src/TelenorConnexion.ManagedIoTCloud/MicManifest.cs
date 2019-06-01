@@ -1,12 +1,14 @@
-﻿using Amazon;
-using Newtonsoft.Json;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
-using System.Runtime.Serialization;
+
+using Amazon;
+
+using Newtonsoft.Json;
+
 using THNETII.Common;
-using THNETII.Common.Serialization;
+using THNETII.TypeConverter;
 
 namespace TelenorConnexion.ManagedIoTCloud
 {
