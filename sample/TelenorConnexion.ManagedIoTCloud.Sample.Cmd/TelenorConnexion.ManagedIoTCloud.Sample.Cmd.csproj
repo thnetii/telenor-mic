@@ -9,12 +9,12 @@
 
   <ItemGroup>
     <PackageReference Include="System.Net.WebSockets" Version="4.3.0" />
-    <ProjectReference Include="..\..\dotnet-common\src\THNETII.Common.Cli\THNETII.Common.Cli.csproj" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\..\aws-sdk-net-ext\src\THNETII.AWSSDK.IoTDeviceGateway.Mqtt\THNETII.AWSSDK.IoTDeviceGateway.Mqtt.csproj" />
     <ProjectReference Include="..\..\aws-sdk-net-ext\src\THNETII.AWSSDK.IoTDeviceGateway\THNETII.AWSSDK.IoTDeviceGateway.csproj" />
+    <ProjectReference Include="..\..\dotnet-common\src\THNETII.CommandLine.Extensions\THNETII.CommandLine.Extensions.csproj" />
     <ProjectReference Include="..\..\src\TelenorConnexion.ManagedIoTCloud\TelenorConnexion.ManagedIoTCloud.csproj" />
   </ItemGroup>
 

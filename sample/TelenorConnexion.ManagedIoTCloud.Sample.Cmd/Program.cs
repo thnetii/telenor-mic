@@ -1,18 +1,23 @@
-﻿using Amazon.IoTDeviceGateway;
-using MQTTnet;
-using MQTTnet.Client;
-using Newtonsoft.Json;
-using Newtonsoft.Json.Linq;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Threading;
 using System.Threading.Tasks;
+
+using Amazon.IoTDeviceGateway;
+
+using MQTTnet;
+using MQTTnet.Client;
+
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 using TelenorConnexion.ManagedIoTCloud.Model;
+
+using THNETII.CommandLine.Extensions;
 using THNETII.Common;
-using THNETII.Common.Cli;
 
 namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
 {
@@ -20,7 +25,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
     {
         public static int Main()
         {
-            try { ConsoleUtils.RunVoidAsync(Run).GetAwaiter().GetResult(); }
+            try { ConsoleUtils.RunAsync(Run).GetAwaiter().GetResult(); }
             catch (OperationCanceledException) { return ProcessExitCode.ExitFailure; }
             return ProcessExitCode.ExitSuccess;
         }
@@ -117,7 +122,9 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                                         var jtoken = JToken.Parse(payload);
                                         payload = jtoken.ToString(Formatting.Indented);
                                     }
+#pragma warning disable CA1031 // Do not catch general exception types
                                     catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
                                     Console.WriteLine(payload);
                                     Console.WriteLine();
                                     Console.WriteLine(new string('-', count: 20));
