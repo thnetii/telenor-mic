@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
@@ -10,6 +9,8 @@ using Amazon.IoTDeviceGateway;
 
 using MQTTnet;
 using MQTTnet.Client;
+using MQTTnet.Client.Receiving;
+using MQTTnet.Client.Subscribing;
 
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
@@ -81,13 +82,13 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                 Console.WriteLine($"  Token: {login.Credentials.Token}");
                 Console.WriteLine();
 
-                var immutableCredentials = await awsCredentials.GetCredentialsAsync();
-                Console.WriteLine("AWS Immutable Credentials:");
-                Console.WriteLine($"  Access key: {immutableCredentials.AccessKey}");
-                Console.WriteLine($"  Secret key: {immutableCredentials.SecretKey}");
-                if (immutableCredentials.UseToken)
-                    Console.WriteLine($"  Token:      {immutableCredentials.Token}");
-                Console.WriteLine();
+                //var immutableCredentials = await awsCredentials.GetCredentialsAsync();
+                //Console.WriteLine("AWS Immutable Credentials:");
+                //Console.WriteLine($"  Access key: {immutableCredentials.AccessKey}");
+                //Console.WriteLine($"  Secret key: {immutableCredentials.SecretKey}");
+                //if (immutableCredentials.UseToken)
+                //    Console.WriteLine($"  Token:      {immutableCredentials.Token}");
+                //Console.WriteLine();
 
                 var userInfo = await micClient.UserGet(login.User.Username, cancelToken);
                 Console.WriteLine(JsonConvert.SerializeObject(userInfo, Formatting.Indented));
@@ -103,35 +104,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                     using (var mqttClient = new MqttFactory().CreateMqttClient())
                     {
                         var mqttConsoleSync = new object();
-                        mqttClient.ApplicationMessageReceived += (sender, e) =>
-                        {
-                            Task.Run(() =>
-                            {
-                                lock (mqttConsoleSync)
-                                {
-                                    Console.WriteLine($"Application Message received by client {e.ClientId}");
-                                    Console.WriteLine($"Topic: {e.ApplicationMessage.Topic}, QoS: {e.ApplicationMessage.QualityOfServiceLevel}");
-                                    if (e.ApplicationMessage.Retain)
-                                        Console.WriteLine("  Message should be retained");
-                                    int payloadLength = e.ApplicationMessage.Payload?.Length ?? 0;
-                                    Console.WriteLine($"  Message Payload: ({payloadLength} byte{(payloadLength == 1 ? "" : "s")})");
-                                    Console.WriteLine();
-                                    string payload = e.ApplicationMessage.ConvertPayloadToString();
-                                    try
-                                    {
-                                        var jtoken = JToken.Parse(payload);
-                                        payload = jtoken.ToString(Formatting.Indented);
-                                    }
-#pragma warning disable CA1031 // Do not catch general exception types
-                                    catch { }
-#pragma warning restore CA1031 // Do not catch general exception types
-                                    Console.WriteLine(payload);
-                                    Console.WriteLine();
-                                    Console.WriteLine(new string('-', count: 20));
-                                    Console.WriteLine();
-                                }
-                            }, cancelToken);
-                        };
+                        mqttClient.ApplicationMessageReceivedHandler = new MqttApplicationMessageReceivedLoggerHandler(mqttConsoleSync, cancelToken);
 
                         var mqttOptions = await mqttOptionsTask;
                         var connectInfo = await mqttClient.ConnectAsync(mqttOptions);
@@ -141,7 +114,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                             Console.WriteLine("Successful!");
                             Console.WriteLine($"MQTT Client ID: {mqttClient.Options.ClientId}");
                             Console.Write($"Subscribing to events . . . ");
-                            var subscriptionTasks = new Task<IList<MqttSubscribeResult>>[]
+                            var subscriptionTasks = new Task<MqttClientSubscribeResult>[]
                             {
                                 mqttClient.SubscribeAsync($"event{domainPath}"),
                                 mqttClient.SubscribeAsync($"event{domainPath}#"),
@@ -150,18 +123,18 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                             cancelToken.ThrowIfCancellationRequested();
                             Task.WaitAll(subscriptionTasks, cancelToken);
                             cancelToken.ThrowIfCancellationRequested();
-                            int subCount = subscriptionTasks.Sum(t => t.Result.Count);
+                            int subCount = subscriptionTasks.Sum(t => t.Result.Items.Count);
                             Console.WriteLine($"{subCount} subscription{(subCount == 1 ? "" : "s")}.");
-                            foreach (var sub in subscriptionTasks.SelectMany(t => t.Result))
+                            foreach (var sub in subscriptionTasks.SelectMany(t => t.Result.Items))
                             {
                                 var tf = sub.TopicFilter;
-                                Console.WriteLine($"{tf.Topic} (QoS: {tf.QualityOfServiceLevel}): {sub.ReturnCode}");
+                                Console.WriteLine($"{tf.Topic} (QoS: {tf.QualityOfServiceLevel}): {sub.ResultCode}");
                             }
                             Console.WriteLine();
                             cancelToken.ThrowIfCancellationRequested();
 
-                            var resetEvent = new ManualResetEventSlim();
-                            resetEvent.Wait(cancelToken);
+                            using (var resetEvent = new ManualResetEventSlim())
+                                resetEvent.Wait(cancelToken);
                         }
                         finally
                         {
@@ -169,6 +142,48 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                         }
                     }
                 }
+            }
+        }
+
+        private class MqttApplicationMessageReceivedLoggerHandler : IMqttApplicationMessageReceivedHandler
+        {
+            private readonly object mqttConsoleSync;
+            private readonly CancellationToken cancelToken;
+
+            public MqttApplicationMessageReceivedLoggerHandler(object mqttConsoleSync, CancellationToken cancelToken)
+            {
+                this.mqttConsoleSync = mqttConsoleSync;
+                this.cancelToken = cancelToken;
+            }
+
+            public Task HandleApplicationMessageReceivedAsync(MqttApplicationMessageReceivedEventArgs e)
+            {
+                return Task.Run(() =>
+                {
+                    lock (mqttConsoleSync)
+                    {
+                        Console.WriteLine($"Application Message received by client {e.ClientId}");
+                        Console.WriteLine($"Topic: {e.ApplicationMessage.Topic}, QoS: {e.ApplicationMessage.QualityOfServiceLevel}");
+                        if (e.ApplicationMessage.Retain)
+                            Console.WriteLine("  Message should be retained");
+                        int payloadLength = e.ApplicationMessage.Payload?.Length ?? 0;
+                        Console.WriteLine($"  Message Payload: ({payloadLength} byte{(payloadLength == 1 ? "" : "s")})");
+                        Console.WriteLine();
+                        string payload = e.ApplicationMessage.ConvertPayloadToString();
+                        try
+                        {
+                            var jtoken = JToken.Parse(payload);
+                            payload = jtoken.ToString(Formatting.Indented);
+                        }
+#pragma warning disable CA1031 // Do not catch general exception types
+                    catch { }
+#pragma warning restore CA1031 // Do not catch general exception types
+                    Console.WriteLine(payload);
+                        Console.WriteLine();
+                        Console.WriteLine(new string('-', count: 20));
+                        Console.WriteLine();
+                    }
+                }, cancelToken);
             }
         }
     }
