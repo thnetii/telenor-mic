@@ -72,6 +72,12 @@ namespace TelenorConnexion.ManagedIoTCloud
         public string IotEndpoint { get; set; }
 
         /// <summary>
+        /// The AWS ATS-supported IoT Endpoint to use for MQTT connections.
+        /// </summary>
+        [JsonProperty(nameof(IotEndpointATS))]
+        public string IotEndpointATS { get; set; }
+
+        /// <summary>
         /// The AWS Lambda Function identifier for the Thing Batch API.
         /// </summary>
         [JsonProperty(nameof(ThingBatchLambda))]

@@ -13,14 +13,10 @@
 
   <ItemGroup Condition="Exists('..\..\aws-sdk-net-ext\aws-sdk-net\sdk\src')">
     <ProjectReference Include="..\..\aws-sdk-net-ext\aws-sdk-net\sdk\src\Services\CognitoIdentity\AWSSDK.CognitoIdentity.CoreCLR.csproj" />
-    <ProjectReference Include="..\..\aws-sdk-net-ext\aws-sdk-net\sdk\src\Services\SecurityToken\AWSSDK.SecurityToken.CoreCLR.csproj" />
   </ItemGroup>
 
   <ItemGroup Condition="!Exists('..\..\aws-sdk-net-ext\aws-sdk-net\sdk\src')">
-    <!-- Separator to support automatic dependabot merge PR -->
-    <PackageReference Include="AWSSDK.CognitoIdentity" Version="3.3.100.34" />
-    <!-- Separator to support automatic dependabot merge PR -->
-    <PackageReference Include="AWSSDK.SecurityToken" Version="3.3.101.16" />
+    <PackageReference Include="AWSSDK.CognitoIdentity" Version="3.3.100.40" />
   </ItemGroup>
 
   <ItemGroup>
