@@ -4,7 +4,7 @@ using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
 
 using Amazon;
-
+using Amazon.CognitoIdentityProvider;
 using Newtonsoft.Json;
 
 using THNETII.Common;
@@ -345,8 +345,11 @@ namespace TelenorConnexion.ManagedIoTCloud
         [JsonProperty(nameof(MqttFn))]
         public string MqttFn { get; set; }
 
+        private static readonly AmazonCognitoIdentityProviderConfig cognitoIdpConfig =
+            new AmazonCognitoIdentityProviderConfig();
+
         public string GetCognitoProviderName() =>
-            $"cognito-idp.{RegionSystemName}.amazonaws.com/{UserPool}";
+            $"{AwsRegion.GetEndpointForService(cognitoIdpConfig.RegionEndpointServiceName)}/{UserPool}";
 
         private static DuplexConversionTuple<string, Uri> GetUrlToUriDuplexConversionTuple() =>
             new DuplexConversionTuple<string, Uri>(
