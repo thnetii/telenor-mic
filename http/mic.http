@@ -1,0 +1,57 @@
+@manifestUrl = https://1u31fuekv5.execute-api.eu-west-1.amazonaws.com/prod/manifest/
+@hostname = {{$dotenv HOSTNAME}}
+@userName = {{$dotenv USERNAME}}
+@password = {{$dotenv PASSWORD}}
+
+@metadataApi = metadata
+@metadataManifestApi = {{metadataApi}}/manifest
+
+@authApi = auth
+@authLoginApi = {{authApi}}/login
+
+@userApi = users
+
+@thingTypeApi = thingtypes
+
+###
+# @name Manifest
+GET {{manifestUrl}}?hostname={{hostname}} HTTP/1.1
+
+###
+# @name MetadataManifest
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{metadataManifestApi}} HTTP/1.1
+
+###
+# @name AuthLogin
+POST {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{authLoginApi}} HTTP/1.1
+x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
+Content-Type: application/json;charset=utf-8
+
+{
+    "userName": "{{userName}}",
+    "password": "{{password}}"
+}
+
+###
+# @name UserList
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{userApi}} HTTP/1.1
+x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
+Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
+
+###
+# @name UserGetMe
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{userApi}}/{{userName}} HTTP/1.1
+x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
+Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
+
+###
+# @name ThingTypeList
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{thingTypeApi}} HTTP/1.1
+x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
+Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
+
+###
+# @name ThingTypeGet
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{thingTypeApi}}/{{ThingTypeList.response.body.$[0].id}} HTTP/1.1
+x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
+Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
