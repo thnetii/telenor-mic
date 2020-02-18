@@ -10,6 +10,7 @@
 @authLoginApi = {{authApi}}/login
 
 @userApi = users
+@userWhoami = user
 
 @thingTypeApi = thingtypes
 
@@ -39,8 +40,14 @@ x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
 Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
 
 ###
-# @name UserGetMe
-GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{userApi}}/{{userName}} HTTP/1.1
+# @name UserListWithAllAttributes
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{userApi}}?attributes=userName,firstName,lastName,email,phone,locale,company,address,zip,country,roleName,domainName,data,roles,termsAgreed,dateTermsAgreed,termsVersion,createdAt,enabled HTTP/1.1
+x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
+Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
+
+###
+# @name UserGetWhoami
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{userWhoami}}?attributes=userName,firstName,lastName,email,phone,locale,company,address,zip,country,roleName,domainName,data,roles HTTP/1.1
 x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
 Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
 
