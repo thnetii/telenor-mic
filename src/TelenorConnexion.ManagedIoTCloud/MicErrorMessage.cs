@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+
+using System;
 using System.Collections.Generic;
 
 namespace TelenorConnexion.ManagedIoTCloud
@@ -17,7 +19,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// unknown errors that may occur.S
         /// </remarks>
         [JsonProperty("message")]
-        public string Message { get; set; }
+        public string? Message { get; set; }
 
         /// <summary>
         /// Used to localize the message and the possible values are described
@@ -28,19 +30,20 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// contant values for this property.
         /// </remarks>
         [JsonProperty("messageKey")]
-        public string MessageKey { get; set; }
+        public string? MessageKey { get; set; }
 
         /// <summary>
         /// Used to provide extra information about the error.
         /// </summary>
         [JsonProperty("messageParams")]
-        public IDictionary<string, object> Parameters { get; set; }
+        public IDictionary<string, object?> Parameters { get; } =
+            new Dictionary<string, object?>(StringComparer.OrdinalIgnoreCase);
 
         /// <summary>
         /// Contains the JSON name of the property if the error is related to a
         /// specific property.
         /// </summary>
         [JsonProperty("property")]
-        public string Property { get; set; }
+        public string? Property { get; set; }
     }
 }

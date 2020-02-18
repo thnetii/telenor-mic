@@ -1,11 +1,13 @@
 ﻿using Newtonsoft.Json;
+
 using System;
 using System.Diagnostics.CodeAnalysis;
-using System.IO;
 using System.Net.Http;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
+using THNETII.Networking.Http;
 
 namespace TelenorConnexion.ManagedIoTCloud
 {
@@ -134,12 +136,10 @@ namespace TelenorConnexion.ManagedIoTCloud
             Uri manifestServiceUri, string hostname, HttpClient httpClient,
             CancellationToken cancellationToken = default)
         {
-            if (manifestServiceUri == null)
+            if (manifestServiceUri is null)
                 throw new ArgumentNullException(nameof(manifestServiceUri));
-            if (httpClient == null)
-            {
+            if (httpClient is null)
                 return GetMicManifestInternal(manifestServiceUri, hostname, cancellationToken);
-            }
 
             return GetMicManifestInternal(manifestServiceUri, hostname, httpClient, cancellationToken);
         }
@@ -148,12 +148,11 @@ namespace TelenorConnexion.ManagedIoTCloud
             Uri manifestServiceUri, string hostname,
             CancellationToken cancellationToken)
         {
-            using (var httpClient = new HttpClient())
-            {
-                return await GetMicManifestInternal(
-                    manifestServiceUri, hostname, httpClient, cancellationToken
-                    ).ConfigureAwait(continueOnCapturedContext: false);
-            }
+            using var httpClient = new HttpClient();
+            return await GetMicManifestInternal(manifestServiceUri, hostname,
+                httpClient, cancellationToken
+                )
+                .ConfigureAwait(continueOnCapturedContext: false);
         }
 
         private static async Task<MicManifest> GetMicManifestInternal(
@@ -161,13 +160,16 @@ namespace TelenorConnexion.ManagedIoTCloud
             CancellationToken cancellationToken)
         {
             var requestUri = new Uri(manifestServiceUri, "?hostname=" + Uri.EscapeDataString(hostname ?? string.Empty));
-            using (var response = await httpClient.GetAsync(requestUri, cancellationToken).ConfigureAwait(continueOnCapturedContext: false))
-            using (var contentStream = await response.Content.ReadAsStreamAsync().ConfigureAwait(continueOnCapturedContext: false))
-            using (var contentTextReader = new StreamReader(contentStream, Encoding.UTF8))
-            using (var jsonReader = new JsonTextReader(contentTextReader))
-            {
-                return serializer.Deserialize<MicManifest>(jsonReader);
-            }
+            using var response = await httpClient
+                .GetAsync(requestUri, cancellationToken)
+                .ConfigureAwait(continueOnCapturedContext: false);
+            if (!response.Content.IsJson())
+                throw new HttpRequestException($"Content-Type '{response.Content.Headers.ContentType}' does not indicate a JSON response");
+            using var contentTextReader = await response.Content
+                .ReadAsStreamReaderAsync(Encoding.UTF8)
+                .ConfigureAwait(continueOnCapturedContext: false);
+            using var jsonReader = new JsonTextReader(contentTextReader);
+            return serializer.Deserialize<MicManifest>(jsonReader)!;
         }
     }
 }

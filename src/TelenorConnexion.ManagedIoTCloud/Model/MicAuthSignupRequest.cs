@@ -12,12 +12,12 @@ namespace TelenorConnexion.ManagedIoTCloud.Model
         /// The password of the user.
         /// </summary>
         [JsonProperty("password")]
-        public string Password { get; set; }
+        public string? Password { get; set; }
 
         /// <summary>
         /// If the user has to give consent to terms and conditions before signing up, they need to set this boolean to true.
         /// Required if if the account requires consent, otherwise optional.
-        /// <para>Refer to the <see cref="IMicClient.AuthGiveConsent"/> endpoint for more details.</para>
+        /// <para>Refer to the <see cref="MicClient.AuthGiveConsent"/> endpoint for more details.</para>
         /// </summary>
         [JsonProperty("consent")]
         public bool? RequireConsent { get; set; }

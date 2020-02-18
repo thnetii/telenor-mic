@@ -7,7 +7,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Model
 {
     public class MicAuthGetConsentDocumentResponse : MicModel
     {
-        private readonly DuplexConversionTuple<string, Uri> url = new DuplexConversionTuple<string, Uri>(
+        private readonly DuplexConversionTuple<string?, Uri?> url = new DuplexConversionTuple<string?, Uri?>(
             s => string.IsNullOrWhiteSpace(s) ? null : new Uri(s), u => u?.ToString()
             );
 
@@ -16,7 +16,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Model
         /// </summary>
         [JsonProperty("url")]
         [SuppressMessage("Design", "CA1056: Uri properties should not be strings")]
-        public string Url
+        public string? Url
         {
             get => url.RawValue;
             set => url.RawValue = value;
@@ -30,7 +30,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Model
         /// if <see cref="Url"/> is either <c>null</c>, empty or contains only whitespace characters.
         /// </value>
         [JsonIgnore]
-        public Uri Uri
+        public Uri? Uri
         {
             get => url.ConvertedValue;
             set => url.ConvertedValue = value;
@@ -40,6 +40,6 @@ namespace TelenorConnexion.ManagedIoTCloud.Model
         /// The custom version of the file.
         /// </summary>
         [JsonProperty("version")]
-        public string Version { get; set; }
+        public string? Version { get; set; }
     }
 }

@@ -6,7 +6,7 @@ namespace TelenorConnexion.ManagedIoTCloud
     /// Defines the possible value for the <see cref="MicErrorMessage.MessageKey"/>
     /// property of a MIC Error Message.
     /// </summary>
-    [SuppressMessage("Naming", "CA1707:Identifiers should not contain underscores")]
+    [SuppressMessage("Naming", "CA1707: Identifiers should not contain underscores")]
     public static class MicErrorMessageKey
     {
         /// <summary>
@@ -30,7 +30,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// </summary>
         public const string INVALID_LOGIN = nameof(INVALID_LOGIN);
         /// <summary>
-        /// The user has not given consent, refer to the <see cref="IMicClient.AuthGiveConsent"/>
+        /// The user has not given consent, refer to the <see cref="MicClient.AuthGiveConsent"/>
         /// method.
         /// </summary>
         public const string USER_CONSENT_REQUIRED = nameof(USER_CONSENT_REQUIRED);

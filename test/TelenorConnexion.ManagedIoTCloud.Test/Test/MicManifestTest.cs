@@ -1,5 +1,7 @@
 ﻿using Microsoft.Extensions.FileProviders;
+
 using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -8,7 +10,9 @@ using System.Reflection;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+
 using TelenorConnexion.ManagedIoTCloud.Data;
+
 using Xunit;
 
 namespace TelenorConnexion.ManagedIoTCloud.Manifest.Test
@@ -24,7 +28,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Manifest.Test
             Assert.NotNull(manifest);
             foreach (var pi in manifest.GetType().GetProperties(BindingFlags.Public | BindingFlags.Instance))
             {
-                object pv = pi.GetValue(manifest);
+                _ = pi.GetValue(manifest);
             }
         }
 

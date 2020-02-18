@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+
 using System;
 using System.Diagnostics;
 
@@ -43,7 +44,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// </summary>
         /// <param name="errorMessage"></param>
         public MicException(MicErrorMessage errorMessage)
-            : this(errorMessage?.Message) =>
+            : this(errorMessage?.Message!) =>
             MicErrorMessage = errorMessage;
         /// <summary>
         /// Creats a new <see cref="MicException"/> instance with the specified
@@ -51,7 +52,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// cause of the error.
         /// </summary>
         public MicException(MicErrorMessage errorMessage, Exception innerException)
-            : this(errorMessage?.Message, innerException) =>
+            : this(errorMessage?.Message!, innerException) =>
             MicErrorMessage = errorMessage;
 
         /// <summary>
@@ -70,7 +71,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// detail on the error that ocurred.
         /// </summary>
         [JsonProperty(ErrorMessageKey)]
-        public MicErrorMessage MicErrorMessage { get; }
+        public MicErrorMessage? MicErrorMessage { get; }
 
         private string DebuggerDisplay()
         {

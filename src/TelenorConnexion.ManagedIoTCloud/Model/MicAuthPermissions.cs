@@ -1,4 +1,6 @@
 ﻿using Newtonsoft.Json;
+
+using System;
 using System.Collections.Generic;
 
 namespace TelenorConnexion.ManagedIoTCloud.Model
@@ -14,6 +16,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Model
         /// role, i.e. <c>CREATE</c>, <c>READ</c>, <c>UPDATE</c> or <c>DELETE</c>.
         /// </summary>
         [JsonProperty("objects")]
-        public IDictionary<string, IList<string>> Objects { get; set; }
+        public IDictionary<string, IList<string>> Objects { get; } =
+            new Dictionary<string, IList<string>>(StringComparer.OrdinalIgnoreCase);
     }
 }

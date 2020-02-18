@@ -11,24 +11,28 @@ namespace TelenorConnexion.ManagedIoTCloud.Model
         /// The name of the role that the user has (<c>Read</c> | <c>ReadWrite</c>).
         /// </summary>
         [JsonProperty("roleName")]
-        public string RoleName { get; set; }
+        public string? RoleName { get; set; }
 
         /// <summary>
         /// The first name of the user.
         /// </summary>
         [JsonProperty("firstName")]
-        public string FirstName { get; set; }
+        public string? FirstName { get; set; }
 
         /// <summary>
         /// The last name of the user.
         /// </summary>
         [JsonProperty("lastName")]
-        public string LastName { get; set; }
+        public string? LastName { get; set; }
 
         /// <summary>
         /// The e-mail address of the user.
         /// </summary>
         [JsonProperty("email")]
-        public string Email { get; set; }
+        public string? Email { get; set; }
+
+        /// <summary/>
+        [JsonProperty("domainName")]
+        public string? DomainName { get; set; }
     }
 }

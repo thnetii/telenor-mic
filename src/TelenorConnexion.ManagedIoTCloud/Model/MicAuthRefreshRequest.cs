@@ -11,6 +11,6 @@ namespace TelenorConnexion.ManagedIoTCloud.Model
         /// The refresh token acquired when logging in.
         /// </summary>
         [JsonProperty("refreshToken")]
-        public string RefreshToken { get; set; }
+        public string? RefreshToken { get; set; }
     }
 }

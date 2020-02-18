@@ -1,6 +1,7 @@
 ﻿using Amazon;
 using Amazon.Runtime;
 using Amazon.Util.Internal;
+
 using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
@@ -13,16 +14,17 @@ namespace TelenorConnexion.ManagedIoTCloud
 {
     public class MicClientConfig : ClientConfig
     {
-        private Dictionary<Type, ClientConfig> clientConfigs =
+        private readonly Dictionary<Type, ClientConfig> clientConfigs =
             new Dictionary<Type, ClientConfig>();
 
         public MicClientConfig(IEnumerable<ClientConfig> clientConfigs) : this()
         {
             foreach (var config in (clientConfigs ?? Enumerable.Empty<ClientConfig>()).Where(c => !(c is null)))
-                this.clientConfigs[clientConfigs.GetType()] = config;
+                this.clientConfigs[config.GetType()] = config;
         }
 
-        public MicClientConfig(params ClientConfig[] clientConfigs) : this((IEnumerable<ClientConfig>)clientConfigs) { }
+        public MicClientConfig(params ClientConfig[] clientConfigs)
+            : this((IEnumerable<ClientConfig>)clientConfigs) { }
 
         #region Redefined Members
 

@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
 
@@ -14,7 +15,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Model
         /// model definition.
         /// </summary>
         [JsonExtensionData]
-        IDictionary<string, object> AdditionalData { get; }
+        IDictionary<string, object?> AdditionalData { get; }
     }
 
     /// <summary>
@@ -23,7 +24,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Model
     public abstract class MicModel : IMicModel
     {
         [JsonExtensionData]
-        IDictionary<string, object> IMicModel.AdditionalData { get; } =
-            new Dictionary<string, object>(StringComparer.Ordinal);
+        IDictionary<string, object?> IMicModel.AdditionalData { get; } =
+            new Dictionary<string, object?>(StringComparer.Ordinal);
     }
 }

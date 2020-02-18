@@ -11,6 +11,6 @@ namespace TelenorConnexion.ManagedIoTCloud.Model
         /// The user name of the user.
         /// </summary>
         [JsonProperty("userName")]
-        public string Username { get; set; }
+        public string? Username { get; set; }
     }
 }
