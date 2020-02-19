@@ -1,6 +1,8 @@
 ﻿using Newtonsoft.Json;
+
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.CodeAnalysis;
 
 namespace TelenorConnexion.ManagedIoTCloud.Model
 {
@@ -31,6 +33,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Model
             [nameof(Enabled)] = "enabled",
         };
 
+        [SuppressMessage("Usage", "CA2214: Do not call overridable methods in constructors")]
         public MicUserDataAttributes() : base() => SetAll();
 
         /// <summary>

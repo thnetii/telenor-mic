@@ -9,6 +9,7 @@ using System.Threading;
 using System.Threading.Tasks;
 
 using TelenorConnexion.ManagedIoTCloud.Model;
+using THNETII.Common;
 using THNETII.Common.Collections.Generic;
 using THNETII.Networking.Http;
 using THNETII.TypeConverter.Serialization;
@@ -18,24 +19,6 @@ namespace TelenorConnexion.ManagedIoTCloud
     using static MicErrorMessageKey;
 
 #pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
-    public partial interface IMicClient
-    {
-        /// <summary>
-        /// Resets the password for the specified user which results in a link being sent by email to the user,
-        /// that can visit the link to set a new password. The link is usable only once. If the link has expired,
-        /// this endpoint can be invoked again.
-        /// </summary>
-        /// <remarks>
-        /// Note: Following a password reset, the user account is disabled until the password has been successfully changed.
-        /// </remarks>
-        Task<MicResponse> UserResetPassword(MicUserResetPasswordRequest request, CancellationToken cancelToken = default);
-
-        /// <summary>
-        /// Gets information about a user.
-        /// </summary>
-        Task<MicUserGetResponse> UserGet(MicUserGetRequest request, CancellationToken cancelToken = default);
-    }
-
     public partial class MicClient
     {
         #region User API : LIST
@@ -337,23 +320,227 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// </list>
         /// </exception>
         /// <seealso href="https://docs.telenorconnexion.com/mic/rest-api/user/#revoke-consent"/>
-        public Task<MicModel> UserRevokeConsent(MicUserRevokeContentRequest request,
+        public Task<MicModel> UserRevokeConsent(MicUserRevokeConsentRequest request,
             CancellationToken cancelToken = default) =>
             HandleClientRequest<MicModel>(UserRevokeConsentUrl(request?.Username),
                 HttpMethod.Post, request, hasPayload: true, cancelToken);
 
-        /// <inheritdoc cref="UserRevokeConsent(MicUserRevokeContentRequest, CancellationToken)"/>
+        /// <inheritdoc cref="UserRevokeConsent(MicUserRevokeConsentRequest, CancellationToken)"/>
         /// <param name="userName">The user name of the user to revoke consent for.</param>
         public Task<MicModel> UserRevokeConsent(string userName,
             CancellationToken cancelToken = default) =>
-            UserRevokeConsent(new MicUserRevokeContentRequest { Username = userName },
+            UserRevokeConsent(new MicUserRevokeConsentRequest { Username = userName },
                 cancelToken);
 
-        /// <inheritdoc cref="UserRevokeConsent(MicUserRevokeContentRequest, CancellationToken)"/>
+        /// <inheritdoc cref="UserRevokeConsent(MicUserRevokeConsentRequest, CancellationToken)"/>
         public Task<MicModel> UserRevokeConsent(MicUserBasicInfo userInfo,
             CancellationToken cancelToken = default) =>
             HandleClientRequest<MicModel>(UserRevokeConsentUrl(userInfo?.Username),
                 HttpMethod.Post, userInfo, hasPayload: true, cancelToken);
+        #endregion
+
+        #region User API : REMOVE
+        private static string UserRemoveUrl(string? userName) =>
+            FormattableString.Invariant($"/users/{userName}");
+
+        /// <summary>
+        /// Removes a user.
+        /// </summary>
+        /// <returns>No repsonse</returns>
+        /// <exception cref="MicException">
+        /// <list type="table">
+        /// <listheader><term><see cref="MicException.MicErrorMessage"/></term><description>Description</description></listheader>
+        /// <item>
+        /// <term><list type="table">
+        /// <listheader><term>Property</term><description>Value</description></listheader>
+        /// <item><term><see cref="MicErrorMessage.MessageKey"/></term><description><see cref="NOT_AUTHORIZED_DOMAIN"/></description></item>
+        /// </list></term>
+        /// <description>Returned if the user tries to remove a user that is assigned to a domain that the user is not authorized to see.</description>
+        /// </item>
+        /// <item>
+        /// <term><list type="table">
+        /// <listheader><term>Property</term><description>Value</description></listheader>
+        /// <item><term><see cref="MicErrorMessage.MessageKey"/></term><description><see cref="PROPERTY_REQUIRED"/></description></item>
+        /// <item><term><see cref="MicErrorMessage.Property"/></term><description><c>userName</c></description></item>
+        /// </list></term>
+        /// <description>Returned if no user name was provided.</description>
+        /// </item>
+        /// <item>
+        /// <term><list type="table">
+        /// <listheader><term>Property</term><description>Value</description></listheader>
+        /// <item><term><see cref="MicErrorMessage.MessageKey"/></term><description><see cref="USER_NOT_FOUND"/></description></item>
+        /// <item><term><see cref="MicErrorMessage.Property"/></term><description><c>userName</c></description></item>
+        /// </list></term>
+        /// <description>Returned if the user cannot be found.</description>
+        /// </item>
+        /// </list>
+        /// </exception>
+        /// <seealso href="https://docs.telenorconnexion.com/mic/rest-api/user/#remove"/>
+        public Task<MicResponse> UserRemove(MicUserRemoveRequest request,
+            CancellationToken cancelToken = default) =>
+            HandleClientRequest<MicResponse>(UserRemoveUrl(request?.Username),
+                HttpMethod.Delete, request, hasPayload: false, cancelToken);
+
+        /// <inheritdoc cref="UserRemove(MicUserRemoveRequest, CancellationToken)"/>
+        public Task<MicResponse> UserRemove(MicUserBasicInfo userInfo,
+            CancellationToken cancelToken = default) =>
+            HandleClientRequest<MicResponse>(UserRemoveUrl(userInfo?.Username),
+                HttpMethod.Delete, userInfo, hasPayload: false, cancelToken);
+
+        /// <inheritdoc cref="UserRemove(MicUserRemoveRequest, CancellationToken)"/>
+        /// <param name="userName">A single username</param>
+        public Task<MicResponse> UserRemove(string userName,
+            CancellationToken cancelToken = default) =>
+            UserRemove(new MicUserRemoveRequest { Username = userName },
+                cancelToken);
+        #endregion
+
+        #region User API : UPDATE
+        private static string UserUpdateUrl(string? userName) =>
+            FormattableString.Invariant($"/users/{userName}");
+
+        /// <summary>
+        /// Updates a user. There is a possibility to disable an active user, using the <see cref="MicUserUpdateRequest.Enabled"/> property.
+        /// <para>User attributes can be deleted by setting properties in the specified <see cref="MicUserUpdateRequest"/> instance to <see langword="null"/>.</para>
+        /// </summary>
+        /// <exception cref="MicException">
+        /// <list type="table">
+        /// <listheader><term><see cref="MicException.MicErrorMessage"/></term><description>Description</description></listheader>
+        /// <item>
+        /// <term><list type="table">
+        /// <listheader><term>Property</term><description>Value</description></listheader>
+        /// <item><term><see cref="MicErrorMessage.MessageKey"/></term><description><see cref="NOT_AUTHORIZED_DOMAIN"/></description></item>
+        /// <item><term><see cref="MicErrorMessage.Property"/></term><description><c>domainName</c></description></item>
+        /// </list></term>
+        /// <description>Returned if the user tries to move a user to a domain that the user is not authorized to see.</description>
+        /// </item>
+        /// <item>
+        /// <term><list type="table">
+        /// <listheader><term>Property</term><description>Value</description></listheader>
+        /// <item><term><see cref="MicErrorMessage.MessageKey"/></term><description><see cref="PROPERTY_REQUIRED"/></description></item>
+        /// <item><term><see cref="MicErrorMessage.Property"/></term><description><c>userName</c></description></item>
+        /// </list></term>
+        /// <description>Returned if no user name was provided.</description>
+        /// </item>
+        /// <item>
+        /// <term><list type="table">
+        /// <listheader><term>Property</term><description>Value</description></listheader>
+        /// <item><term><see cref="MicErrorMessage.MessageKey"/></term><description><see cref="PROPERTY_NOT_DELETABLE"/></description></item>
+        /// </list></term>
+        /// <description>Returned if a non-deletable property was sent to be deleted.</description>
+        /// </item>
+        /// <item>
+        /// <term><list type="table">
+        /// <listheader><term>Property</term><description>Value</description></listheader>
+        /// <item><term><see cref="MicErrorMessage.MessageKey"/></term><description><see cref="USER_NOT_FOUND"/></description></item>
+        /// <item><term><see cref="MicErrorMessage.Property"/></term><description><c>userName</c></description></item>
+        /// </list></term>
+        /// <description>Returned if the user cannot be found.</description>
+        /// </item>
+        /// <item>
+        /// <term><list type="table">
+        /// <listheader><term>Property</term><description>Value</description></listheader>
+        /// <item><term><see cref="MicErrorMessage.MessageKey"/></term><description><see cref="INVALID_ARGUMENTS"/></description></item>
+        /// </list></term>
+        /// <description>Returned if a parameter does not fulfil requirements.</description>
+        /// </item>
+        /// </list>
+        /// </exception>
+        /// <seealso href="https://docs.telenorconnexion.com/mic/rest-api/user/#update"/>
+        public Task<MicUserFullDetails> UserUpdate(MicUserUpdateRequest request,
+            CancellationToken cancelToken = default) =>
+            HandleClientRequest<MicUserFullDetails>(UserUpdateUrl(request?.Username),
+#if NETSTANDARD1_3 || NETSTANDARD2_0
+                new HttpMethod("PATCH"),
+#else
+                HttpMethod.Patch,
+#endif
+                request, hasPayload: true, cancelToken
+                );
+        #endregion
+
+        #region User API : UPDATE_PROFILE
+        private static string UserUpdateProfileUrl(string? userName) =>
+            FormattableString.Invariant($"/users/{userName}/profile");
+
+        /// <summary>
+        /// Updates the profile of the logged in user. Currently updating the password is not possible at this endpoint. To achieve that the user needs to invoke the <see cref="AuthForgotPassword(MicAuthForgotPasswordRequest, CancellationToken)"/> and follow the email link as described above.
+        /// <para>User attributes can be deleted by setting properties in the specified <see cref="MicUserUpdateRequest"/> instance to <see langword="null"/>.</para>
+        /// </summary>
+        /// <param name="request">The user name of the user must be set to the currently logged in user. This endpoint can only update the currently logged in user.</param>
+        /// <exception cref="MicException">
+        /// <list type="table">
+        /// <listheader><term><see cref="MicException.MicErrorMessage"/></term><description>Description</description></listheader>
+        /// <item>
+        /// <term><list type="table">
+        /// <listheader><term>Property</term><description>Value</description></listheader>
+        /// <item><term><see cref="MicErrorMessage.MessageKey"/></term><description><see cref="NOT_AUTHORIZED"/></description></item>
+        /// </list></term>
+        /// <description>Returned if the user tries to update the profile of another user.</description>
+        /// </item>
+        /// <item>
+        /// <term><list type="table">
+        /// <listheader><term>Property</term><description>Value</description></listheader>
+        /// <item><term><see cref="MicErrorMessage.MessageKey"/></term><description><see cref="PROPERTY_REQUIRED"/></description></item>
+        /// <item><term><see cref="MicErrorMessage.Property"/></term><description><c>userName</c></description></item>
+        /// </list></term>
+        /// <description>Returned if no user name was provided.</description>
+        /// </item>
+        /// <item>
+        /// <term><list type="table">
+        /// <listheader><term>Property</term><description>Value</description></listheader>
+        /// <item><term><see cref="MicErrorMessage.MessageKey"/></term><description><see cref="PROPERTY_NOT_DELETABLE"/></description></item>
+        /// </list></term>
+        /// <description>Returned if a non-deletable property was sent to be deleted.</description>
+        /// </item>
+        /// <item>
+        /// <term><list type="table">
+        /// <listheader><term>Property</term><description>Value</description></listheader>
+        /// <item><term><see cref="MicErrorMessage.MessageKey"/></term><description><see cref="USER_NOT_FOUND"/></description></item>
+        /// <item><term><see cref="MicErrorMessage.Property"/></term><description><c>userName</c></description></item>
+        /// </list></term>
+        /// <description>Returned if the user cannot be found.</description>
+        /// </item>
+        /// <item>
+        /// <term><list type="table">
+        /// <listheader><term>Property</term><description>Value</description></listheader>
+        /// <item><term><see cref="MicErrorMessage.MessageKey"/></term><description><see cref="INVALID_ARGUMENTS"/></description></item>
+        /// </list></term>
+        /// <description>Returned if a parameter does not fulfil requirements.</description>
+        /// </item>
+        /// </list>
+        /// </exception>
+        /// <seealso href="https://docs.telenorconnexion.com/mic/rest-api/user/#update-profile"/>
+        public Task<MicUserFullDetails> UserUpdateProfile(MicUserUpdateRequest request,
+            CancellationToken cancelToken = default) =>
+            HandleClientRequest<MicUserFullDetails>(UserUpdateProfileUrl(request?.Username),
+#if NETSTANDARD1_3 || NETSTANDARD2_0
+                new HttpMethod("PATCH"),
+#else
+                HttpMethod.Patch,
+#endif
+                request, hasPayload: true, cancelToken
+                );
+        #endregion
+
+        #region User API : UPDATE_USERDATA
+        private static string UserUpdateUserdataUrl(string? userName) =>
+            FormattableString.Invariant($"/users/{userName}/data");
+
+        /// <summary>
+        /// Updates the customer user data of a user
+        /// </summary>
+        /// <seealso href="https://docs.telenorconnexion.com/mic/rest-api/user/#update-userdata"/>
+        public Task<MicUserdataResponse> UserUpdateUserdata(MicUserUpdateUserdataRequest request,
+            CancellationToken cancelToken = default) =>
+            HandleClientRequest<MicUserdataResponse>(UserUpdateUserdataUrl(request?.Username),
+#if NETSTANDARD1_3 || NETSTANDARD2_0
+                new HttpMethod("PATCH"),
+#else
+                HttpMethod.Patch,
+#endif
+                request, hasPayload: true, cancelToken
+                );
         #endregion
 
         #region User API : RESET_PASSWORD

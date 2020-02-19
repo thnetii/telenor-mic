@@ -49,7 +49,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// Gets the last set of MIC Credentials received from a successful
         /// login or refresh operation.
         /// </summary>
-        protected MicAuthCredentials Credentials { get; set; }
+        protected MicAuthCredentials? Credentials { get; set; }
 
         /// <summary>
         /// Gets the AWS Cognito Identity Credentials object used to authenticate
@@ -57,7 +57,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// </summary>
         public CognitoAWSCredentials AwsCredentials { get; }
 
-        public string ApiKey { get; protected set; }
+        public string? ApiKey { get; protected set; }
 
         #region Constructor
 
@@ -72,7 +72,7 @@ namespace TelenorConnexion.ManagedIoTCloud
             Manifest = manifest ?? throw new ArgumentNullException(nameof(manifest));
             apiGatewayEndpoint = manifest.GetApiGatewayBaseEndpoint();
 
-            Config = new MicClientConfig() { RegionEndpoint = Manifest.AwsRegion };
+            Config = new MicClientConfig() { RegionEndpoint = Manifest.AwsRegion! };
 
             var anonymousCreds = new AnonymousAWSCredentials();
             cognitoClient = new AmazonCognitoIdentityClient(
@@ -156,6 +156,8 @@ namespace TelenorConnexion.ManagedIoTCloud
             bool hasPayload = true, CancellationToken cancelToken = default)
             where TResponse : MicModel
         {
+            // Strip leading '/' in order to make proper relative Urls the API Gateway Root URL.
+            relativeUrl = relativeUrl is null ? string.Empty : relativeUrl.TrimStart('/');
             Uri requestUri = new Uri(apiGatewayEndpoint, relativeUrl);
             using var requestMessage = new HttpRequestMessage(httpMethod, requestUri);
             if (hasPayload)
@@ -224,7 +226,7 @@ namespace TelenorConnexion.ManagedIoTCloud
             var jsonObject = await JObject.LoadAsync(jsonReader, cancelToken)
                 .ConfigureAwait(continueOnCapturedContext: false);
             if (jsonObject.TryGetValue(MicException.ErrorMessageKey, out var errorToken))
-                throw new MicException(errorToken.ToObject<MicErrorMessage>());
+                throw new MicException(errorToken.ToObject<MicErrorMessage>()!);
             return jsonObject.ToObject<TResponse>();
         }
 

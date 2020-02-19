@@ -284,9 +284,9 @@ namespace TelenorConnexion.ManagedIoTCloud
         {
             var info = (ClientConfigPropertyInfo<T>)propertyInfo[name];
             foreach (var config in clientConfigs.Values)
-                info.Setter(config, value);
+                info.Setter?.Invoke(config, value);
             if (!fromThis)
-                info.Setter(this, value);
+                info.Setter?.Invoke(this, value);
             markedProperty[info.Index] = true;
         }
 
@@ -296,9 +296,12 @@ namespace TelenorConnexion.ManagedIoTCloud
             {
                 if (markedProperty[info.Index])
                 {
-                    var value = info.Getter(this);
+                    var getter = info.Getter;
+                    if (getter is null)
+                        continue;
+                    var value = getter(this);
                     foreach (var config in clientConfigs.Values)
-                        info.Setter(config, value);
+                        info.Setter?.Invoke(config, value);
                 }
             }
         }
@@ -309,8 +312,11 @@ namespace TelenorConnexion.ManagedIoTCloud
             {
                 if (markedProperty[info.Index])
                 {
-                    var value = info.Getter(this);
-                    info.Setter(config, value);
+                    var getter = info.Getter;
+                    if (getter is null)
+                        continue;
+                    var value = getter(this);
+                    info.Setter?.Invoke(config, value);
                 }
             }
         }
@@ -320,7 +326,7 @@ namespace TelenorConnexion.ManagedIoTCloud
 
         private class ClientConfigPropertyInfo
         {
-            public PropertyInfo Metadata { get; set; }
+            public PropertyInfo? Metadata { get; set; }
             public int Index { get; set; }
         }
 
@@ -347,8 +353,8 @@ namespace TelenorConnexion.ManagedIoTCloud
                 };
             }
 
-            public Action<ClientConfig, T> Setter { get; set; }
-            public Func<ClientConfig, T> Getter { get; set; }
+            public Action<ClientConfig, T>? Setter { get; set; }
+            public Func<ClientConfig, T>? Getter { get; set; }
         }
 
         private static readonly Dictionary<string, ClientConfigPropertyInfo> propertyInfo;
@@ -369,19 +375,19 @@ namespace TelenorConnexion.ManagedIoTCloud
                 var info = fromPropertyInfoFunc(pi);
                 info.Index = i;
                 return info;
-            }).ToDictionary(i => i.Metadata.Name, StringComparer.Ordinal);
+            }).ToDictionary(i => i.Metadata?.Name ?? string.Empty, StringComparer.Ordinal);
 
             var openPushMarkedPropertiesOfTypeInfo = typeof(MicClientConfig)
                 .GetMethod(nameof(PushMarkedPropertiesOfType), BindingFlags.Instance | BindingFlags.NonPublic);
             pushMarkedOfTypeInfos = propertyInfo.Values
-                .Select(info => info.Metadata.PropertyType)
+                .Select(info => info.Metadata?.PropertyType)
                 .Distinct()
                 .Select(t => openPushMarkedPropertiesOfTypeInfo.MakeGenericMethod(t))
                 .ToList();
             var openPushMarkedPropertiesOfTypeToConfigInfo = typeof(MicClientConfig)
                 .GetMethod(nameof(PushMarkedPropertiesOfTypeToConfig), BindingFlags.Instance | BindingFlags.NonPublic);
             pushMarkedOfTypeToConfigInfos = propertyInfo.Values
-                .Select(info => info.Metadata.PropertyType)
+                .Select(info => info.Metadata?.PropertyType)
                 .Distinct()
                 .Select(t => openPushMarkedPropertiesOfTypeToConfigInfo.MakeGenericMethod(t))
                 .ToList();

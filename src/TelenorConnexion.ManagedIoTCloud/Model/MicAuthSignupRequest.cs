@@ -17,7 +17,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Model
         /// <summary>
         /// If the user has to give consent to terms and conditions before signing up, they need to set this boolean to true.
         /// Required if if the account requires consent, otherwise optional.
-        /// <para>Refer to the <see cref="MicClient.AuthGiveConsent"/> endpoint for more details.</para>
+        /// <para>Refer to the <see cref="MicClient.AuthGiveConsent(MicAuthGiveConsentRequest, System.Threading.CancellationToken)"/> endpoint for more details.</para>
         /// </summary>
         [JsonProperty("consent")]
         public bool? RequireConsent { get; set; }

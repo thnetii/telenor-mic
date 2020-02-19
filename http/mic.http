@@ -9,6 +9,9 @@
 @authApi = auth
 @authLoginApi = {{authApi}}/login
 
+@domainApi = domains
+@domainListApi = {{domainApi}}/list
+
 @userApi = users
 @userWhoami = user
 
@@ -48,6 +51,24 @@ Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
 ###
 # @name UserGetWhoami
 GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{userWhoami}}?attributes=userName,firstName,lastName,email,phone,locale,company,address,zip,country,roleName,domainName,data,roles HTTP/1.1
+x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
+Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
+
+###
+# @name UserGetAuthUser
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{userApi}}/{{AuthLogin.response.body.$.user.userName}}?attributes=firstName,lastName,email,phone,locale,company,address,zip,city,country,roleName,domainName,notes1,notes2,notes3,data,roles,termsAgreed,dateTermsAgreed,termsVersion,createdAt,enabled HTTP/1.1
+x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
+Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
+
+###
+# @name DomainList
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/domains HTTP/1.1
+x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
+Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
+
+###
+# @name DomainGet
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/domains/UIT_IFI_Course HTTP/1.1
 x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
 Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
 

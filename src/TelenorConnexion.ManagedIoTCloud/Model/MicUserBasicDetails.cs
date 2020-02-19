@@ -8,12 +8,6 @@ namespace TelenorConnexion.ManagedIoTCloud.Model
     public class MicUserBasicDetails : MicUserBasicInfo
     {
         /// <summary>
-        /// The name of the role that the user has (<c>Read</c> | <c>ReadWrite</c>).
-        /// </summary>
-        [JsonProperty("roleName")]
-        public string? RoleName { get; set; }
-
-        /// <summary>
         /// The first name of the user.
         /// </summary>
         [JsonProperty("firstName")]
@@ -31,7 +25,15 @@ namespace TelenorConnexion.ManagedIoTCloud.Model
         [JsonProperty("email")]
         public string? Email { get; set; }
 
-        /// <summary/>
+        /// <summary>
+        /// The name of the role that the user has (<c>Read</c> | <c>ReadWrite</c>).
+        /// </summary>
+        [JsonProperty("roleName")]
+        public string? RoleName { get; set; }
+
+        /// <summary>
+        /// The name of the domain that the user is assigned to.
+        /// </summary>
         [JsonProperty("domainName")]
         public string? DomainName { get; set; }
     }

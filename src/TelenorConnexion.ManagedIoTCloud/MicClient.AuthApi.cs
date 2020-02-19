@@ -321,7 +321,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         [SuppressMessage("Globalization", "CA1303: Do not pass literals as localized parameters")]
         public Task<MicAuthLoginResponse> AuthRefresh(CancellationToken cancelToken = default)
         {
-            if ((Credentials?.RefreshToken).TryNotNull(out string refreshToken))
+            if ((Credentials?.RefreshToken).TryNotNull(out string? refreshToken))
                 return AuthRefresh(refreshToken, cancelToken);
             throw new InvalidOperationException("No refresh token from previous login operations available.");
         }

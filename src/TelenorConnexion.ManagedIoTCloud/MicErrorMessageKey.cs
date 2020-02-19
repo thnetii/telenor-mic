@@ -1,4 +1,7 @@
 ﻿using System.Diagnostics.CodeAnalysis;
+using System.Threading;
+
+using TelenorConnexion.ManagedIoTCloud.Model;
 
 namespace TelenorConnexion.ManagedIoTCloud
 {
@@ -30,7 +33,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// </summary>
         public const string INVALID_LOGIN = nameof(INVALID_LOGIN);
         /// <summary>
-        /// The user has not given consent, refer to the <see cref="MicClient.AuthGiveConsent"/>
+        /// The user has not given consent, refer to the <see cref="MicClient.AuthGiveConsent(MicAuthGiveConsentRequest, CancellationToken)"/>
         /// method.
         /// </summary>
         public const string USER_CONSENT_REQUIRED = nameof(USER_CONSENT_REQUIRED);

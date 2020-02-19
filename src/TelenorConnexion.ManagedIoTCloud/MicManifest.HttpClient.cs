@@ -39,7 +39,8 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// is returned.
         /// </para>
         /// </returns>
-        public static Task<MicManifest> GetMicManifest(string hostname, CancellationToken cancellationToken = default) =>
+        public static Task<MicManifest> GetMicManifest(string hostname,
+            CancellationToken cancellationToken = default) =>
             GetMicManifest(hostname, httpClient: null, cancellationToken);
 
         /// <summary>
@@ -57,8 +58,11 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// is returned.
         /// </para>
         /// </returns>
-        public static Task<MicManifest> GetMicManifest(string hostname, HttpClient httpClient, CancellationToken cancellationToken = default) =>
-            GetMicManifest(ManifestServiceUri, hostname, httpClient, cancellationToken);
+        public static Task<MicManifest> GetMicManifest(string hostname,
+            HttpClient? httpClient,
+            CancellationToken cancellationToken = default) =>
+            GetMicManifest(ManifestServiceUri, hostname, httpClient,
+                cancellationToken);
 
         /// <summary>
         /// Retrieves a MIC manifest document for the specified hostname from a
@@ -76,8 +80,10 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// </para>
         /// </returns>
         [SuppressMessage("Usage", "CA2234:Pass system uri objects instead of strings")]
-        public static Task<MicManifest> GetMicManifest(string manifestServiceUrl, string hostname, CancellationToken cancellationToken = default) =>
-            GetMicManifest(manifestServiceUrl, hostname, httpClient: null, cancellationToken);
+        public static Task<MicManifest> GetMicManifest(string manifestServiceUrl,
+            string hostname, CancellationToken cancellationToken = default) =>
+            GetMicManifest(manifestServiceUrl, hostname, httpClient: null,
+                cancellationToken);
 
         /// <summary>
         /// Retrieves a MIC manifest document for the specified hostname from a
@@ -94,8 +100,10 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// is returned.
         /// </para>
         /// </returns>
-        public static Task<MicManifest> GetMicManifest(Uri manifestServiceUri, string hostname, CancellationToken cancellationToken = default) =>
-            GetMicManifest(manifestServiceUri, hostname, httpClient: null, cancellationToken);
+        public static Task<MicManifest> GetMicManifest(Uri manifestServiceUri,
+            string hostname, CancellationToken cancellationToken = default) =>
+            GetMicManifest(manifestServiceUri, hostname, httpClient: null,
+                cancellationToken);
 
         /// <summary>
         /// Retrieves a MIC manifest document for the specified hostname from a
@@ -113,8 +121,11 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// is returned.
         /// </para>
         /// </returns>
-        public static Task<MicManifest> GetMicManifest(string manifestServiceUrl, string hostname, HttpClient httpClient, CancellationToken cancellationToken = default) =>
-            GetMicManifest(new Uri(manifestServiceUrl), hostname, httpClient, cancellationToken);
+        public static Task<MicManifest> GetMicManifest(string manifestServiceUrl,
+            string hostname, HttpClient? httpClient,
+            CancellationToken cancellationToken = default) =>
+            GetMicManifest(new Uri(manifestServiceUrl), hostname, httpClient,
+                cancellationToken);
 
         /// <summary>
         /// Retrieves a MIC manifest document for the specified hostname from a
@@ -133,7 +144,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// </para>
         /// </returns>
         public static Task<MicManifest> GetMicManifest(
-            Uri manifestServiceUri, string hostname, HttpClient httpClient,
+            Uri manifestServiceUri, string hostname, HttpClient? httpClient,
             CancellationToken cancellationToken = default)
         {
             if (manifestServiceUri is null)

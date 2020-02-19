@@ -101,5 +101,23 @@ namespace TelenorConnexion.ManagedIoTCloud.Model
         /// <summary/>
         [JsonProperty("enabled")]
         public bool? Enabled { get; set; }
+
+        /// <summary>
+        /// Additional notes field.
+        /// </summary>
+        [JsonProperty("notes1")]
+        public string? Notes1 { get; set; }
+
+        /// <summary>
+        /// Additional notes field.
+        /// </summary>
+        [JsonProperty("notes2")]
+        public string? Notes2 { get; set; }
+
+        /// <summary>
+        /// Additional notes field.
+        /// </summary>
+        [JsonProperty("notes3")]
+        public string? Notes3 { get; set; }
     }
 }

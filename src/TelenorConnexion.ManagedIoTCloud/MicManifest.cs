@@ -352,6 +352,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         private static readonly AmazonCognitoIdentityProviderConfig cognitoIdpConfig =
             new AmazonCognitoIdentityProviderConfig();
 
+        [SuppressMessage("Globalization", "CA1303: Do not pass literals as localized parameters")]
         public string GetCognitoProviderName()
         {
             if (!(AwsRegion is RegionEndpoint region))
