@@ -4,17 +4,23 @@
   <PropertyGroup>
     <LangVersion>7.2</LangVersion>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="System.Net.WebSockets" Version="4.3.0" />
+    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\..\aws-sdk-net-ext\src\THNETII.AWSSDK.IoTDeviceGateway.Mqtt\THNETII.AWSSDK.IoTDeviceGateway.Mqtt.csproj" />
-    <ProjectReference Include="..\..\aws-sdk-net-ext\src\THNETII.AWSSDK.IoTDeviceGateway\THNETII.AWSSDK.IoTDeviceGateway.csproj" />
-    <ProjectReference Include="..\..\dotnet-common\src\THNETII.CommandLine.Extensions\THNETII.CommandLine.Extensions.csproj" />
+    <PackageReference Include="THNETII.Common" Version="1.0.0-build7150" />
+    <PackageReference Include="THNETII.CommandLine.Extensions" Version="1.0.0-build7150" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="THNETII.AWSSDK.IoTDeviceGateway.Mqtt" Version="3.3.679-preview1-build7756" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\..\src\TelenorConnexion.ManagedIoTCloud\TelenorConnexion.ManagedIoTCloud.csproj" />
   </ItemGroup>
 
