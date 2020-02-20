@@ -3,31 +3,17 @@
 @userName = {{$dotenv USERNAME}}
 @password = {{$dotenv PASSWORD}}
 
-@metadataApi = metadata
-@metadataManifestApi = {{metadataApi}}/manifest
-
-@authApi = auth
-@authLoginApi = {{authApi}}/login
-
-@domainApi = domains
-@domainListApi = {{domainApi}}/list
-
-@userApi = users
-@userWhoami = user
-
-@thingTypeApi = thingtypes
-
 ###
 # @name Manifest
 GET {{manifestUrl}}?hostname={{hostname}} HTTP/1.1
 
 ###
 # @name MetadataManifest
-GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{metadataManifestApi}} HTTP/1.1
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/metadata/manifest HTTP/1.1
 
 ###
 # @name AuthLogin
-POST {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{authLoginApi}} HTTP/1.1
+POST {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/auth/login HTTP/1.1
 x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
 Content-Type: application/json;charset=utf-8
 
@@ -37,26 +23,46 @@ Content-Type: application/json;charset=utf-8
 }
 
 ###
+# @name AuthGetConsentDocument
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/auth/get-consent-document HTTP/1.1
+x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
+Content-Type: application/json;charset=utf-8
+
+###
+# @name AuthDownloadConsentDocument
+GET {{AuthGetConsentDocument.response.body.$.url}} HTTP/1.1
+
+###
+# @name AuthRefresh
+POST {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/auth/refresh HTTP/1.1
+x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
+Content-Type: application/json;charset=utf-8
+
+{
+    "refreshToken": "{{AuthLogin.response.body.$.credentials.refreshToken}}",
+}
+
+###
 # @name UserList
-GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{userApi}} HTTP/1.1
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/users HTTP/1.1
 x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
 Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
 
 ###
 # @name UserListWithAllAttributes
-GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{userApi}}?attributes=userName,firstName,lastName,email,phone,locale,company,address,zip,country,roleName,domainName,data,roles,termsAgreed,dateTermsAgreed,termsVersion,createdAt,enabled HTTP/1.1
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/users?attributes=userName,firstName,lastName,email,phone,locale,company,address,zip,country,roleName,domainName,data,roles,termsAgreed,dateTermsAgreed,termsVersion,createdAt,enabled HTTP/1.1
 x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
 Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
 
 ###
 # @name UserGetWhoami
-GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{userWhoami}}?attributes=userName,firstName,lastName,email,phone,locale,company,address,zip,country,roleName,domainName,data,roles HTTP/1.1
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/user?attributes=userName,firstName,lastName,email,phone,locale,company,address,zip,country,roleName,domainName,data,roles HTTP/1.1
 x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
 Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
 
 ###
 # @name UserGetAuthUser
-GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{userApi}}/{{AuthLogin.response.body.$.user.userName}}?attributes=firstName,lastName,email,phone,locale,company,address,zip,city,country,roleName,domainName,notes1,notes2,notes3,data,roles,termsAgreed,dateTermsAgreed,termsVersion,createdAt,enabled HTTP/1.1
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/users/{{AuthLogin.response.body.$.user.userName}}?attributes=firstName,lastName,email,phone,locale,company,address,zip,city,country,roleName,domainName,notes1,notes2,notes3,data,roles,termsAgreed,dateTermsAgreed,termsVersion,createdAt,enabled HTTP/1.1
 x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
 Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
 
@@ -67,19 +73,37 @@ x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
 Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
 
 ###
+# @name DomainListTopDomains
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/domains/list HTTP/1.1
+x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
+Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
+
+###
+# @name DomainListSubdomains
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/domains/{{AuthLogin.response.body.$.user.domainName}}/list HTTP/1.1
+x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
+Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
+
+###
 # @name DomainGet
-GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/domains/UIT_IFI_Course HTTP/1.1
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/domains/{{AuthLogin.response.body.$.user.domainName}} HTTP/1.1
+x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
+Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
+
+###
+# @name FileV2List
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/files?listAll=true HTTP/1.1
 x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
 Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
 
 ###
 # @name ThingTypeList
-GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{thingTypeApi}} HTTP/1.1
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/thingtypes HTTP/1.1
 x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
 Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
 
 ###
 # @name ThingTypeGet
-GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/{{thingTypeApi}}/{{ThingTypeList.response.body.$[0].id}} HTTP/1.1
+GET {{Manifest.response.body.$.ApiGatewayRootUrl}}/{{Manifest.response.body.$.StackName}}/thingtypes/{{ThingTypeList.response.body.$[0].id}} HTTP/1.1
 x-api-key: {{MetadataManifest.response.body.$.ApiKey}}
 Authorization: Bearer {{AuthLogin.response.body.$.credentials.token}}
