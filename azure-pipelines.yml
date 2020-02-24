@@ -20,6 +20,17 @@ jobs:
     - checkout:   self
       submodules: true
     presteps:
+    - task: DownloadSecureFile@1
+      displayName:  Download Online Test parameters
+      inputs:
+        secureFile: online.parameters.json
+    - task: CopyFiles@2
+      displayName:  Copy Online Test parameters to Unit Test source directory
+      inputs:
+        sourceFolder: $(Agent.TempDirectory)
+        contents:     online.parameters.json
+        targetFolder: $(Build.SourcesDirectory)/test/TelenorConnexion.ManagedIoTCloud.Test/Data
+        overWrite:    true
     - task: UseDotNet@2
       displayName:  Use .NET Core SDK version 2.1.x
       inputs:

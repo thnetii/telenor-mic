@@ -1,11 +1,16 @@
-﻿using Microsoft.Extensions.FileProviders;
-using Newtonsoft.Json;
 using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
 using System.Text;
+
+using Microsoft.Extensions.FileProviders;
+
+using Newtonsoft.Json;
+
+using TelenorConnexion.ManagedIoTCloud.CloudApi;
 using TelenorConnexion.ManagedIoTCloud.Data;
+
 using Xunit;
 
 namespace TelenorConnexion.ManagedIoTCloud.Test
@@ -21,13 +26,10 @@ namespace TelenorConnexion.ManagedIoTCloud.Test
         {
             var serializer = JsonSerializer.Create();
 
-            using (var stream = sampleFile.CreateReadStream())
-            using (var textReader = new StreamReader(stream, Encoding.UTF8))
-            using (var jsonReader = new JsonTextReader(textReader))
-            {
-                var errorMessage = serializer.Deserialize<MicErrorMessage>(
-                    jsonReader);
-            }
+            using var stream = sampleFile.CreateReadStream();
+            using var textReader = new StreamReader(stream, Encoding.UTF8);
+            using var jsonReader = new JsonTextReader(textReader);
+            var errorMessage = serializer.Deserialize<MicErrorMessage>(jsonReader);
         }
     }
 }
