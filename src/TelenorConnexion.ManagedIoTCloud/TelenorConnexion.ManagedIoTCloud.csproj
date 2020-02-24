@@ -1,11 +1,10 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <Nullable>enable</Nullable>
     <LangVersion>8</LangVersion>
-    <TargetFrameworks>netstandard1.3;netstandard2.0;netstandard2.1</TargetFrameworks>
-    <GenerateDocumentationFile>true</GenerateDocumentationFile>
+    <Nullable>enable</Nullable>
+    <TargetFrameworks>netstandard1.3;netstandard2.0</TargetFrameworks>
   </PropertyGroup>
 
   <ItemGroup>
@@ -13,15 +12,13 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="THNETII.Common" Version="1.0.0-build7150" />
-    <PackageReference Include="THNETII.Networking.Http" Version="1.0.0-build7150" />
-    <PackageReference Include="THNETII.TypeConverter" Version="1.0.0-build7150" />
-    <PackageReference Include="THNETII.TypeConverter.Serialization" Version="1.0.0-build7150" />
+    <PackageReference Include="AWSSDK.Core" Version="3.3.104.27" />
+    <PackageReference Include="AWSSDK.CognitoIdentityProvider" Version="3.3.108.3" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.CognitoIdentity" Version="3.3.101.36" />
-    <PackageReference Include="AWSSDK.CognitoIdentityProvider" Version="3.3.108.1" />
+    <ProjectReference Include="..\..\dotnet-common\src\THNETII.Networking.Http\THNETII.Networking.Http.csproj" />
+    <ProjectReference Include="..\..\dotnet-common\src\THNETII.TypeConverter\THNETII.TypeConverter.csproj" />
   </ItemGroup>
 
 </Project>

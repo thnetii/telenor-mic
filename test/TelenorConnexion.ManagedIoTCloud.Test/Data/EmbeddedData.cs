@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.FileProviders;
 using System;
 
 namespace TelenorConnexion.ManagedIoTCloud.Data
@@ -11,5 +11,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Data
 
         public static IDirectoryContents GetFiles() =>
             fileProvider.GetDirectoryContents("");
+        public static IFileInfo GetFile(string filename) =>
+            fileProvider.GetFileInfo(filename);
     }
 }

@@ -1,8 +1,10 @@
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
+
 using Amazon;
+using Amazon.CognitoIdentityProvider;
 using Newtonsoft.Json;
 
 using THNETII.Common;
@@ -346,6 +348,17 @@ namespace TelenorConnexion.ManagedIoTCloud
 
         [JsonProperty(nameof(MqttFn))]
         public string? MqttFn { get; set; }
+
+        private static readonly AmazonCognitoIdentityProviderConfig cognitoIdpConfig =
+            new AmazonCognitoIdentityProviderConfig();
+
+        [SuppressMessage("Globalization", "CA1303: Do not pass literals as localized parameters")]
+        public string GetCognitoProviderName()
+        {
+            if (!(AwsRegion is RegionEndpoint region))
+                throw new InvalidOperationException($"{nameof(AwsRegion)} is null.");
+            return $"{region.GetEndpointForService(cognitoIdpConfig.RegionEndpointServiceName)}/{UserPool}";
+        }
 
         private static DuplexConversionTuple<string?, Uri?> GetUrlToUriDuplexConversionTuple() =>
             new DuplexConversionTuple<string?, Uri?>(
