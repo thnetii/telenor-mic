@@ -9,6 +9,10 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="AWSSDK.CognitoIdentityProvider" Version="3.3.108.3" />
+  </ItemGroup>
+
+  <ItemGroup>
     <ProjectReference Include="..\TelenorConnexion.ManagedIoTCloud\TelenorConnexion.ManagedIoTCloud.csproj" />
   </ItemGroup>
 

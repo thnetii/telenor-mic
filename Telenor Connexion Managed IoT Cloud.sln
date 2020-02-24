@@ -56,6 +56,10 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THNETII.TypeConverter", "do
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THNETII.CommandLine.Extensions", "dotnet-common\src\THNETII.CommandLine.Extensions\THNETII.CommandLine.Extensions.csproj", "{D6B5F41D-F411-48E6-84E1-0241FD1C4DAD}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THNETII.TypeConverter.Serialization", "dotnet-common\src\THNETII.TypeConverter.Serialization\THNETII.TypeConverter.Serialization.csproj", "{5013C0B1-D53A-4182-ABC4-0FB3D3BF44C9}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TelenorConnexion.ManagedIoTCloud.CloudApi.Rest", "src\TelenorConnexion.ManagedIoTCloud.CloudApi.Rest\TelenorConnexion.ManagedIoTCloud.CloudApi.Rest.csproj", "{841C9DE9-D8FC-46B8-855D-946FF0F3DD4E}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -222,6 +226,30 @@ Global
 		{D6B5F41D-F411-48E6-84E1-0241FD1C4DAD}.Release|x64.Build.0 = Release|Any CPU
 		{D6B5F41D-F411-48E6-84E1-0241FD1C4DAD}.Release|x86.ActiveCfg = Release|Any CPU
 		{D6B5F41D-F411-48E6-84E1-0241FD1C4DAD}.Release|x86.Build.0 = Release|Any CPU
+		{5013C0B1-D53A-4182-ABC4-0FB3D3BF44C9}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5013C0B1-D53A-4182-ABC4-0FB3D3BF44C9}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5013C0B1-D53A-4182-ABC4-0FB3D3BF44C9}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{5013C0B1-D53A-4182-ABC4-0FB3D3BF44C9}.Debug|x64.Build.0 = Debug|Any CPU
+		{5013C0B1-D53A-4182-ABC4-0FB3D3BF44C9}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{5013C0B1-D53A-4182-ABC4-0FB3D3BF44C9}.Debug|x86.Build.0 = Debug|Any CPU
+		{5013C0B1-D53A-4182-ABC4-0FB3D3BF44C9}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5013C0B1-D53A-4182-ABC4-0FB3D3BF44C9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5013C0B1-D53A-4182-ABC4-0FB3D3BF44C9}.Release|x64.ActiveCfg = Release|Any CPU
+		{5013C0B1-D53A-4182-ABC4-0FB3D3BF44C9}.Release|x64.Build.0 = Release|Any CPU
+		{5013C0B1-D53A-4182-ABC4-0FB3D3BF44C9}.Release|x86.ActiveCfg = Release|Any CPU
+		{5013C0B1-D53A-4182-ABC4-0FB3D3BF44C9}.Release|x86.Build.0 = Release|Any CPU
+		{841C9DE9-D8FC-46B8-855D-946FF0F3DD4E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{841C9DE9-D8FC-46B8-855D-946FF0F3DD4E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{841C9DE9-D8FC-46B8-855D-946FF0F3DD4E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{841C9DE9-D8FC-46B8-855D-946FF0F3DD4E}.Debug|x64.Build.0 = Debug|Any CPU
+		{841C9DE9-D8FC-46B8-855D-946FF0F3DD4E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{841C9DE9-D8FC-46B8-855D-946FF0F3DD4E}.Debug|x86.Build.0 = Debug|Any CPU
+		{841C9DE9-D8FC-46B8-855D-946FF0F3DD4E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{841C9DE9-D8FC-46B8-855D-946FF0F3DD4E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{841C9DE9-D8FC-46B8-855D-946FF0F3DD4E}.Release|x64.ActiveCfg = Release|Any CPU
+		{841C9DE9-D8FC-46B8-855D-946FF0F3DD4E}.Release|x64.Build.0 = Release|Any CPU
+		{841C9DE9-D8FC-46B8-855D-946FF0F3DD4E}.Release|x86.ActiveCfg = Release|Any CPU
+		{841C9DE9-D8FC-46B8-855D-946FF0F3DD4E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -242,6 +270,8 @@ Global
 		{4F494655-A732-4334-B633-0242EE228B71} = {3B99DEC3-920A-458C-B9E5-D4F7BB069603}
 		{ECB66D32-D2F8-49A8-B2C6-6613093CECC4} = {3B99DEC3-920A-458C-B9E5-D4F7BB069603}
 		{D6B5F41D-F411-48E6-84E1-0241FD1C4DAD} = {3B99DEC3-920A-458C-B9E5-D4F7BB069603}
+		{5013C0B1-D53A-4182-ABC4-0FB3D3BF44C9} = {3B99DEC3-920A-458C-B9E5-D4F7BB069603}
+		{841C9DE9-D8FC-46B8-855D-946FF0F3DD4E} = {14DF9197-C154-40D1-8001-632BCF08E96E}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D7EB7D3-BB18-4A25-B5BF-A236A532AE65}
