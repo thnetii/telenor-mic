@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="THNETII.AWSSDK.IoTDeviceGateway.Mqtt" Version="3.3.679-preview1-build7756" />
+    <PackageReference Include="THNETII.AWSSDK.IoTDeviceGateway.Mqtt" Version="3.3.679-preview1-build8015" />
   </ItemGroup>
 
   <ItemGroup>
