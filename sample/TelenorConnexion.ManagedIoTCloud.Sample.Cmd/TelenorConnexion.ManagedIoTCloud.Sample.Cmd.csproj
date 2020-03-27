@@ -12,8 +12,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="THNETII.Common" Version="1.0.0-build7150" />
-    <PackageReference Include="THNETII.CommandLine.Extensions" Version="1.0.0-build7150" />
+    <PackageReference Include="THNETII.Common" Version="0.0.1-build8108" />
+    <PackageReference Include="THNETII.CommandLine.Extensions" Version="0.0.1-build8108" />
   </ItemGroup>
 
   <ItemGroup>

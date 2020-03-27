@@ -5,7 +5,7 @@
   "recommendations": [
     "editorconfig.editorconfig",
     "codezombiech.gitignore",
-    "ms-vscode.csharp",
+    "ms-dotnettools.csharp",
     "tintoy.msbuild-project-tools",
     "humao.rest-client"
   ],
