@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="THNETII.Common" Version="0.0.1-build8108" />
-    <PackageReference Include="THNETII.CommandLine.Extensions" Version="0.0.1-build8108" />
+    <PackageReference Include="THNETII.CommandLine.Extensions" Version="0.0.1-build8571" />
   </ItemGroup>
 
   <ItemGroup>
