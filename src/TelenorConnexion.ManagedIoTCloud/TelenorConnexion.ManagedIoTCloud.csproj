@@ -13,7 +13,7 @@
 
   <ItemGroup>
     <PackageReference Include="THNETII.Common" Version="0.0.1-build8108" />
-    <PackageReference Include="THNETII.Networking.Http" Version="0.0.1-build8108" />
+    <PackageReference Include="THNETII.Networking.Http" Version="0.0.1-build8571" />
     <PackageReference Include="THNETII.TypeConverter" Version="0.0.1-build8108" />
   </ItemGroup>
 
