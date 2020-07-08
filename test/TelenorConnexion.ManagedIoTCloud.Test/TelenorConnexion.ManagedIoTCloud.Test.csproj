@@ -1,8 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <LangVersion>7.2</LangVersion>
     <TargetFramework>netcoreapp2.1</TargetFramework>
     <RootNamespace>TelenorConnexion.ManagedIoTCloud</RootNamespace>
     <IsPackable>false</IsPackable>
@@ -23,5 +22,5 @@
   <ItemGroup>
     <ProjectReference Include="..\..\src\TelenorConnexion.ManagedIoTCloud\TelenorConnexion.ManagedIoTCloud.csproj" />
   </ItemGroup>
-  
+
 </Project>

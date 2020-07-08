@@ -1,9 +1,8 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <LangVersion>7.2</LangVersion>
-    <TargetFrameworks>netstandard1.3;netstandard2.0</TargetFrameworks>
+    <TargetFrameworks>netstandard1.3;netstandard2.0;netstandard2.1</TargetFrameworks>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
   </PropertyGroup>
 
@@ -12,9 +11,9 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="THNETII.Common" Version="0.0.1-build8678" />
-    <PackageReference Include="THNETII.Networking.Http" Version="0.0.1-build8108" />
-    <PackageReference Include="THNETII.TypeConverter" Version="0.0.1-build8678" />
+    <ProjectReference Include="..\..\dotnet-common\src\THNETII.Common\THNETII.Common.csproj" />
+    <ProjectReference Include="..\..\dotnet-common\src\THNETII.Networking.Http\THNETII.Networking.Http.csproj" />
+    <ProjectReference Include="..\..\dotnet-common\src\THNETII.TypeConverter\THNETII.TypeConverter.csproj" />
   </ItemGroup>
 
   <ItemGroup>

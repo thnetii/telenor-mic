@@ -1,8 +1,7 @@
-﻿<?xml version="1.0" encoding="utf-8"?>
+<?xml version="1.0" encoding="utf-8"?>
 <Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
-    <LangVersion>7.2</LangVersion>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp3.1</TargetFramework>
   </PropertyGroup>
@@ -12,12 +11,11 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="THNETII.Common" Version="0.0.1-build8678" />
-    <PackageReference Include="THNETII.CommandLine.Extensions" Version="0.0.1-build8678" />
+    <ProjectReference Include="..\..\dotnet-common\src\THNETII.CommandLine.Extensions\THNETII.CommandLine.Extensions.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="THNETII.AWSSDK.IoTDeviceGateway.Mqtt" Version="3.3.679-preview1-build7756" />
+    <ProjectReference Include="..\..\aws-sdk-net-ext\src\THNETII.AWSSDK.IoTDeviceGateway.Mqtt\THNETII.AWSSDK.IoTDeviceGateway.Mqtt.csproj" />
   </ItemGroup>
 
   <ItemGroup>

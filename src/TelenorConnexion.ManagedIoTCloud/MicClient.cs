@@ -1,4 +1,4 @@
-﻿using Amazon.CognitoIdentity;
+using Amazon.CognitoIdentity;
 using Amazon.Runtime;
 using Amazon.SecurityToken;
 using Newtonsoft.Json;

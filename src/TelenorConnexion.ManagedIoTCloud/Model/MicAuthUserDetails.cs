@@ -1,4 +1,4 @@
-﻿namespace TelenorConnexion.ManagedIoTCloud.Model
+namespace TelenorConnexion.ManagedIoTCloud.Model
 {
     /// <summary>
     /// Represents basic details of the logged in user returned from a

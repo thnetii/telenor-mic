@@ -1,4 +1,4 @@
-﻿namespace TelenorConnexion.ManagedIoTCloud.Model
+namespace TelenorConnexion.ManagedIoTCloud.Model
 {
     /// <summary>
     /// Represents the arguments for an operation that requests to reset the

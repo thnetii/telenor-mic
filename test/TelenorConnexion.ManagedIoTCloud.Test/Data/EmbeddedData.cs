@@ -1,4 +1,4 @@
-﻿using Microsoft.Extensions.FileProviders;
+using Microsoft.Extensions.FileProviders;
 using System;
 
 namespace TelenorConnexion.ManagedIoTCloud.Data
