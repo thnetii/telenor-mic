@@ -8,7 +8,6 @@
     <TargetFramework Condition="'$(BuildDefaultTargetFramework)'!=''">netstandard2.0</TargetFramework>
   </PropertyGroup>
   <PropertyGroup>
-    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
     <PublishRepositoryUrl>true</PublishRepositoryUrl>
     <EmbedUntrackedSources>true</EmbedUntrackedSources>
     <IncludeSymbols>true</IncludeSymbols>
@@ -17,6 +16,7 @@
   <PropertyGroup Label="BasePath">
     <BaseOutputPath>$(MSBuildThisFileDirectory)bin\</BaseOutputPath>
     <BaseIntermediateOutputPath>$(MSBuildThisFileDirectory)obj\$(MSBuildProjectName)\</BaseIntermediateOutputPath>
+    <PublishDir>$(MSBuildThisFileDirectory)publish\$(MSBuildProjectName)\</PublishDir>
   </PropertyGroup>
   <PropertyGroup>
     <Features>IOperation</Features>
@@ -40,7 +40,7 @@
     <AssemblyVersion Condition="'$(FileVersion)'!=''">$(FileVersion).$(BuildId)</AssemblyVersion>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="2.9.8" PrivateAssets="All" />
+    <PackageReference Include="Microsoft.CodeAnalysis.FxCopAnalyzers" Version="3.0.0" PrivateAssets="All" />
     <PackageReference Include="Microsoft.DotNet.Analyzers.Compatibility" Version="0.2.12-alpha" PrivateAssets="All" />
   </ItemGroup>
   <ItemGroup Label="SourceLink">

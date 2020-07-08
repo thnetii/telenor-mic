@@ -1,4 +1,4 @@
-﻿namespace TelenorConnexion.ManagedIoTCloud.CloudApi.Model
+namespace TelenorConnexion.ManagedIoTCloud.CloudApi.Model
 {
     public class MicUserCreateResponse : MicUserFullDetails
     {
