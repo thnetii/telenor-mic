@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics.CodeAnalysis;
 using System.Globalization;
@@ -8,18 +8,18 @@ using System.Runtime.CompilerServices;
 using System.Threading;
 using System.Threading.Tasks;
 
-using TelenorConnexion.ManagedIoTCloud.Model;
+using TelenorConnexion.ManagedIoTCloud.CloudApi.Model;
 using THNETII.Common;
 using THNETII.Common.Collections.Generic;
 using THNETII.Networking.Http;
 using THNETII.TypeConverter.Serialization;
 
-namespace TelenorConnexion.ManagedIoTCloud
+namespace TelenorConnexion.ManagedIoTCloud.CloudApi
 {
     using static MicErrorMessageKey;
 
 #pragma warning disable CS1573 // Parameter has no matching param tag in the XML comment (but other parameters do)
-    public partial class MicClient
+    public partial class MicCloudApiRestClient
     {
         #region User API : LIST
         private static string UserListUrl(MicUserListRequest? request)

@@ -1,4 +1,4 @@
-﻿using Amazon.CognitoIdentity;
+using Amazon.CognitoIdentity;
 using Amazon.Runtime;
 using Amazon.SecurityToken;
 
@@ -13,17 +13,17 @@ using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 
-using TelenorConnexion.ManagedIoTCloud.Model;
+using TelenorConnexion.ManagedIoTCloud.CloudApi.Model;
 
 using THNETII.Common;
 using THNETII.Networking.Http;
 
-namespace TelenorConnexion.ManagedIoTCloud
+namespace TelenorConnexion.ManagedIoTCloud.CloudApi
 {
     /// <summary>
     /// Provides basic functionality for MIC Client implementations.
     /// </summary>
-    public partial class MicClient : IAmazonService, IDisposable
+    public partial class MicCloudApiRestClient : IAmazonService, IDisposable
     {
         private readonly HttpClient httpClient;
         private readonly Uri apiGatewayEndpoint;
@@ -66,7 +66,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// MIC Manifest document.
         /// </summary>
         /// <param name="manifest"></param>
-        protected MicClient(HttpClient httpClient, MicManifest manifest) : base()
+        protected MicCloudApiRestClient(HttpClient httpClient, MicManifest manifest) : base()
         {
             this.httpClient = httpClient ?? throw new ArgumentNullException(nameof(httpClient));
             Manifest = manifest ?? throw new ArgumentNullException(nameof(manifest));
@@ -91,18 +91,18 @@ namespace TelenorConnexion.ManagedIoTCloud
                 );
         }
 
-        public MicClient(HttpClient httpClient, MicManifest manifest, string apiKey)
+        public MicCloudApiRestClient(HttpClient httpClient, MicManifest manifest, string apiKey)
             : this(httpClient, manifest) =>
             ApiKey = apiKey.ThrowIfNullOrWhiteSpace(nameof(apiKey));
 
-        public static async Task<MicClient> CreateFromHostname(
+        public static async Task<MicCloudApiRestClient> CreateFromHostname(
             HttpClient httpClient, string hostname,
             CancellationToken cancelToken = default)
         {
             var manifest = await MicManifest
                 .GetMicManifest(hostname, httpClient, cancelToken)
                 .ConfigureAwait(continueOnCapturedContext: false);
-            var micClient = new MicClient(httpClient, manifest);
+            var micClient = new MicCloudApiRestClient(httpClient, manifest);
             var metadataManifest = await micClient
                 .MetadataManifest(cancelToken)
                 .ConfigureAwait(continueOnCapturedContext: false);
@@ -110,14 +110,14 @@ namespace TelenorConnexion.ManagedIoTCloud
             return micClient;
         }
 
-        public static async Task<MicClient> CreateFromHostname(
+        public static async Task<MicCloudApiRestClient> CreateFromHostname(
             HttpClient httpClient, string hostname, string apiKey,
             CancellationToken cancelToken = default)
         {
             var manifest = await MicManifest
                 .GetMicManifest(hostname, httpClient, cancelToken)
                 .ConfigureAwait(continueOnCapturedContext: false);
-            var micClient = new MicClient(httpClient, manifest, apiKey);
+            var micClient = new MicCloudApiRestClient(httpClient, manifest, apiKey);
             return micClient;
         }
 
@@ -146,8 +146,8 @@ namespace TelenorConnexion.ManagedIoTCloud
         /// <param name="cancelToken">An optional cancellation token that can be used to prematurely cancel the operation.</param>
         /// <returns>A deserialized instance reqpresenting the response payload of the operation.</returns>
         /// <remarks>
-        /// <para>Valid values for <paramref name="relativeUrl"/> are the identifiers of the instance methods defined in the <see cref="MicClient"/> class that represent MIC API oprations.</para>
-        /// <para>Classes derived from <see cref="MicClient"/> should implement this method using a switch statement with each case using the <c>nameof</c> operator.</para>
+        /// <para>Valid values for <paramref name="relativeUrl"/> are the identifiers of the instance methods defined in the <see cref="MicCloudApiRestClient"/> class that represent MIC API oprations.</para>
+        /// <para>Classes derived from <see cref="MicCloudApiRestClient"/> should implement this method using a switch statement with each case using the <c>nameof</c> operator.</para>
         /// <para>For MIC API endpoints that do not return any object <typeparamref name="TResponse"/> should be <see cref="MicModel"/> which represents an empty return value.</para>
         /// </remarks>
         [SuppressMessage("Design", "CA1054: Uri parameters should not be strings", Scope = "parameter")]
@@ -246,7 +246,7 @@ namespace TelenorConnexion.ManagedIoTCloud
         #region Dispose
 
         /// <inheritdoc />
-        ~MicClient() => Dispose(disposing: false);
+        ~MicCloudApiRestClient() => Dispose(disposing: false);
 
         /// <inheritdoc />
         public void Dispose()
