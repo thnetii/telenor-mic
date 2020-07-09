@@ -71,7 +71,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Test
         [Fact]
         public void GetsOnlineMicManifestUsingConfig()
         {
-            var parameters = OnlineParameters.GetEmbedded();
+            var parameters = OnlineParameters.GetFromUserSecrets();
             using var client = new MicClient(new MicClientConfig
             {
                 Hostname = parameters.Hostname
@@ -85,7 +85,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Test
         [Fact]
         public void GetsOnlineMicManifestUsingHostname()
         {
-            var parameters = OnlineParameters.GetEmbedded();
+            var parameters = OnlineParameters.GetFromUserSecrets();
             using var client = new MicClient(parameters.Hostname);
 
             var manifest = client.GetManifest().GetAwaiter().GetResult();

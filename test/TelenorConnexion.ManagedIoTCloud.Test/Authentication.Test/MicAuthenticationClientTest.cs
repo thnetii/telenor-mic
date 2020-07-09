@@ -34,7 +34,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Authentication.Test
         [Fact]
         public static void GetAuthClientFromOnlineManifest()
         {
-            var parameters = OnlineParameters.GetEmbedded();
+            var parameters = OnlineParameters.GetFromUserSecrets();
             using var client = new MicClient(parameters.Hostname);
 
             using var authClient = client.GetAuthenticationClient()
@@ -49,7 +49,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Authentication.Test
         [Fact]
         public static void CanSrpAuthenticateOnlineCredentials()
         {
-            var parameters = OnlineParameters.GetEmbedded();
+            var parameters = OnlineParameters.GetFromUserSecrets();
             using var client = new MicClient(parameters.Hostname);
             using var authClient = client.GetAuthenticationClient()
                 .GetAwaiter().GetResult();
@@ -69,7 +69,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Authentication.Test
         [Fact]
         public static void GetCognitoCredentialsFromOnlineCredentials()
         {
-            var parameters = OnlineParameters.GetEmbedded();
+            var parameters = OnlineParameters.GetFromUserSecrets();
             using var client = new MicClient(parameters.Hostname);
             using var authClient = client.GetAuthenticationClient()
                 .GetAwaiter().GetResult();
@@ -88,7 +88,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Authentication.Test
         [Fact]
         public static void GetUserDetailsFromOnlineCredentials()
         {
-            var parameters = OnlineParameters.GetEmbedded();
+            var parameters = OnlineParameters.GetFromUserSecrets();
             using var client = new MicClient(parameters.Hostname);
             using var authClient = client.GetAuthenticationClient()
                 .GetAwaiter().GetResult();

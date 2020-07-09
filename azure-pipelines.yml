@@ -13,6 +13,8 @@ resources:
     type:       github
     name:       thnetii/azure-pipelines
     endpoint:   thnetii
+variables:
+  - group: thnetii.aws-sdk-net-ext
 jobs:
 - template: templates/dotnetcore/azure-pipelines.yml@templates
   parameters:
@@ -20,22 +22,13 @@ jobs:
     - checkout:   self
       submodules: true
     presteps:
-    - task: DownloadSecureFile@1
-      displayName:  Download Online Test parameters
-      inputs:
-        secureFile: online.parameters.json
-    - task: CopyFiles@2
-      displayName:  Copy Online Test parameters to Unit Test source directory
-      inputs:
-        sourceFolder: $(Agent.TempDirectory)
-        contents:     online.parameters.json
-        targetFolder: $(Build.SourcesDirectory)/test/TelenorConnexion.ManagedIoTCloud.Test/Data
-        overWrite:    true
-    - task: UseDotNet@2
-      displayName:  Use .NET Core SDK version 2.1.x
-      inputs:
-        version:    2.1.x
-    - task: UseDotNet@2
-      displayName:  Use .NET Core SDK version 3.x
-      inputs:
-        version:    3.x
+    - script: |
+        dotnet user-secrets set -p test/TelenorConnexion.ManagedIoTCloud.Test "TelenorMic:Credentials:Hostname" "$(TelenorMic.Credentials.Hostname)"
+        dotnet user-secrets set -p test/TelenorConnexion.ManagedIoTCloud.Test "TelenorMic:Credentials:Username" "$(TelenorMic.Credentials.Username)"
+        dotnet user-secrets set -p test/TelenorConnexion.ManagedIoTCloud.Test "TelenorMic:Credentials:Username" "$(TelenorMic.Credentials.Username)"
+      displayName: dotnet user-secrets set -p test/TelenorConnexion.ManagedIoTCloud.Test
+    poststeps:
+    - script: |
+        dotnet user-secrets clear -p test/TelenorConnexion.ManagedIoTCloud.Test
+      displayName: dotnet user-secrets clear -p test/TelenorConnexion.ManagedIoTCloud.Test
+      condition: always()

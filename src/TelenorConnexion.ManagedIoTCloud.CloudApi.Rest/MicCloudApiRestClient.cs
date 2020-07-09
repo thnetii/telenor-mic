@@ -77,11 +77,11 @@ namespace TelenorConnexion.ManagedIoTCloud.CloudApi
             var anonymousCreds = new AnonymousAWSCredentials();
             cognitoClient = new AmazonCognitoIdentityClient(
                 anonymousCreds,
-                Config.Create<AmazonCognitoIdentityConfig>()
+                Manifest.CreateClientConfig<AmazonCognitoIdentityConfig>(Config)
                 );
             stsClient = new AmazonSecurityTokenServiceClient(
                 anonymousCreds,
-                Config.Create<AmazonSecurityTokenServiceConfig>()
+                Manifest.CreateClientConfig<AmazonSecurityTokenServiceConfig>(Config)
                 );
 
             AwsCredentials = new CognitoAWSCredentials(accountId: null,

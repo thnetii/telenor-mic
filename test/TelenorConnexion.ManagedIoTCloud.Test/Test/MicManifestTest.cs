@@ -52,7 +52,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Test
         [Fact]
         public static async Task GetOnlineMicManifest()
         {
-            var parameters = OnlineParameters.GetEmbedded();
+            var parameters = OnlineParameters.GetFromUserSecrets();
             var manifest = await MicManifest.GetMicManifest(parameters.Hostname);
             AssertMicManifest(manifest);
         }
@@ -60,7 +60,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Test
         [Fact]
         public static void GetMicManifestWithCancelledTokenThrows()
         {
-            var parameters = OnlineParameters.GetEmbedded();
+            var parameters = OnlineParameters.GetFromUserSecrets();
             Assert.Throws<TaskCanceledException>(() =>
             {
                 var cts = new CancellationTokenSource();

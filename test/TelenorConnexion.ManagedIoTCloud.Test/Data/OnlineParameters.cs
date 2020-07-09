@@ -1,19 +1,23 @@
 using System.IO;
 using System.Text;
 
+using Microsoft.Extensions.Configuration;
+
 using Newtonsoft.Json;
 
 namespace TelenorConnexion.ManagedIoTCloud.Data
 {
     public class OnlineParameters
     {
-        public static OnlineParameters GetEmbedded()
+        public static OnlineParameters GetFromUserSecrets()
         {
-            var fileInfo = EmbeddedData.GetFile("online.parameters.json");
-            using var stream = fileInfo.CreateReadStream();
-            using var textReader = new StreamReader(stream, Encoding.UTF8);
-            using var jsonReader = new JsonTextReader(textReader) { CloseInput = false };
-            return JsonSerializer.CreateDefault().Deserialize<OnlineParameters>(jsonReader);
+            var config = new ConfigurationBuilder()
+                .AddUserSecrets<OnlineParameters>()
+                .Build();
+            var instance = new OnlineParameters();
+            config.Bind(ConfigurationPath.Combine("TelenorMic", "Credentials"),
+                instance);
+            return instance;
         }
 
         [JsonProperty("hostname")]
