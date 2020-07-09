@@ -11,7 +11,11 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Solution Items", "Solution 
 		.gitmodules = .gitmodules
 		AllRules.ruleset = AllRules.ruleset
 		Directory.Build.props = Directory.Build.props
+		Directory.Build.targets = Directory.Build.targets
+		Directory.Meta.props = Directory.Meta.props
+		Directory.Version.props = Directory.Version.props
 		LICENSE = LICENSE
+		nuget.config = nuget.config
 	EndProjectSection
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{14DF9197-C154-40D1-8001-632BCF08E96E}"
@@ -30,11 +34,21 @@ Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "dotnet-common", "dotnet-com
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{0941A572-545A-430E-8102-B4FF357AF513}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THNETII.Common", "dotnet-common\src\THNETII.Common\THNETII.Common.csproj", "{3E9F3E3F-842A-4A98-8793-E318AD76457C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "THNETII.Common", "dotnet-common\src\THNETII.Common\THNETII.Common.csproj", "{3E9F3E3F-842A-4A98-8793-E318AD76457C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THNETII.Networking.Http", "dotnet-common\src\THNETII.Networking.Http\THNETII.Networking.Http.csproj", "{8C8CDAF5-6BE6-44F1-8173-5D6FF528E2FD}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "THNETII.Networking.Http", "dotnet-common\src\THNETII.Networking.Http\THNETII.Networking.Http.csproj", "{8C8CDAF5-6BE6-44F1-8173-5D6FF528E2FD}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THNETII.TypeConverter", "dotnet-common\src\THNETII.TypeConverter\THNETII.TypeConverter.csproj", "{AA4FFBA7-E01D-4ACD-BA1D-F9C067386032}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "THNETII.TypeConverter", "dotnet-common\src\THNETII.TypeConverter\THNETII.TypeConverter.csproj", "{AA4FFBA7-E01D-4ACD-BA1D-F9C067386032}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "aws-sdk-net-ext", "aws-sdk-net-ext", "{02AD20E4-A500-433A-9247-6A707FD7F099}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{5D96EFD3-175F-4714-BF8D-C6055E461D9B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THNETII.AWSSDK.IoTDeviceGateway", "aws-sdk-net-ext\src\THNETII.AWSSDK.IoTDeviceGateway\THNETII.AWSSDK.IoTDeviceGateway.csproj", "{9E4DA9C1-DEEF-42B8-87BD-43A846FF197A}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THNETII.AWSSDK.IoTDeviceGateway.Mqtt", "aws-sdk-net-ext\src\THNETII.AWSSDK.IoTDeviceGateway.Mqtt\THNETII.AWSSDK.IoTDeviceGateway.Mqtt.csproj", "{7EEC62CE-C4D9-414C-9FE7-91D22F75BFCA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "THNETII.CommandLine.Extensions", "dotnet-common\src\THNETII.CommandLine.Extensions\THNETII.CommandLine.Extensions.csproj", "{3E3BD6B8-4A3F-4583-AC23-A5023D55EA9E}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -118,6 +132,42 @@ Global
 		{AA4FFBA7-E01D-4ACD-BA1D-F9C067386032}.Release|x64.Build.0 = Release|Any CPU
 		{AA4FFBA7-E01D-4ACD-BA1D-F9C067386032}.Release|x86.ActiveCfg = Release|Any CPU
 		{AA4FFBA7-E01D-4ACD-BA1D-F9C067386032}.Release|x86.Build.0 = Release|Any CPU
+		{9E4DA9C1-DEEF-42B8-87BD-43A846FF197A}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9E4DA9C1-DEEF-42B8-87BD-43A846FF197A}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9E4DA9C1-DEEF-42B8-87BD-43A846FF197A}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{9E4DA9C1-DEEF-42B8-87BD-43A846FF197A}.Debug|x64.Build.0 = Debug|Any CPU
+		{9E4DA9C1-DEEF-42B8-87BD-43A846FF197A}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{9E4DA9C1-DEEF-42B8-87BD-43A846FF197A}.Debug|x86.Build.0 = Debug|Any CPU
+		{9E4DA9C1-DEEF-42B8-87BD-43A846FF197A}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9E4DA9C1-DEEF-42B8-87BD-43A846FF197A}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9E4DA9C1-DEEF-42B8-87BD-43A846FF197A}.Release|x64.ActiveCfg = Release|Any CPU
+		{9E4DA9C1-DEEF-42B8-87BD-43A846FF197A}.Release|x64.Build.0 = Release|Any CPU
+		{9E4DA9C1-DEEF-42B8-87BD-43A846FF197A}.Release|x86.ActiveCfg = Release|Any CPU
+		{9E4DA9C1-DEEF-42B8-87BD-43A846FF197A}.Release|x86.Build.0 = Release|Any CPU
+		{7EEC62CE-C4D9-414C-9FE7-91D22F75BFCA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7EEC62CE-C4D9-414C-9FE7-91D22F75BFCA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7EEC62CE-C4D9-414C-9FE7-91D22F75BFCA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{7EEC62CE-C4D9-414C-9FE7-91D22F75BFCA}.Debug|x64.Build.0 = Debug|Any CPU
+		{7EEC62CE-C4D9-414C-9FE7-91D22F75BFCA}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{7EEC62CE-C4D9-414C-9FE7-91D22F75BFCA}.Debug|x86.Build.0 = Debug|Any CPU
+		{7EEC62CE-C4D9-414C-9FE7-91D22F75BFCA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7EEC62CE-C4D9-414C-9FE7-91D22F75BFCA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7EEC62CE-C4D9-414C-9FE7-91D22F75BFCA}.Release|x64.ActiveCfg = Release|Any CPU
+		{7EEC62CE-C4D9-414C-9FE7-91D22F75BFCA}.Release|x64.Build.0 = Release|Any CPU
+		{7EEC62CE-C4D9-414C-9FE7-91D22F75BFCA}.Release|x86.ActiveCfg = Release|Any CPU
+		{7EEC62CE-C4D9-414C-9FE7-91D22F75BFCA}.Release|x86.Build.0 = Release|Any CPU
+		{3E3BD6B8-4A3F-4583-AC23-A5023D55EA9E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3E3BD6B8-4A3F-4583-AC23-A5023D55EA9E}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3E3BD6B8-4A3F-4583-AC23-A5023D55EA9E}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3E3BD6B8-4A3F-4583-AC23-A5023D55EA9E}.Debug|x64.Build.0 = Debug|Any CPU
+		{3E3BD6B8-4A3F-4583-AC23-A5023D55EA9E}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3E3BD6B8-4A3F-4583-AC23-A5023D55EA9E}.Debug|x86.Build.0 = Debug|Any CPU
+		{3E3BD6B8-4A3F-4583-AC23-A5023D55EA9E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3E3BD6B8-4A3F-4583-AC23-A5023D55EA9E}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3E3BD6B8-4A3F-4583-AC23-A5023D55EA9E}.Release|x64.ActiveCfg = Release|Any CPU
+		{3E3BD6B8-4A3F-4583-AC23-A5023D55EA9E}.Release|x64.Build.0 = Release|Any CPU
+		{3E3BD6B8-4A3F-4583-AC23-A5023D55EA9E}.Release|x86.ActiveCfg = Release|Any CPU
+		{3E3BD6B8-4A3F-4583-AC23-A5023D55EA9E}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -130,6 +180,10 @@ Global
 		{3E9F3E3F-842A-4A98-8793-E318AD76457C} = {0941A572-545A-430E-8102-B4FF357AF513}
 		{8C8CDAF5-6BE6-44F1-8173-5D6FF528E2FD} = {0941A572-545A-430E-8102-B4FF357AF513}
 		{AA4FFBA7-E01D-4ACD-BA1D-F9C067386032} = {0941A572-545A-430E-8102-B4FF357AF513}
+		{5D96EFD3-175F-4714-BF8D-C6055E461D9B} = {02AD20E4-A500-433A-9247-6A707FD7F099}
+		{9E4DA9C1-DEEF-42B8-87BD-43A846FF197A} = {5D96EFD3-175F-4714-BF8D-C6055E461D9B}
+		{7EEC62CE-C4D9-414C-9FE7-91D22F75BFCA} = {5D96EFD3-175F-4714-BF8D-C6055E461D9B}
+		{3E3BD6B8-4A3F-4583-AC23-A5023D55EA9E} = {0941A572-545A-430E-8102-B4FF357AF513}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {9D7EB7D3-BB18-4A25-B5BF-A236A532AE65}
