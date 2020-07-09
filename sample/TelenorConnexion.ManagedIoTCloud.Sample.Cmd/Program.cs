@@ -103,7 +103,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                     using (var mqttClient = new MqttFactory().CreateMqttClient())
                     {
                         var mqttConsoleSync = new object();
-                        mqttClient.ApplicationMessageReceived += (sender, e) =>
+                        mqttClient.UseApplicationMessageReceivedHandler(e =>
                         {
                             lock (mqttConsoleSync)
                             {
@@ -128,7 +128,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                                 Console.WriteLine(new string('-', count: 20));
                                 Console.WriteLine();
                             }
-                        };
+                        });
 
                         var mqttOptions = await mqttOptionsTask;
                         var connectInfo = await mqttClient.ConnectAsync(mqttOptions);
@@ -138,7 +138,7 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                             Console.WriteLine("Successful!");
                             Console.WriteLine($"MQTT Client ID: {mqttClient.Options.ClientId}");
                             Console.Write($"Subscribing to events . . . ");
-                            var subscriptionTasks = new Task<IList<MqttSubscribeResult>>[]
+                            var subscriptionTasks = new []
                             {
                                 mqttClient.SubscribeAsync($"event{domainPath}"),
                                 mqttClient.SubscribeAsync($"event{domainPath}#"),
@@ -148,13 +148,13 @@ namespace TelenorConnexion.ManagedIoTCloud.Sample.Cmd
                             Task.WaitAll(subscriptionTasks, cancelToken);
                             cancelToken.ThrowIfCancellationRequested();
                             int subCount = subscriptionTasks
-                                .SelectMany(t => t.Result)
+                                .SelectMany(t => t.Result.Items)
                                 .Count();
                             Console.WriteLine($"{subCount} subscription{(subCount == 1 ? "" : "s")}.");
-                            foreach (var sub in subscriptionTasks.SelectMany(t => t.Result))
+                            foreach (var sub in subscriptionTasks.SelectMany(t => t.Result.Items))
                             {
                                 var tf = sub.TopicFilter;
-                                Console.WriteLine($"{tf.Topic} (QoS: {tf.QualityOfServiceLevel}): {sub.ReturnCode}");
+                                Console.WriteLine($"{tf.Topic} (QoS: {tf.QualityOfServiceLevel}): {sub.ResultCode}");
                             }
                             Console.WriteLine();
                             cancelToken.ThrowIfCancellationRequested();
