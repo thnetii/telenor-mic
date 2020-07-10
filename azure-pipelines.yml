@@ -12,7 +12,7 @@ resources:
   - repository: templates
     type:       github
     name:       thnetii/azure-pipelines
-    endpoint:   github
+    endpoint:   thnetii
 jobs:
 - template: templates/dotnetcore/azure-pipelines.yml@templates
   parameters:
