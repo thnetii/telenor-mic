@@ -17,7 +17,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <PackageReference Include="AWSSDK.CognitoIdentity" Version="3.3.101.114" />
+    <PackageReference Include="AWSSDK.CognitoIdentity" Version="3.3.101.115" />
   </ItemGroup>
 
 </Project>
